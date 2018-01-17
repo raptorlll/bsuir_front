@@ -13,6 +13,9 @@
         android:title="@string/login"
         />
     <item
+        android:id="@+id/logoutMenu"
+        android:title="Logout" />
+    <item
         android:id="@+id/mnuFree"
         android:title="@string/free_apps" />
     <item

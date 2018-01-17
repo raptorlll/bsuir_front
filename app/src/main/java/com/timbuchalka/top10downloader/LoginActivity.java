@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Set;
 
 import android.content.SharedPreferences;
 import android.view.View;
@@ -19,11 +21,26 @@ import android.widget.*;
 
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.GetLoginData;
+import com.timbuchalka.top10downloader.api.GetRolesData;
 import com.timbuchalka.top10downloader.models.Login;
+import com.timbuchalka.top10downloader.models.Role;
 import com.timbuchalka.top10downloader.models.Token;
 
-public class LoginActivity extends AppCompatActivity implements GetLoginData.OnDataAvailable {
+public class LoginActivity extends BaseActivity implements GetLoginData.OnDataAvailable, GetRolesData.OnDataAvailable {
     private static final String TAG = "LoginActivity";
+
+    @Override
+    public void onDataAvailable(Set<Role> data, DownloadStatus status) {
+        Log.d(TAG, "onDataAvailable: ");
+        String[] sb = new String[data.size()];
+        int i = 0;
+        for (Role s : data){
+            sb[i++] = s.getValue();
+        }
+        SharedPreferences.Editor e= sp.edit();
+        e.putString("roles", TextUtils.join(".", sb));
+        e.commit();
+    }
 
     @Override
     public void onDataAvailable(Token data, DownloadStatus status) {
@@ -49,12 +66,16 @@ public class LoginActivity extends AppCompatActivity implements GetLoginData.OnD
         e.putString("token_type", data.getToken_type());
         e.commit();
 
+
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+
+        getRoles(sp.getString("token", ""));
+
+
         Toast.makeText(getBaseContext(),"Login Successful", Toast.LENGTH_LONG).show();
         startActivity(new Intent(getBaseContext(), MainActivity.class));
 
         finish();
-
-
 
         Log.d(TAG, "onDataAvailable: ends");
     }
@@ -99,6 +120,10 @@ public class LoginActivity extends AppCompatActivity implements GetLoginData.OnD
     private void authProcess(String username, String password) {
         GetLoginData loginData = new GetLoginData(this);
         loginData.execute(username, password);
+    }
+    private void getRoles(String token) {
+        GetRolesData loginData = new GetRolesData(this);
+        loginData.execute(token);
     }
 
 

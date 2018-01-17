@@ -1,6 +1,7 @@
 package com.timbuchalka.top10downloader;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +10,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.timbuchalka.top10downloader.models.Role;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -24,26 +30,39 @@ public class MainActivity extends AppCompatActivity {
     private String feedCachedUrl = "INVALIDATED";
     public static final String STATE_URL = "feedUrl";
     public static final String STATE_LIMIT = "feedLimit";
-
+    public Set<Role> rolesSet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listApps = (ListView) findViewById(R.id.xmlListView);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             feedUrl = savedInstanceState.getString(STATE_URL);
             feedLimit = savedInstanceState.getInt(STATE_LIMIT);
         }
 
         downloadUrl(String.format(feedUrl, feedLimit));
 
+
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        String roles = sp.getString("roles", "");
+        String[] parts = roles.split(Pattern.quote("."));
+        Set<Role> rolesSet = new HashSet<Role>();
+
+        for (String s: parts) {
+            rolesSet.add(new Role(s, s));
+        }
+
+        this.rolesSet = rolesSet;
+
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.feeds_menu, menu);
-        if(feedLimit == 10) {
+        if (feedLimit == 10) {
             menu.findItem(R.id.mnu10).setChecked(true);
         } else {
             menu.findItem(R.id.mnu25).setChecked(true);
@@ -55,12 +74,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch(id) {
+        switch (id) {
             case R.id.loginMenu:
                 Intent i = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(i);
                 finish();
 //                setContentView(R.layout.login);
+                return true;
+            case R.id.logoutMenu:
+                SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor e = sp.edit();
+                e.clear();
+                e.commit();
                 return true;
             case R.id.mnuFree:
                 feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml";
@@ -73,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mnu10:
             case R.id.mnu25:
-                if(!item.isChecked()) {
+                if (!item.isChecked()) {
                     item.setChecked(true);
                     feedLimit = 35 - feedLimit;
                     Log.d(TAG, "onOptionsItemSelected: " + item.getTitle() + " setting feedLimit to " + feedLimit);
@@ -101,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadUrl(String feedUrl) {
-        if(!feedUrl.equalsIgnoreCase(feedCachedUrl)) {
+        if (!feedUrl.equalsIgnoreCase(feedCachedUrl)) {
             Log.d(TAG, "downloadUrl: starting Asynctask");
             DownloadData downloadData = new DownloadData();
             downloadData.execute(feedUrl);
