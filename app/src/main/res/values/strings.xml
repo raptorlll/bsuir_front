@@ -3,4 +3,8 @@
     <string name="login">Login</string>
     <string name="free_apps">Free apps</string>
     <string name="password">password</string>
+    <string name="register">Register</string>
+    <string name="licence_data">Licence data</string>
+    <string name="company_news">Company news</string>
+    <string name="item" />
 </resources>

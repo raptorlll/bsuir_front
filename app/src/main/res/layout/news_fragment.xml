@@ -11,11 +11,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.timbuchalka.top10downloader.LoginActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_placeholder"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="News"
+        android:textSize="40dp" />
 
 </LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/item" />
+
+    <item
+        android:id="@+id/menu_login"
+        android:title="@string/login" />
+    <item
+        android:id="@+id/menu_register"
+        android:title="@string/register" />
+    <item
+        android:id="@+id/menu_license"
+        android:title="@string/licence_data" />
+    <item
+        android:id="@+id/menu_company_news"
+        android:title="@string/company_news" />
+</menu>

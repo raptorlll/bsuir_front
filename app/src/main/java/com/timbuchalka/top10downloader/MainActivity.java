@@ -10,11 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.timbuchalka.top10downloader.models.Role;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,7 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAuthActivity {
     private static final String TAG = "MainActivity";
     private ListView listApps;
     private String feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml";
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String STATE_URL = "feedUrl";
     public static final String STATE_LIMIT = "feedLimit";
     public Set<Role> rolesSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +47,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         downloadUrl(String.format(feedUrl, feedLimit));
-
-
-        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
-        String roles = sp.getString("roles", "");
-        String[] parts = roles.split(Pattern.quote("."));
-        Set<Role> rolesSet = new HashSet<Role>();
-
-        for (String s: parts) {
-            rolesSet.add(new Role(s, s));
-        }
-
-        this.rolesSet = rolesSet;
-
-        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -75,17 +65,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.loginMenu:
-                Intent i = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(i);
-                finish();
-//                setContentView(R.layout.login);
-                return true;
+//            case R.id.loginMenu:
+//                Intent i = new Intent(getBaseContext(), LoginActivity.class);
+//                startActivity(i);
+//                finish();
+////                setContentView(R.layout.login);
+//                return true;
             case R.id.logoutMenu:
                 SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor e = sp.edit();
                 e.clear();
                 e.commit();
+                /* Reload activity */
+                finish();
+                startActivity(getIntent());
                 return true;
             case R.id.mnuFree:
                 feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml";
