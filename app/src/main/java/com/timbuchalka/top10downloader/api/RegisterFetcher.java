@@ -12,9 +12,13 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 
 public class RegisterFetcher extends FetcherAbstract{
-    private String password;
-    private String username;
+    private String userJson;
 
+
+    public RegisterFetcher(OnDownloadComplete callback, String userJson) {
+        super(callback);
+        this.userJson = userJson;
+    }
 
     public RegisterFetcher(OnDownloadComplete callback) {
         super(callback);
@@ -29,15 +33,11 @@ public class RegisterFetcher extends FetcherAbstract{
 
     @Override
     String getUrl() {
-        return "/oauth/token";
+        return "/user/registration";
     }
 
 
     public HttpURLConnection executeRequest(URL url) throws IOException {
-        Authenticator.setDefault(new Authenticator(){
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("testjwtclientid", "XY7kmzoNzl100".toCharArray());
-        }});
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -46,17 +46,20 @@ public class RegisterFetcher extends FetcherAbstract{
         connection.setDoInput(true);
         connection.setDoOutput(true);
 
-        Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("username", username)
-                .appendQueryParameter("password", password)
-                .appendQueryParameter("grant_type", "password");
 
-        String query = builder.build().getEncodedQuery();
+        connection.setRequestProperty("Content-Type", "application/json");
+//
+//        Uri.Builder builder = new Uri.Builder()
+//                .appendQueryParameter("username", username)
+//                .appendQueryParameter("password", password)
+//                .appendQueryParameter("grant_type", "password");
+//
+//        String query = builder.build().getEncodedQuery();
 
         OutputStream os = connection.getOutputStream();
         BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(os, "UTF-8"));
-        writer.write(query);
+        writer.write(userJson);
         writer.flush();
         writer.close();
         os.close();

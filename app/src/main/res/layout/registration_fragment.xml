@@ -51,11 +51,18 @@
         android:hint="Password" />
 
     <CheckBox
+        android:id="@+id/checkbox_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin" />
+    <CheckBox
+        android:id="@+id/checkbox_consultant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Consultant" />
 
     <CheckBox
+        android:id="@+id/checkbox_client"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Client" />

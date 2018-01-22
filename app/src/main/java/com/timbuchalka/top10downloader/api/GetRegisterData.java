@@ -4,24 +4,26 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.timbuchalka.top10downloader.convertors.TokenConvertor;
+import com.timbuchalka.top10downloader.convertors.UserJsonConvertor;
 import com.timbuchalka.top10downloader.models.Token;
+import com.timbuchalka.top10downloader.models.UserJson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GetRegisterData
-        extends AsyncTask<String, Void, Token>
+        extends AsyncTask<String, Void, UserJson>
         implements FetcherAbstract.OnDownloadComplete {
 
     private static final String TAG = "GetRegisterData";
 
-    private Token mLogin;
+    private UserJson mLogin;
 
     private final OnDataAvailable mCallBack;
     private boolean runningOnSameThread = false;
 
     public interface OnDataAvailable {
-        void onDataAvailable(Token data, DownloadStatus status);
+        void onDataAvailable(UserJson data, DownloadStatus status);
     }
 
     public GetRegisterData(OnDataAvailable callBack) {
@@ -30,18 +32,18 @@ public class GetRegisterData
     }
 
     @Override
-    protected void onPostExecute(Token Logins) {
+    protected void onPostExecute(UserJson Logins) {
         Log.d(TAG, "onPostExecute starts");
 
-        if(mCallBack != null) {
+        if (mCallBack != null) {
             mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
         }
         Log.d(TAG, "onPostExecute ends");
     }
 
     @Override
-    protected Token doInBackground(String... params) {
-        FetcherAbstract RawDataFetcher = new LoginFetcher(this, params[0], params[1]);
+    protected UserJson doInBackground(String... params) {
+        FetcherAbstract RawDataFetcher = new RegisterFetcher(this, params[0]);
         RawDataFetcher.runInSameThread();
         Log.d(TAG, "doInBackground ends");
         return mLogin;
@@ -51,25 +53,25 @@ public class GetRegisterData
     @Override
     public void onDownloadComplete(String data, DownloadStatus status) {
         Log.d(TAG, "onDownloadComplete starts. Status = " + status);
-        Token token;
-        if(status == DownloadStatus.OK) {
+        UserJson userJson;
+        if (status == DownloadStatus.OK) {
             try {
                 JSONObject jsonData = new JSONObject(data);
 
-//                LoginConvertor convertor = new LoginConvertor();
-//                login = convertor.convert(jsonData);
-                TokenConvertor convertor = new TokenConvertor();
-                token = convertor.convert(jsonData);
-                mLogin = token;
-                Log.d(TAG, "onDownloadComplete " + token.toString());
-            } catch(JSONException jsone) {
+                UserJsonConvertor convertor = new UserJsonConvertor();
+                userJson = convertor.convert(jsonData);
+//                TokenConvertor convertor = new TokenConvertor();
+//                token = convertor.convert(jsonData);
+
+                mLogin = userJson;
+            } catch (JSONException jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
                 status = DownloadStatus.FAILED_OR_EMPTY;
             }
         }
 
-        if(runningOnSameThread && mCallBack != null) {
+        if (runningOnSameThread && mCallBack != null) {
             mCallBack.onDataAvailable(mLogin, status);
         }
 
