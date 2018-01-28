@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -34,7 +36,13 @@ public class MainActivity extends BaseAuthActivity {
     public static final String STATE_URL = "feedUrl";
     public static final String STATE_LIMIT = "feedLimit";
     public Set<Role> rolesSet;
-
+    
+    private static final int MENU_ADD = Menu.FIRST;
+    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
+//    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
+    
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +68,39 @@ public class MainActivity extends BaseAuthActivity {
         return true;
     }
 
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+
+        if(isAdmin()){
+            menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);
+        }
+
+
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        FragmentTransaction ft;
+        ft = getSupportFragmentManager().beginTransaction();
+
         switch (id) {
+            
+            case MENU_CLIENT_INFO:
+
+                ft.replace(R.id.fragment_placeholder, new CustomerInformationFragment());
+                ft.commit();
+
+                Log.d(TAG, "onOptionsItemSelected: !!!!");
+                break;
 //            case R.id.loginMenu:
 //                Intent i = new Intent(getBaseContext(), LoginActivity.class);
 //                startActivity(i);

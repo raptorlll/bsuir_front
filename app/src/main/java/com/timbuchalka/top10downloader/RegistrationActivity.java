@@ -27,7 +27,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-public class RegistrationActivity extends BaseGuestActivity implements GetLoginData.OnDataAvailable {
+public class RegistrationActivity
+        extends BaseGuestActivity
+        implements GetLoginData.OnDataAvailable {
     private static final String TAG = "LoginActivity";
 
     @Override

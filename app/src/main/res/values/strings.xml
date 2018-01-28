@@ -7,4 +7,5 @@
     <string name="licence_data">Licence data</string>
     <string name="company_news">Company news</string>
     <string name="item" />
+    <string name="client_info">Client information</string>
 </resources>

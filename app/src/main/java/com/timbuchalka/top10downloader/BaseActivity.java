@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.timbuchalka.top10downloader.enums.RolesEnum;
 import com.timbuchalka.top10downloader.models.Role;
 
 import java.lang.reflect.Type;
@@ -50,6 +51,33 @@ public class BaseActivity extends AppCompatActivity {
 //        }
     }
 
+    protected boolean isAdmin(){
+        Set<Role> roles = getRoles();
+
+        return checkRole(roles, RolesEnum.ADMIN);
+    }
+
+    protected boolean isCustomer(){
+        Set<Role> roles = getRoles();
+
+        return checkRole(roles, RolesEnum.CUSTOMER);
+    }
+
+    protected boolean isConsultant(){
+        Set<Role> roles = getRoles();
+
+        return checkRole(roles, RolesEnum.CONSULTANT);
+    }
+
+    private boolean checkRole(Set<Role> roles, RolesEnum rolesEnum){
+        for (Role role : roles) {
+            if(role.getValue().equals(rolesEnum.getValue())){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     boolean isUserLogeddin() {
         sp = getSharedPreferences("login", MODE_PRIVATE);
