@@ -9,19 +9,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.timbuchalka.top10downloader.api.DownloadStatus;
+import com.timbuchalka.top10downloader.api.GetCustomerInformationData;
+import com.timbuchalka.top10downloader.models.CustomerInformation;
+import com.timbuchalka.top10downloader.models.Token;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 
-import static android.content.ContentValues.TAG;
 
-public class CustomerInformationFragment extends Fragment {
+public class CustomerInformationFragment
+        extends Fragment
+        implements GetCustomerInformationData.OnDataAvailable{
     private ListView listApps;
+    private static final String TAG = "CustomerrmationFragment";
+
+    @Override
+    public void onDataAvailable(Collection<CustomerInformation> data, DownloadStatus status) {
+        Log.d(TAG, "onDataAvailable: ");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        GetCustomerInformationData getCustomerInformationData = new GetCustomerInformationData(this);
+        getCustomerInformationData.execute();
+
         return inflater.inflate(R.layout.cutomer_information, parent, false);
     }
 
