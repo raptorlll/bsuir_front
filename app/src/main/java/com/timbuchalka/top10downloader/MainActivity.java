@@ -96,7 +96,7 @@ public class MainActivity extends BaseAuthActivity {
             
             case MENU_CLIENT_INFO:
 
-                ft.replace(R.id.fragment_placeholder, new CustomerInformationFragment());
+                ft.replace(R.id.fragmentMain, new CustomerInformationFragment());
                 ft.commit();
 
                 Log.d(TAG, "onOptionsItemSelected: !!!!");
@@ -176,12 +176,12 @@ public class MainActivity extends BaseAuthActivity {
             ParseApplications parseApplications = new ParseApplications();
             parseApplications.parse(s);
 
-//            ArrayAdapter<FeedEntry> arrayAdapter = new ArrayAdapter<FeedEntry>(
+//            ArrayAdapter<CustomerInformationEntry> arrayAdapter = new ArrayAdapter<CustomerInformationEntry>(
 //                    MainActivity.this, R.layout.list_item, parseApplications.getApplications());
 //            listApps.setAdapter(arrayAdapter);
-            FeedAdapter<FeedEntry> feedAdapter = new FeedAdapter<>(MainActivity.this, R.layout.list_record,
-                    parseApplications.getApplications());
-            listApps.setAdapter(feedAdapter);
+//            FeedAdapter<FeedEntry> feedAdapter = new FeedAdapter<>(MainActivity.this, R.layout.list_record,
+//                    parseApplications.getApplications());
+//            listApps.setAdapter(feedAdapter);
 
         }
 

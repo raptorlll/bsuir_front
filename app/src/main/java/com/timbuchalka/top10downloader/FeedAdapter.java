@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class FeedAdapter<T extends FeedEntry> extends ArrayAdapter {
-    private static final String TAG = "FeedAdapter";
+    private static final String TAG = "CustomerInformationAdapter";
     private final int layoutResource;
     private final LayoutInflater layoutInflater;
     private List<T> applications;

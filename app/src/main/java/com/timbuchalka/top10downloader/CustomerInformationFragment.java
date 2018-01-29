@@ -7,8 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import com.timbuchalka.top10downloader.adapters.CustomerInformationAdapter;
+import com.timbuchalka.top10downloader.adapters.entries.CustomerInformationEntry;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.GetCustomerInformationData;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
@@ -20,7 +23,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class CustomerInformationFragment
@@ -32,6 +37,13 @@ public class CustomerInformationFragment
     @Override
     public void onDataAvailable(Collection<CustomerInformation> data, DownloadStatus status) {
         Log.d(TAG, "onDataAvailable: ");
+
+        List<CustomerInformation> list = new ArrayList<>();
+        list.addAll(data);
+
+        CustomerInformationAdapter<CustomerInformation> feedAdapter =
+                new CustomerInformationAdapter<>(getActivity(), R.layout.list_row_customer_information, list);
+        listApps.setAdapter(feedAdapter);
     }
 
     @Override
@@ -39,7 +51,10 @@ public class CustomerInformationFragment
         GetCustomerInformationData getCustomerInformationData = new GetCustomerInformationData(this);
         getCustomerInformationData.execute();
 
-        return inflater.inflate(R.layout.cutomer_information, parent, false);
+        View view = inflater.inflate(R.layout.cutomer_information, parent, false);
+        listApps = (ListView) view.findViewById(R.id.xmlListView);
+
+        return view;
     }
 
     @Override
@@ -59,7 +74,7 @@ public class CustomerInformationFragment
             ParseApplications parseApplications = new ParseApplications();
             parseApplications.parse(s);
 
-//            ArrayAdapter<FeedEntry> arrayAdapter = new ArrayAdapter<FeedEntry>(
+//            ArrayAdapter<CustomerInformationEntry> arrayAdapter = new ArrayAdapter<CustomerInformationEntry>(
 //                    MainActivity.this, R.layout.list_item, parseApplications.getApplications());
 //            listApps.setAdapter(arrayAdapter);
             FeedAdapter<FeedEntry> feedAdapter = new FeedAdapter<>(

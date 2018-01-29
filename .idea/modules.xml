@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://C:\cinsay\bsuir_front\Top-10-Downloaded-App-Generics-Adapter-source-code.iml" filepath="C:\cinsay\bsuir_front\Top-10-Downloaded-App-Generics-Adapter-source-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\cinsay\bsuir_front\app\app.iml" filepath="C:\cinsay\bsuir_front\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bsuir_front.iml" filepath="$PROJECT_DIR$/bsuir_front.iml" />
     </modules>
   </component>

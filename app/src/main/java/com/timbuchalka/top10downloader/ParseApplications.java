@@ -75,7 +75,7 @@ public class ParseApplications {
                 eventType = xpp.next();
 
             }
-//            for (FeedEntry app: applications) {
+//            for (CustomerInformationEntry app: applications) {
 //                Log.d(TAG, "******************");
 //                Log.d(TAG, app.toString());
 //            }
