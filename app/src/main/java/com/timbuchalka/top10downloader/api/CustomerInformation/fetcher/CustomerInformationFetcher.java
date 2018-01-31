@@ -1,6 +1,8 @@
-package com.timbuchalka.top10downloader.api;
+package com.timbuchalka.top10downloader.api.CustomerInformation.fetcher;
 
 import android.net.Uri;
+
+import com.timbuchalka.top10downloader.api.FetcherAbstract;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 
-public class CustomerInformationFetcher extends FetcherAbstract{
+public class CustomerInformationFetcher extends FetcherAbstract {
 
     public CustomerInformationFetcher(OnDownloadComplete callback) {
         super(callback);
@@ -24,7 +26,7 @@ public class CustomerInformationFetcher extends FetcherAbstract{
 
 
     @Override
-    String getUrl() {
+    public String getUrl() {
         return "/customer_information";
     }
 

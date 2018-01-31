@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.timbuchalka.top10downloader.CustomerInformationCreateFragment;
 import com.timbuchalka.top10downloader.CustomerInformationFragment;
+import com.timbuchalka.top10downloader.CustomerInformationUpdateFragment;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 
@@ -91,15 +92,16 @@ public class CustomerInformationAdapter<T extends CustomerInformation>
 
                             switch (item.getItemId()) {
                                 case R.id.crudRead:
-                                    CustomerInformationCreateFragment faa = new CustomerInformationCreateFragment(activeElement, R.layout.list_row_customer_information_read);
-//                                    faa.setArguments();
+                                    CustomerInformationCreateFragment faa =
+                                            new CustomerInformationCreateFragment(activeElement, R.layout.list_row_customer_information_read);
                                     fragmentReplace(faa);
                                     Toast.makeText(contextAll, "Read at position " + positionStr , Toast.LENGTH_LONG).show();
                                     break;
                                 case R.id.crudUpdate:
-
+                                    CustomerInformationUpdateFragment faa1 =
+                                            new CustomerInformationUpdateFragment(activeElement, R.layout.list_row_customer_information_update);
+                                    fragmentReplace(faa1);
                                     Toast.makeText(contextAll, "Add to Wish List Clicked at position " + position, Toast.LENGTH_LONG).show();
-
                                     break;
 
                                 default:

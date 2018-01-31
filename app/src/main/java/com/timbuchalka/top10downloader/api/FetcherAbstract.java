@@ -10,8 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-abstract class FetcherAbstract extends AsyncTask<String, Void, String> {
-    abstract String getUrl();
+abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
+    abstract protected String getUrl();
 
     private static final String TAG = "FetcherAbstract";
     String host = "http://10.0.2.2:8080";
@@ -19,7 +19,7 @@ abstract class FetcherAbstract extends AsyncTask<String, Void, String> {
     private DownloadStatus mDownloadStatus;
     private final OnDownloadComplete mCallback;
 
-    interface OnDownloadComplete {
+    public interface OnDownloadComplete {
         void onDownloadComplete(String data, DownloadStatus status);
     }
 
@@ -29,13 +29,13 @@ abstract class FetcherAbstract extends AsyncTask<String, Void, String> {
     }
 
 
-    String getUrlConcat() {
+    protected String getUrlConcat() {
         return host.concat(getUrl());
     }
 
     abstract public String createUri();
 
-    void runInSameThread() {
+    public void runInSameThread() {
         String s = createUri();
         if(mCallback != null) {
             mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);

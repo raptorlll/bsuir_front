@@ -31,7 +31,7 @@ public class RolesFetcher extends FetcherAbstract{
 
 
     @Override
-    String getUrl() {
+    protected String getUrl() {
         return "/springjwt/getuserroles";
     }
 

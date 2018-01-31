@@ -142,7 +142,7 @@ public class MainActivity extends BaseAuthActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-        downloadUrl(String.format(feedUrl, feedLimit));
+//        downloadUrl(String.format(feedUrl, feedLimit));
         return true;
 
     }
@@ -157,8 +157,8 @@ public class MainActivity extends BaseAuthActivity {
     private void downloadUrl(String feedUrl) {
         if (!feedUrl.equalsIgnoreCase(feedCachedUrl)) {
             Log.d(TAG, "downloadUrl: starting Asynctask");
-            DownloadData downloadData = new DownloadData();
-            downloadData.execute(feedUrl);
+//            DownloadData downloadData = new DownloadData();
+//            downloadData.execute(feedUrl);
             feedCachedUrl = feedUrl;
             Log.d(TAG, "downloadUrl: done");
         } else {

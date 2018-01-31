@@ -33,7 +33,7 @@ public class LoginFetcher extends FetcherAbstract{
 
 
     @Override
-    String getUrl() {
+    protected String getUrl() {
         return "/oauth/token";
     }
 

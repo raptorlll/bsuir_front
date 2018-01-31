@@ -1,44 +1,43 @@
-package com.timbuchalka.top10downloader.api;
+package com.timbuchalka.top10downloader.api.CustomerInformation.fetcher;
 
 import android.net.Uri;
+
+import com.timbuchalka.top10downloader.api.FetcherAbstract;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
 import java.net.URL;
 
-public class RegisterFetcher extends FetcherAbstract{
-    private String userJson;
+public class CustomerInformationCreateFetcher extends FetcherAbstract {
 
+    private String guid;
+    private String customerInformation;
 
-    public RegisterFetcher(OnDownloadComplete callback, String userJson) {
+    public  CustomerInformationCreateFetcher(OnDownloadComplete callback) {
         super(callback);
-        this.userJson = userJson;
     }
 
-    public RegisterFetcher(OnDownloadComplete callback) {
+    public CustomerInformationCreateFetcher(OnDownloadComplete callback, String customerInformation) {
         super(callback);
+        this.customerInformation = customerInformation;
     }
 
     @Override
     public String createUri() {
-        return Uri.parse(getUrlConcat()).buildUpon()
-                .build().toString();
+        return Uri.parse(getUrlConcat()).buildUpon().build().toString();
     }
 
 
     @Override
-    protected String getUrl() {
-        return "/user/registration";
+    public String getUrl() {
+        return "/customer_information";
     }
 
 
     public HttpURLConnection executeRequest(URL url) throws IOException {
-
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setReadTimeout(10000);
@@ -48,18 +47,11 @@ public class RegisterFetcher extends FetcherAbstract{
 
 
         connection.setRequestProperty("Content-Type", "application/json");
-//
-//        Uri.Builder builder = new Uri.Builder()
-//                .appendQueryParameter("username", username)
-//                .appendQueryParameter("password", password)
-//                .appendQueryParameter("grant_type", "password");
-//
-//        String query = builder.build().getEncodedQuery();
 
         OutputStream os = connection.getOutputStream();
         BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(os, "UTF-8"));
-        writer.write(userJson);
+        writer.write(customerInformation);
         writer.flush();
         writer.close();
         os.close();
@@ -68,3 +60,4 @@ public class RegisterFetcher extends FetcherAbstract{
         return connection;
     }
 }
+
