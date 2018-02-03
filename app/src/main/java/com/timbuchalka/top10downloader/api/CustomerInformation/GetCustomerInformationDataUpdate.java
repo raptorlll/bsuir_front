@@ -1,5 +1,7 @@
 package com.timbuchalka.top10downloader.api.CustomerInformation;
 
+import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -30,7 +32,7 @@ public class GetCustomerInformationDataUpdate
     private final OnDataAvailable mCallBack;
     private boolean runningOnSameThread = false;
 
-    public interface OnDataAvailable {
+    public interface OnDataAvailable{
         void onDataAvailable(CustomerInformation data, DownloadStatus status);
     }
 

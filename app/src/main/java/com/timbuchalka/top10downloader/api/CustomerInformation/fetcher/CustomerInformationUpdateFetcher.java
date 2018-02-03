@@ -47,12 +47,12 @@ public class CustomerInformationUpdateFetcher extends FetcherAbstract {
         connection.setDoInput(true);
         connection.setDoOutput(true);
 
-
         connection.setRequestProperty("Content-Type", "application/json");
 
+        attemptAssignToken(connection);
+
         OutputStream os = connection.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
         writer.write(customerInformation);
         writer.flush();
         writer.close();

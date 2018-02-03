@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\cinsay\bsuir_front\Top-10-Downloaded-App-Generics-Adapter-source-code.iml" filepath="C:\cinsay\bsuir_front\Top-10-Downloaded-App-Generics-Adapter-source-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Top-10-Downloaded-App-Generics-Adapter-source-code.iml" filepath="$PROJECT_DIR$/Top-10-Downloaded-App-Generics-Adapter-source-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bsuir_front.iml" filepath="$PROJECT_DIR$/bsuir_front.iml" />
     </modules>
   </component>
 </project>

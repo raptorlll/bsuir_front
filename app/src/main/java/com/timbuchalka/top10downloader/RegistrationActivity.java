@@ -57,7 +57,7 @@ public class RegistrationActivity
             startActivity(new Intent(getBaseContext(), MainActivity.class));
             finish();
         }
-
+//this.contex
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
