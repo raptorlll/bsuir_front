@@ -4,7 +4,7 @@ package com.timbuchalka.top10downloader.models;
  * Created by Vera on 14.01.2018.
  */
 
-public class Token implements ModelInterface {
+public class Token {
     private String access_token;
     private String token_type;
     private String expires_in;

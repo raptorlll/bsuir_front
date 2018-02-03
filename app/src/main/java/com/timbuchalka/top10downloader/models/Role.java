@@ -1,6 +1,6 @@
 package com.timbuchalka.top10downloader.models;
 
-public class Role implements ModelInterface {
+public class Role {
     private String value;
     private String description;
 
