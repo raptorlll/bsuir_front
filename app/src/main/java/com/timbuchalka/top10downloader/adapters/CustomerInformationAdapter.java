@@ -14,10 +14,13 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.timbuchalka.top10downloader.CustomerInformationCreateFragment;
 import com.timbuchalka.top10downloader.CustomerInformationFragment;
+import com.timbuchalka.top10downloader.CustomerInformationReadFragment;
 import com.timbuchalka.top10downloader.CustomerInformationUpdateFragment;
 import com.timbuchalka.top10downloader.R;
+import com.timbuchalka.top10downloader.api.CustomerInformation.GetCustomerInformationDataDelete;
+import com.timbuchalka.top10downloader.api.DownloadStatus;
+import com.timbuchalka.top10downloader.api.FetcherAbstract;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +33,16 @@ public class CustomerInformationAdapter<T extends CustomerInformation>
     private final LayoutInflater layoutInflater;
     private final FragmentActivity contextInner;
     private List<T> elementsList;
+
+    private DataReload reloadDataEvent;
+
+    public interface DataReload{
+        public void reloadData();
+    }
+
+    public void registerReloadListener(DataReload event){
+        reloadDataEvent = event;
+    }
 
     FragmentTransaction ft;
     public CustomerInformationAdapter(FragmentActivity context, int resource, List<T> applications) {
@@ -87,21 +100,37 @@ public class CustomerInformationAdapter<T extends CustomerInformation>
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             String positionStr  = String.valueOf(position);
-                            Context contextAll = getContext().getApplicationContext();
+                            final Context contextAll = getContext().getApplicationContext();
                             T activeElement = elementsList.get(position);
 
                             switch (item.getItemId()) {
                                 case R.id.crudRead:
-                                    CustomerInformationCreateFragment faa =
-                                            new CustomerInformationCreateFragment(activeElement, R.layout.list_row_customer_information_read);
+                                    CustomerInformationReadFragment faa =
+                                            new CustomerInformationReadFragment(activeElement, R.layout.list_row_customer_information_read);
                                     fragmentReplace(faa);
                                     Toast.makeText(contextAll, "Read at position " + positionStr , Toast.LENGTH_LONG).show();
                                     break;
+
                                 case R.id.crudUpdate:
                                     CustomerInformationUpdateFragment faa1 =
                                             new CustomerInformationUpdateFragment(activeElement, R.layout.list_row_customer_information_update);
                                     fragmentReplace(faa1);
                                     Toast.makeText(contextAll, "Add to Wish List Clicked at position " + position, Toast.LENGTH_LONG).show();
+                                    break;
+
+                                case R.id.crudDelete:
+                                    GetCustomerInformationDataDelete deleteData = new GetCustomerInformationDataDelete(
+                                            new GetCustomerInformationDataDelete.OnDataAvailable(){
+                                            @Override
+                                            public void onDataAvailable(CustomerInformation data, DownloadStatus status) {
+//                                                Toast.makeText(contextAll, "You deleted row", Toast.LENGTH_LONG).show();
+                                                System.out.println("reload data");
+
+                                                if(reloadDataEvent!=null)
+                                                    reloadDataEvent.reloadData();
+                                            }
+                                        }, activeElement.getId());
+                                    deleteData.execute();
                                     break;
 
                                 default:

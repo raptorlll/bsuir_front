@@ -46,6 +46,8 @@ public class CustomerInformationCreateFetcher extends FetcherAbstract {
         connection.setDoOutput(true);
 
 
+        attemptAssignToken(connection);
+
         connection.setRequestProperty("Content-Type", "application/json");
 
         OutputStream os = connection.getOutputStream();

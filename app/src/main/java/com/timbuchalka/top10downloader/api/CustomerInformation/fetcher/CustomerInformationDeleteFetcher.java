@@ -8,15 +8,20 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
 import java.net.URL;
 
-public class CustomerInformationFetcher extends FetcherAbstract {
+public class CustomerInformationDeleteFetcher extends FetcherAbstract {
+    private String guid;
+    private Long id;
 
-    public CustomerInformationFetcher(OnDownloadComplete callback) {
+    public CustomerInformationDeleteFetcher(OnDownloadComplete callback) {
         super(callback);
+    }
+
+    public CustomerInformationDeleteFetcher(OnDownloadComplete callback, Long id) {
+        super(callback);
+        this.id = id;
     }
 
     @Override
@@ -24,16 +29,14 @@ public class CustomerInformationFetcher extends FetcherAbstract {
         return Uri.parse(getUrlConcat()).buildUpon().build().toString();
     }
 
-
     @Override
     public String getUrl() {
-        return "/customer_information";
+        return "/customer_information".concat("/").concat(id.toString());
     }
-
 
     public HttpURLConnection executeRequest(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod("DELETE");
 
         attemptAssignToken(connection);
 
@@ -41,3 +44,4 @@ public class CustomerInformationFetcher extends FetcherAbstract {
         return connection;
     }
 }
+

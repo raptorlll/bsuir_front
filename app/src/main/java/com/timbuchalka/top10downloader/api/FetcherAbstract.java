@@ -80,22 +80,13 @@ abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
 
     abstract public HttpURLConnection executeRequest(URL url) throws IOException;
 
-    public void attemptAssignToken(HttpURLConnection connection){
-
-//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(GlobalClass.getContext());
+    protected void attemptAssignToken(HttpURLConnection connection){
         SharedPreferences sp = GlobalClass.getContext().getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        //if SharedPreferences contains username and password then redirect to Home activity
         if (sp.contains("token")) {
             String token = sp.getString("token", "");
             connection.addRequestProperty("Authorization", "Bearer " + token);
-//            startActivity(new Intent(getBaseContext(), MainActivity.class));
-//            finish();
         }
-//this.cont
-//        sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-//
-//        getRoles(sp.getString("token", ""));
     }
 
     @Override

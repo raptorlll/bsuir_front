@@ -13,7 +13,7 @@ import com.timbuchalka.top10downloader.models.CustomerInformation;
 import java.text.SimpleDateFormat;
 
 
-public class CustomerInformationCreateFragment extends Fragment {
+public class CustomerInformationReadFragment extends Fragment {
     private static final String TAG = "Create info";
     private int layout;
     private CustomerInformation activeElement;
@@ -22,11 +22,11 @@ public class CustomerInformationCreateFragment extends Fragment {
     TextView additionalInformation;
     TextView primary;
 
-    public CustomerInformationCreateFragment() {
+    public CustomerInformationReadFragment() {
     }
 
     @SuppressLint("ValidFragment")
-    public CustomerInformationCreateFragment(CustomerInformation activeElement, int layout) {
+    public CustomerInformationReadFragment(CustomerInformation activeElement, int layout) {
         super();
         this.activeElement = activeElement;
         this.layout = layout;
@@ -38,9 +38,9 @@ public class CustomerInformationCreateFragment extends Fragment {
         birthData = (TextView) view.findViewById(R.id.birthData);
         additionalInformation = (TextView) view.findViewById(R.id.additionalInformation);
         primary = (TextView) view.findViewById(R.id.primary);
-//        birthData.setText(new SimpleDateFormat("Y-m-d").format(activeElement.getBirthData()).concat(" birth date"));
-//        additionalInformation.setText(activeElement.getAdditionalInformation());
-//        primary.setText(activeElement.getPrimary() == 0 ? "Secondary" : "Primary");
+        birthData.setText(new SimpleDateFormat("Y-m-d").format(activeElement.getBirthData()).concat(" birth date"));
+        additionalInformation.setText(activeElement.getAdditionalInformation());
+        primary.setText(activeElement.getPrimary() == 0 ? "Secondary" : "Primary");
         return view;
     }
 }
