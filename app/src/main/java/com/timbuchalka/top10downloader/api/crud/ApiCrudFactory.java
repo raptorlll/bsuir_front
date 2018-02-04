@@ -6,10 +6,12 @@ import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantGroupConvert
 import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantGroupUserConvertor;
 import com.timbuchalka.top10downloader.api.crud.convertor.CrudConvertorInterface;
 import com.timbuchalka.top10downloader.api.crud.convertor.CustomerInformationConvertor;
+import com.timbuchalka.top10downloader.api.crud.convertor.UserConvertor;
 import com.timbuchalka.top10downloader.models.ConsultantGroup;
 import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.ModelInterface;
+import com.timbuchalka.top10downloader.models.User;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -26,6 +28,8 @@ public class ApiCrudFactory {
             return new ConsultantGroupConvertor();
         } else if (ConsultantGroupUser.class == genericClass) {
             return new ConsultantGroupUserConvertor();
+        } else if (User.class == genericClass) {
+            return new UserConvertor();
         }
 
         return null;

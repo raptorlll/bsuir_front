@@ -42,7 +42,7 @@ public class UpdateData<T extends ModelInterface>
         String json = ApiCrudFactory.convertElement(genericClass, model);
 
         FetcherAbstract RawDataFetcher = new UpdateFetcher(genericClass, this, json, model.getId().toString());
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
 
         return mLogin;
     }
@@ -53,6 +53,10 @@ public class UpdateData<T extends ModelInterface>
             try {
                 T userJson = ApiCrudFactory.convertElement(genericClass, data);
                 mLogin = userJson;
+
+                if(mCallBack != null) {
+                    mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
+                }
             } catch(Exception jsone) {
                 jsone.printStackTrace();
                 status = DownloadStatus.FAILED_OR_EMPTY;

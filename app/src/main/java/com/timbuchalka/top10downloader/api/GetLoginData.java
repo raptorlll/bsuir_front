@@ -1,16 +1,9 @@
 package com.timbuchalka.top10downloader.api;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.timbuchalka.top10downloader.convertors.ContertorInterface;
-import com.timbuchalka.top10downloader.convertors.LoginConvertor;
 import com.timbuchalka.top10downloader.convertors.TokenConvertor;
-import com.timbuchalka.top10downloader.models.Login;
 import com.timbuchalka.top10downloader.models.Token;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,15 +28,6 @@ public class GetLoginData
         mCallBack = callBack;
     }
 
-//    void executeOnSameThread(String searchCriteria) {
-//        Log.d(TAG, "executeOnSameThread starts");
-//        runningOnSameThread = true;
-//
-//        FetcherAbstract RawDataFetcher = new LoginFetcher(this);
-//        RawDataFetcher.execute(destinationUri);
-//        Log.d(TAG, "executeOnSameThread ends");
-//    }
-
     @Override
     protected void onPostExecute(Token Logins) {
         Log.d(TAG, "onPostExecute starts");
@@ -57,7 +41,7 @@ public class GetLoginData
     @Override
     protected Token doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new LoginFetcher(this, params[0], params[1]);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
         Log.d(TAG, "doInBackground ends");
         return mLogin;
     }
@@ -70,9 +54,6 @@ public class GetLoginData
         if(status == DownloadStatus.OK) {
             try {
                 JSONObject jsonData = new JSONObject(data);
-
-//                LoginConvertor convertor = new LoginConvertor();
-//                login = convertor.convert(jsonData);
                 TokenConvertor convertor = new TokenConvertor();
                 token = convertor.convert(jsonData);
                 mLogin = token;

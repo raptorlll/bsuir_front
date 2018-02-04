@@ -44,7 +44,7 @@ public class GetRegisterData
     @Override
     protected UserJson doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new RegisterFetcher(this, params[0]);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
         Log.d(TAG, "doInBackground ends");
         return mLogin;
     }

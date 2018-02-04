@@ -26,7 +26,7 @@ abstract public class UpdateFragment<T extends ModelInterface>
     private static final String TAG = "Update info";
     private Class<T> genericClass;
     private int layout;
-    private T activeElement;
+    protected T activeElement;
     private T element;
     Button buttonSubmit;
 

@@ -34,24 +34,26 @@ public class ListData<T extends ModelInterface>
 
     @Override
     protected void onPostExecute(Collection<T> Logins) {
-        if(mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
-        }
+
     }
 
     @Override
     protected Collection<T> doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new ListFetcher(genericClass, this);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
         return mLogin;
     }
 
     @Override
     public void onDownloadComplete(String data, DownloadStatus status) {
-        if(status == DownloadStatus.OK) {
+       if(status == DownloadStatus.OK) {
             try {
                 Collection<T> userJson = ApiCrudFactory.convertCollection(genericClass, data);
                 mLogin = userJson;
+
+                if(mCallBack != null) {
+                    mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
+                }
             } catch(Exception jsone) {
                 jsone.printStackTrace();
                 status = DownloadStatus.FAILED_OR_EMPTY;

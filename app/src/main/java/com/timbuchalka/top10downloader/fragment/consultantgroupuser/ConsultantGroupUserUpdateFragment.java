@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,10 +17,12 @@ import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.crud.ListData;
 import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
+import com.timbuchalka.top10downloader.models.ConsultantGroup;
 import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.User;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class ConsultantGroupUserUpdateFragment
@@ -28,10 +34,44 @@ public class ConsultantGroupUserUpdateFragment
     TextView conversationTarif;
     Spinner user;
     Spinner consultantGroup;
+    ArrayList<User> userData = null;
+    ArrayList<ConsultantGroup> consultantGroupData = null;
 
     @Override
     public void onDataAvailable(Collection<User> data, DownloadStatus status) {
-        System.out.println("User");
+        System.out.println("");
+        userData = (ArrayList<User>)data;
+        ArrayList<String> list = new ArrayList<String>();
+
+        for (User u : data){
+            list.add(u.getFirstName().concat(" ").concat(u.getEmail()));
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
+
+        user.setAdapter(arrayAdapter);
+
+        int i = 0;
+        for (User u : data){
+            if(activeElement.getUser().getId() == u.getId()){
+                user.setSelection(i);
+            }
+
+            i++;
+        }
+
+        user.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                activeElement.setUser(((ArrayList<User>)userData).get(i));
+                System.out.println("");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @SuppressLint("ValidFragment")
@@ -40,11 +80,48 @@ public class ConsultantGroupUserUpdateFragment
     }
 
     @SuppressLint("ValidFragment")
-    ConsultantGroupUserUpdateFragment(Class<ConsultantGroupUser> genericClass, ConsultantGroupUser activeElement, int layout) {
-        super(genericClass, activeElement, layout);
+    ConsultantGroupUserUpdateFragment(Class<ConsultantGroupUser> genericClass, ConsultantGroupUser activeElement2, int layout) {
+        super(genericClass, activeElement2, layout);
+        (new ListData<User>(User.class, this)).execute();
+        (new ListData<ConsultantGroup>(ConsultantGroup.class, new ListData.OnDataAvailable<ConsultantGroup>() {
+            @Override
+            public void onDataAvailable(Collection<ConsultantGroup> data, DownloadStatus status) {
+                System.out.println("");
+                consultantGroupData = (ArrayList<ConsultantGroup>) data;
+                ArrayList<String> list = new ArrayList<String>();
 
+                for (ConsultantGroup u : data){
+                    list.add(u.getName().concat(" ").concat(u.getDescription()));
+                }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
+
+                consultantGroup.setAdapter(arrayAdapter);
+
+                int i = 0;
+                for (ConsultantGroup u : data){
+                    if(activeElement.getConsultantGroup().getId() == u.getId()){
+                        user.setSelection(i);
+                    }
+
+                    i++;
+                }
+
+                consultantGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        activeElement.setConsultantGroup(consultantGroupData.get(i));
+                        System.out.println("");
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+        })).execute();
 //        new ListData(User.class, this).execute();
-        new ListData(User.class, this).execute();
     }
 
     @SuppressLint("ValidFragment")
@@ -83,6 +160,7 @@ public class ConsultantGroupUserUpdateFragment
 
     @Override
     public void setListeners() {
+
     }
 
     @Override

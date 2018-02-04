@@ -47,7 +47,7 @@ public class CreateData<T extends ModelInterface>
         String json = ApiCrudFactory.convertElement(genericClass, model);
 
         FetcherAbstract RawDataFetcher = new CreateFetcher(genericClass, this, json);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
 
         return modelOutput;
     }
@@ -59,6 +59,10 @@ public class CreateData<T extends ModelInterface>
             try {
                 T userJson = ApiCrudFactory.convertElement(genericClass, data);
                 modelOutput = userJson;
+
+                if(mCallBack != null) {
+                    mCallBack.onDataAvailable(modelOutput, DownloadStatus.OK);
+                }
             } catch(Exception jsone) {
                 jsone.printStackTrace();
                 status = DownloadStatus.FAILED_OR_EMPTY;

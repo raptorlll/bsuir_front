@@ -35,7 +35,7 @@ public class DeleteData<T extends ModelInterface>
     @Override
     protected T doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new DeleteFetcher(genericClass,this, id);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
         return null;
     }
 

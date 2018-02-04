@@ -52,9 +52,10 @@ abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
 
     public void runInSameThread() {
         String s = createUri();
-        if(mCallback != null) {
-            mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);
-        }
+        this.execute(s);
+//        if(mCallback != null) {
+//            mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);
+//        }
 
         Log.d(TAG, "runInSameThread ends");
     }
@@ -101,7 +102,7 @@ abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
 
         try {
             mDownloadStatus = DownloadStatus.PROCESSING;
-            URL url = new URL(strings[0]);
+            URL url = new URL(strings.length == 0 || strings == null ? createUri() : strings[0]);
 
             connection = executeRequest(url);
 

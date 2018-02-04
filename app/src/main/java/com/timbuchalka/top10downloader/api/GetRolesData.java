@@ -49,7 +49,7 @@ public class GetRolesData
     @Override
     protected Set<Role> doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new RolesFetcher(this, params[0]);
-        RawDataFetcher.runInSameThread();
+        RawDataFetcher.execute();
         Log.d(TAG, "doInBackground ends");
         return mLogin;
     }
