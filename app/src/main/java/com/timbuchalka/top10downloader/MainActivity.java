@@ -36,10 +36,11 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
     private static final int MENU_CONSULTANT_GROUP = Menu.FIRST + 2;
     private static final int MENU_CONSULTANT_GROUP_USER = Menu.FIRST + 3;
+    private static final int MENU_LOGOUT = Menu.FIRST + 100;
 //    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
-    
-    
-    
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,8 @@ public class MainActivity extends BaseAuthActivity {
             menu.add(0, MENU_CONSULTANT_GROUP_USER, Menu.NONE, "Consultant group user");
         }
 
+        menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -99,8 +102,7 @@ public class MainActivity extends BaseAuthActivity {
                 ft.replace(R.id.fragmentMain, new ConsultantGroupUserFragment());
                 ft.commit();
                 break;
-
-            case R.id.logoutMenu:
+            case MENU_LOGOUT:
                 SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor e = sp.edit();
                 e.clear();

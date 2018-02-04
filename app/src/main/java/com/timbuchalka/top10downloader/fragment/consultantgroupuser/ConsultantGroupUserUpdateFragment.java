@@ -44,7 +44,7 @@ public class ConsultantGroupUserUpdateFragment
         super(genericClass, activeElement, layout);
 
 //        new ListData(User.class, this).execute();
-        new ListData(User.class, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new ListData(User.class, this).execute();
     }
 
     @SuppressLint("ValidFragment")
