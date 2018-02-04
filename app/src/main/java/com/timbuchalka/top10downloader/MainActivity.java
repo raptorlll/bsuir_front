@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.timbuchalka.top10downloader.fragment.consultantgroup.ConsultantGroupFragment;
+import com.timbuchalka.top10downloader.fragment.consultantgroupuser.ConsultantGroupUserFragment;
 import com.timbuchalka.top10downloader.fragment.customerinformation.CustomerInformationFragment;
 import com.timbuchalka.top10downloader.models.Role;
 
@@ -34,6 +35,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_ADD = Menu.FIRST;
     private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
     private static final int MENU_CONSULTANT_GROUP = Menu.FIRST + 2;
+    private static final int MENU_CONSULTANT_GROUP_USER = Menu.FIRST + 3;
 //    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
     
     
@@ -71,6 +73,7 @@ public class MainActivity extends BaseAuthActivity {
         if(isAdmin()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);
             menu.add(0, MENU_CONSULTANT_GROUP, Menu.NONE, "Consultant group");
+            menu.add(0, MENU_CONSULTANT_GROUP_USER, Menu.NONE, "Consultant group user");
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -87,21 +90,16 @@ public class MainActivity extends BaseAuthActivity {
             case MENU_CLIENT_INFO:
                 ft.replace(R.id.fragmentMain, new CustomerInformationFragment());
                 ft.commit();
-
-                Log.d(TAG, "onOptionsItemSelected: !!!!");
                 break;
             case MENU_CONSULTANT_GROUP:
                 ft.replace(R.id.fragmentMain, new ConsultantGroupFragment());
                 ft.commit();
-
-                Log.d(TAG, "onOptionsItemSelected: !!!!");
                 break;
-//            case R.id.loginMenu:
-//                Intent i = new Intent(getBaseContext(), LoginActivity.class);
-//                startActivity(i);
-//                finish();
-////                setContentView(R.layout.login);
-//                return true;
+            case MENU_CONSULTANT_GROUP_USER:
+                ft.replace(R.id.fragmentMain, new ConsultantGroupUserFragment());
+                ft.commit();
+                break;
+
             case R.id.logoutMenu:
                 SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor e = sp.edit();

@@ -23,12 +23,12 @@ public class ConsultantGroupUpdateFragment
     }
 
     @SuppressLint("ValidFragment")
-    ConsultantGroupUpdateFragment(Class<ConsultantGroup> genericClass, ConsultantGroup activeElement, int layout) {
+    public ConsultantGroupUpdateFragment(Class<ConsultantGroup> genericClass, ConsultantGroup activeElement, int layout) {
         super(genericClass, activeElement, layout);
     }
 
     @SuppressLint("ValidFragment")
-    ConsultantGroupUpdateFragment(Class<ConsultantGroup> genericClass, int layout) {
+    public ConsultantGroupUpdateFragment(Class<ConsultantGroup> genericClass, int layout) {
         super(genericClass, layout);
     }
 
