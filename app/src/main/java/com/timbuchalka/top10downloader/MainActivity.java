@@ -1,31 +1,24 @@
 package com.timbuchalka.top10downloader;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.timbuchalka.top10downloader.fragment.customerinformation.CustomerInformationFragment;
 import com.timbuchalka.top10downloader.models.Role;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class MainActivity extends BaseAuthActivity {
     private static final String TAG = "MainActivity";

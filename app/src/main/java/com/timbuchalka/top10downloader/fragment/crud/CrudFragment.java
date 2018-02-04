@@ -1,6 +1,7 @@
-package com.timbuchalka.top10downloader;
+package com.timbuchalka.top10downloader.fragment.crud;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.adapters.CrudInformationAdapter;
 import com.timbuchalka.top10downloader.api.crud.ListData;
 import com.timbuchalka.top10downloader.api.crud.DeleteData;
@@ -30,18 +32,12 @@ abstract public class CrudFragment<T extends ModelInterface>
     private static final String TAG = "Crud Fragment";
     FragmentTransaction ft;
     Button addButtom;
-
-    CrudFragment(Class cl){
-
+    protected Class genericClass;
+    public CrudFragment(){}
+    public CrudFragment(Class<T> genericClass){
+        this();
+        this.genericClass = genericClass;
     }
-
-    abstract protected int getLayoutList();
-
-    abstract protected int getLayoutView();
-
-    abstract protected int getLayoutCreate();
-
-    abstract protected int getLayoutUpdate();
 
     @Override
     public void onDataAvailable(Collection<T> data, DownloadStatus status) {
@@ -50,13 +46,12 @@ abstract public class CrudFragment<T extends ModelInterface>
         List<T> list = new ArrayList<>();
         list.addAll(data);
 
-        CrudInformationAdapter<T> feedAdapter =
-                new CrudInformationAdapter<T>(this, getActivity(), getLayoutList(), list);
+        CrudInformationAdapter<T> feedAdapter = new CrudInformationAdapter<T>(this, getActivity(), getLayoutList(), list);
         listView.setAdapter(feedAdapter);
     }
 
     public void loadData(){
-        ListData listData = new ListData(this);
+        ListData<T> listData = new ListData<T>(genericClass,this);
         listData.execute();
     }
 
@@ -69,13 +64,13 @@ abstract public class CrudFragment<T extends ModelInterface>
         loadData();
 
         ft = getActivity().getSupportFragmentManager().beginTransaction();
-        View view = inflater.inflate(getLayoutList(), parent, false);
+        View view = inflater.inflate(getLayoutMain(), parent, false);
         listView = (ListView) view.findViewById(R.id.xmlListView);
         addButtom = (Button) view.findViewById(R.id.crudCreate);
         addButtom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateFragment<T> faa = new UpdateFragment<T>(genericClass, getLayoutCreate());
+                UpdateFragment<T> faa = getCreateFragment();
                 ft.replace(R.id.fragmentMain, faa);
                 ft.commit();
             }
@@ -90,11 +85,10 @@ abstract public class CrudFragment<T extends ModelInterface>
     }
 
     public void onDeleteClick(T activeElement) {
-        DeleteData<T> deleteData = new DeleteData<T>(
+        DeleteData<T> deleteData = new DeleteData<T>(genericClass,
                 new DeleteData.OnDataAvailable<T>(){
                     @Override
                     public void onDataAvailable(T data, DownloadStatus status) {
-                        Toast.makeText(getContext(), "You deleted row", Toast.LENGTH_LONG).show();
                         System.out.println("reload data");
 
                         reloadData();
@@ -104,60 +98,35 @@ abstract public class CrudFragment<T extends ModelInterface>
     }
 
     public void onUpdateClick(T activeElement) {
-        UpdateFragment<T> faa1 = new UpdateFragment<T>(genericClass, activeElement, getLayoutUpdate());
+        UpdateFragment<T> faa1 = getUpdateFragment(activeElement);
         fragmentReplace(faa1);
         Toast.makeText(getContext(), "Add to Wish List Clicked at position ", Toast.LENGTH_LONG).show();
 
     }
 
     public void onViewClick(T activeElement) {
-        CustomerInformationReadFragment faa =
-                new CustomerInformationReadFragment(activeElement, getLayoutView());
+        ReadFragment faa = getReadFragment(activeElement);
         fragmentReplace(faa);
         Toast.makeText(getContext(), "Read at position ", Toast.LENGTH_LONG).show();
     }
 
+    abstract protected int getLayoutList();
 
-    private void inflateListInformation(ViewHolderImplementation viewHolder, T currentElement) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("Y-m-d");
-        viewHolder.birthData.setText(new SimpleDateFormat("Y-m-d").format(currentElement.getBirthData()).concat(" birth date"));
-        viewHolder.additionalInformation.setText(currentElement.getAdditionalInformation());
-        viewHolder.primary.setText(currentElement.getPrimary() == 0 ? "Secondary" : "Primary");
-    }
+    abstract protected int getLayoutView();
 
-    public ViewHolder getViewHolder(View convertView) {
-        ViewHolder viewHolder = new ViewHolderImplementation();
+    abstract protected int getLayoutCreate();
 
-        return viewHolder;
-    }
+    abstract protected int getLayoutUpdate();
 
-    private static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder {
-        @Override
-        public void fillData(View v) {
-            this.birthData = (TextView) v.findViewById(R.id.birthData);
-            this.additionalInformation = (TextView) v.findViewById(R.id.additionalInformation);
-            this.primary = (TextView) v.findViewById(R.id.primary);
-        }
-        private TextView birthData;
-        private TextView additionalInformation;
-        private TextView primary;
-    }
+    abstract protected int getLayoutMain();
+
+    public abstract ReadFragment getReadFragment(T activeElement);
+
+    public abstract UpdateFragment<T> getUpdateFragment(T activeElement);
+
+    public abstract UpdateFragment<T> getCreateFragment();
+
+//    public abstract static class ViewHolderAbsctract extends CrudInformationAdapter.ViewHolder {}
+
+    public abstract CrudInformationAdapter.ViewHolder getViewHolder(View convertView, T currentElement);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

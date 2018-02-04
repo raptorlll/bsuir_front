@@ -3,6 +3,7 @@ package com.timbuchalka.top10downloader.api.crud.fetcher;
 import android.net.Uri;
 
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,9 +14,12 @@ import java.net.URL;
 
 public class CreateFetcher extends FetcherAbstract {
     private String customerInformation;
-    public CreateFetcher(OnDownloadComplete callback, String customerInformation) {
+    private Class genericClass;
+
+    public CreateFetcher(Class genericClass,OnDownloadComplete callback, String customerInformation) {
         super(callback);
         this.customerInformation = customerInformation;
+        this.genericClass = genericClass;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class CreateFetcher extends FetcherAbstract {
 
     @Override
     public String getUrl() {
-        return "/customer_information";
+        return ApiCrudFactory.getUrl(genericClass);
     }
 
 
@@ -41,8 +45,7 @@ public class CreateFetcher extends FetcherAbstract {
 
         connection.setRequestProperty("Content-Type", "application/json");
         OutputStream os = connection.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
         writer.write(customerInformation);
         writer.flush();
         writer.close();

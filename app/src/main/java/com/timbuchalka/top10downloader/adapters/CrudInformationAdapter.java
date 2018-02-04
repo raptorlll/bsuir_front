@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.timbuchalka.top10downloader.CrudFragment;
+import com.timbuchalka.top10downloader.fragment.crud.CrudFragment;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.models.ModelInterface;
 
@@ -47,11 +47,13 @@ public class CrudInformationAdapter<T extends ModelInterface>
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
 
+        T currentElement = elementsList.get(position);
+
         if (convertView == null) {
             Log.d(TAG, "getView: called ");
             convertView = layoutInflater.inflate(layoutResource, parent, false);
 
-            viewHolder = crudFragment.getViewHolder(convertView);
+            viewHolder = crudFragment.getViewHolder(convertView, currentElement);
             viewHolder.getCrudButons(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -59,9 +61,8 @@ public class CrudInformationAdapter<T extends ModelInterface>
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        T currentElement = elementsList.get(position);
 
-        crudFragment.inflateListInformation(viewHolder, currentElement);
+//        crudFragment.inflateListInformation(viewHolder, );
 
         try {
             viewHolder.crudButtons.setOnClickListener(new View.OnClickListener() {

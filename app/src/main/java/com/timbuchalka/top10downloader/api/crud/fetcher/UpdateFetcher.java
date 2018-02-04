@@ -3,6 +3,7 @@ package com.timbuchalka.top10downloader.api.crud.fetcher;
 import android.net.Uri;
 
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,12 +13,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class UpdateFetcher extends FetcherAbstract {
+    private Class genericClass;
     private String id;
     private String model;
-    public UpdateFetcher(OnDownloadComplete callback, String model, String id) {
+    UpdateFetcher(OnDownloadComplete callback, String model, String id) {
         super(callback);
         this.model = model;
         this.id = id;
+    }
+
+    public UpdateFetcher(Class genericClass, OnDownloadComplete callback, String model, String id) {
+        this(callback, model, id);
+        this.genericClass = genericClass;
     }
 
     @Override
@@ -27,7 +34,7 @@ public class UpdateFetcher extends FetcherAbstract {
 
     @Override
     public String getUrl() {
-        return "/customer_information".concat("/").concat(id);
+        return ApiCrudFactory.getUrl(genericClass).concat("/").concat(id);
     }
 
     public HttpURLConnection executeRequest(URL url) throws IOException {

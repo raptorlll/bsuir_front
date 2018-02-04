@@ -3,15 +3,22 @@ package com.timbuchalka.top10downloader.api.crud.fetcher;
 import android.net.Uri;
 
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ListFetcher extends FetcherAbstract {
+    private Class genericClass;
 
     public ListFetcher(OnDownloadComplete callback) {
         super(callback);
+    }
+
+    public ListFetcher(Class genericClass, OnDownloadComplete callback) {
+        super(callback);
+        this.genericClass = genericClass;
     }
 
     @Override
@@ -22,7 +29,7 @@ public class ListFetcher extends FetcherAbstract {
 
     @Override
     public String getUrl() {
-        return "/customer_information";
+        return ApiCrudFactory.getUrl(genericClass);
     }
 
 

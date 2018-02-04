@@ -3,6 +3,7 @@ package com.timbuchalka.top10downloader.api.crud.fetcher;
 import android.net.Uri;
 
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,10 +11,12 @@ import java.net.URL;
 
 public class DeleteFetcher extends FetcherAbstract {
     private Long id;
+    private Class genericClass;
 
-    public DeleteFetcher(OnDownloadComplete callback, Long id) {
+    public DeleteFetcher(Class genericClass,OnDownloadComplete callback, Long id) {
         super(callback);
         this.id = id;
+        this.genericClass = genericClass;
     }
 
     @Override
@@ -23,7 +26,7 @@ public class DeleteFetcher extends FetcherAbstract {
 
     @Override
     public String getUrl() {
-        return "/customer_information".concat("/").concat(id.toString());
+        return ApiCrudFactory.getUrl(genericClass).concat("/").concat(id.toString());
     }
 
     public HttpURLConnection executeRequest(URL url) throws IOException {

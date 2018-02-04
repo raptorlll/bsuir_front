@@ -8,14 +8,18 @@ import com.google.gson.reflect.TypeToken;
 import com.timbuchalka.top10downloader.api.crud.fetcher.ListFetcher;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
+import com.timbuchalka.top10downloader.models.ModelInterface;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-public class ListData<T>
+import static com.timbuchalka.top10downloader.api.crud.ApiCrudFactory.convertCollection;
+
+public class ListData<T extends ModelInterface>
         extends AsyncTask<String, Void, Collection<T>>
         implements FetcherAbstract.OnDownloadComplete {
     private Collection<T> mLogin;
+    private Class<T> genericClass;
 
     private final OnDataAvailable<T> mCallBack;
 
@@ -23,8 +27,9 @@ public class ListData<T>
         void onDataAvailable(Collection<T> data, DownloadStatus status);
     }
 
-    public ListData(OnDataAvailable callBack) {
+    public ListData(Class<T> genericClass, OnDataAvailable callBack) {
         mCallBack = callBack;
+        this.genericClass = genericClass;
     }
 
     @Override
@@ -36,7 +41,7 @@ public class ListData<T>
 
     @Override
     protected Collection<T> doInBackground(String... params) {
-        FetcherAbstract RawDataFetcher = new ListFetcher(this);
+        FetcherAbstract RawDataFetcher = new ListFetcher(genericClass, this);
         RawDataFetcher.runInSameThread();
         return mLogin;
     }
@@ -45,9 +50,7 @@ public class ListData<T>
     public void onDownloadComplete(String data, DownloadStatus status) {
         if(status == DownloadStatus.OK) {
             try {
-                Gson gson = new Gson();
-                Type type = new TypeToken<Collection<T>>() {}.getType();
-                Collection<T> userJson = gson.fromJson(data, type);
+                Collection<T> userJson = ApiCrudFactory.convertCollection(genericClass, data);
                 mLogin = userJson;
             } catch(Exception jsone) {
                 jsone.printStackTrace();
