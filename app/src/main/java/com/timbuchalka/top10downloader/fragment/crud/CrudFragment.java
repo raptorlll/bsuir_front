@@ -110,6 +110,10 @@ abstract public class CrudFragment<T extends ModelInterface>
         Toast.makeText(getContext(), "Read at position ", Toast.LENGTH_LONG).show();
     }
 
+    protected int getLayoutMain() {
+        return R.layout.cutomer_information;
+    }
+
     abstract protected int getLayoutList();
 
     abstract protected int getLayoutView();
@@ -117,8 +121,6 @@ abstract public class CrudFragment<T extends ModelInterface>
     abstract protected int getLayoutCreate();
 
     abstract protected int getLayoutUpdate();
-
-    abstract protected int getLayoutMain();
 
     public abstract ReadFragment getReadFragment(T activeElement);
 

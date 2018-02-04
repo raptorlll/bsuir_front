@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="video_tarif">Video tarif</string>
+    <string name="description">Description</string>
+    <string name="name">Name</string>
+    <string name="conversation_tarif">Conversation tarif</string>
+</resources>

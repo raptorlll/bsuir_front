@@ -37,7 +37,7 @@ abstract public class UpdateFragment<T extends ModelInterface>
         Log.d(TAG, "onDataAvailable: ");
         //redirect back
         ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragmentMain, new CustomerInformationFragment());
+        ft.replace(R.id.fragmentMain, getListView());
         ft.commit();
     }
 
@@ -119,6 +119,8 @@ abstract public class UpdateFragment<T extends ModelInterface>
 
     /** Override */
     abstract public void findViewsById(View view);
+
+    abstract public Fragment getListView();
 
     @Override
     public void onClick(View view) {

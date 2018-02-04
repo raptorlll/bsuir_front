@@ -38,11 +38,6 @@ public class CustomerInformationFragment
         return R.layout.list_row_customer_information_update;
     }
 
-    @Override
-    protected int getLayoutMain(){
-        return R.layout.cutomer_information;
-    }
-
     public CustomerInformationFragment() {
         super(CustomerInformation.class);
     }

@@ -2,8 +2,10 @@ package com.timbuchalka.top10downloader.api.crud;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantGroupConvertor;
 import com.timbuchalka.top10downloader.api.crud.convertor.CrudConvertorInterface;
 import com.timbuchalka.top10downloader.api.crud.convertor.CustomerInformationConvertor;
+import com.timbuchalka.top10downloader.models.ConsultantGroup;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.ModelInterface;
 
@@ -18,6 +20,10 @@ public class ApiCrudFactory {
     public static <T extends ModelInterface> CrudConvertorInterface<T> getConvertor(Class genericClass){
         if(CustomerInformation.class == genericClass) {
             return new CustomerInformationConvertor();
+        }
+
+        if(ConsultantGroup.class == genericClass) {
+            return new ConsultantGroupConvertor();
         }
 
         return null;
@@ -38,46 +44,3 @@ public class ApiCrudFactory {
         return (String) ApiCrudFactory.getConvertor(genericClass).convertElement(data);
     }
 }
-
-
-/**package com.timbuchalka.top10downloader.api.crud;
-
- import com.google.gson.Gson;
- import com.google.gson.reflect.TypeToken;
- import com.timbuchalka.top10downloader.api.crud.convertor.CrudConvertorInterface;
- import com.timbuchalka.top10downloader.api.crud.convertor.CustomerInformationConvertor;
- import com.timbuchalka.top10downloader.models.CustomerInformation;
- import com.timbuchalka.top10downloader.models.ModelInterface;
-
- import java.lang.reflect.Type;
- import java.util.Collection;
-
- public class ApiCrudFactory<T extends ModelInterface> {
- ApiCrudFactory(){
-
- }
-
- public CrudConvertorInterface<T> getConvertor(Class genericClass){
- if(CustomerInformation.class == genericClass) {
- return new CustomerInformationConvertor();
- }
-
- return null;
- }
-
- public String getUrl(Class genericClass){
- return getConvertor(genericClass).getUrl();
- }
-
- public Collection<T> convertCollection(Class<T> genericClass, String data) {
- return getConvertor(genericClass).convertCollection(data);
- }
-
- public T convertElement(Class<T> genericClass, String data) {
- return getConvertor(genericClass).convertElement(data);
- }
- public String convertElement(Class<T> genericClass, T data) {
- return getConvertor(genericClass).convertElement(data);
- }
- }
-*/

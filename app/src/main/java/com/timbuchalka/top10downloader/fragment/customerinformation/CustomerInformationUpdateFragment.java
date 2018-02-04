@@ -2,6 +2,7 @@ package com.timbuchalka.top10downloader.fragment.customerinformation;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -89,5 +90,10 @@ public class CustomerInformationUpdateFragment
         birthData = (TextView) view.findViewById(R.id.birthData);
         additionalInformation = (TextView) view.findViewById(R.id.additionalInformation);
         primary = (CheckBox) view.findViewById(R.id.primary);
+    }
+
+    @Override
+    public Fragment getListView() {
+        return new CustomerInformationFragment();
     }
 }
