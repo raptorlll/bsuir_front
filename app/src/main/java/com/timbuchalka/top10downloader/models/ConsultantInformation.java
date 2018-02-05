@@ -12,7 +12,7 @@ public class ConsultantInformation implements ModelInterface {
     private Date licenseUntil;
     private Time availableFrom;
     private Time availableUntil;
-    private Long consultantGroupUser;
+    private ConsultantGroupUser consultantGroupUser;
 
     @Override
     public Long getId() {
@@ -79,11 +79,11 @@ public class ConsultantInformation implements ModelInterface {
         this.availableUntil = availableUntil;
     }
 
-    public Long getConsultantGroupUser() {
+    public ConsultantGroupUser getConsultantGroupUser() {
         return consultantGroupUser;
     }
 
-    public void setConsultantGroupUser(Long consultantGroupUser) {
+    public void setConsultantGroupUser(ConsultantGroupUser consultantGroupUser) {
         this.consultantGroupUser = consultantGroupUser;
     }
 }

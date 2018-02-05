@@ -17,6 +17,7 @@ android {
                     'src/main/res/layouts/common',
                     'src/main/res/layouts/fragments/consultant-group',
                     'src/main/res/layouts/fragments/consultant-group-user',
+                    'src/main/res/layouts/fragments/consultant-information',
                     'src/main/res/layouts/fragments',
                     'src/main/res/layouts',
                     'src/main/res'
