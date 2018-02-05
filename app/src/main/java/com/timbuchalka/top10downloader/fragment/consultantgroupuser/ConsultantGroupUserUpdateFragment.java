@@ -51,13 +51,17 @@ public class ConsultantGroupUserUpdateFragment
 
         user.setAdapter(arrayAdapter);
 
-        int i = 0;
-        for (User u : data){
-            if(activeElement.getUser().getId() == u.getId()){
-                user.setSelection(i);
-            }
+        if (activeElement.getUser() == null && !data.isEmpty()) {
+            user.setSelection(0);
+        } else {
+            int i = 0;
+            for (User u : data){
+                if(activeElement.getUser().getId() == u.getId()){
+                    user.setSelection(i);
+                }
 
-            i++;
+                i++;
+            }
         }
 
         user.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,6 +86,16 @@ public class ConsultantGroupUserUpdateFragment
     @SuppressLint("ValidFragment")
     ConsultantGroupUserUpdateFragment(Class<ConsultantGroupUser> genericClass, ConsultantGroupUser activeElement2, int layout) {
         super(genericClass, activeElement2, layout);
+        executeDropDowns();
+    }
+
+    @SuppressLint("ValidFragment")
+    ConsultantGroupUserUpdateFragment(Class<ConsultantGroupUser> genericClass, int layout) {
+        super(genericClass, layout);
+        executeDropDowns();
+    }
+
+    private void executeDropDowns() {
         (new ListData<User>(User.class, this)).execute();
         (new ListData<ConsultantGroup>(ConsultantGroup.class, new ListData.OnDataAvailable<ConsultantGroup>() {
             @Override
@@ -98,13 +112,17 @@ public class ConsultantGroupUserUpdateFragment
 
                 consultantGroup.setAdapter(arrayAdapter);
 
-                int i = 0;
-                for (ConsultantGroup u : data){
-                    if(activeElement.getConsultantGroup().getId() == u.getId()){
-                        user.setSelection(i);
-                    }
+                if (activeElement.getConsultantGroup() == null && !data.isEmpty()) {
+                    consultantGroup.setSelection(0);
+                } else {
+                    int i = 0;
+                    for (ConsultantGroup u : data){
+                        if(activeElement.getConsultantGroup().getId() == u.getId()){
+                            consultantGroup.setSelection(i);
+                        }
 
-                    i++;
+                        i++;
+                    }
                 }
 
                 consultantGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -121,11 +139,6 @@ public class ConsultantGroupUserUpdateFragment
                 });
             }
         })).execute();
-    }
-
-    @SuppressLint("ValidFragment")
-    ConsultantGroupUserUpdateFragment(Class<ConsultantGroupUser> genericClass, int layout) {
-        super(genericClass, layout);
     }
 
     private DatePickerDialog datePicker;

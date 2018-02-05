@@ -45,7 +45,7 @@ public class CrudInformationAdapter<T extends ModelInterface>
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        ViewHolder<T> viewHolder;
 
         T currentElement = elementsList.get(position);
 
@@ -54,6 +54,7 @@ public class CrudInformationAdapter<T extends ModelInterface>
             convertView = layoutInflater.inflate(layoutResource, parent, false);
 
             viewHolder = crudFragment.getViewHolder(convertView, currentElement);
+            viewHolder.fillData(convertView);
             viewHolder.getCrudButons(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -62,7 +63,7 @@ public class CrudInformationAdapter<T extends ModelInterface>
         }
 
 
-//        crudFragment.inflateListInformation(viewHolder, );
+        viewHolder.setText(currentElement);
 
         try {
             viewHolder.crudButtons.setOnClickListener(new View.OnClickListener() {
@@ -109,9 +110,10 @@ public class CrudInformationAdapter<T extends ModelInterface>
         return convertView;
     }
 
-    abstract public static class ViewHolder{
+    abstract public static class ViewHolder<T>{
         protected TextView crudButtons;
         abstract public void fillData(View v);
+        abstract public void setText(T v);
         void getCrudButons(View v) {
             this.crudButtons = (TextView) v.findViewById(R.id.crudButtons);
         }

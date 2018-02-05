@@ -64,7 +64,7 @@ public class ConsultantGroupFragment
         return new ConsultantGroupReadFragment(activeElement, getLayoutView());
     }
 
-    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder {
+    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder<ConsultantGroup> {
         @Override
         public void fillData(View v) {
             this.name = (TextView) v.findViewById(R.id.name);
@@ -76,18 +76,19 @@ public class ConsultantGroupFragment
         private TextView description;
         private TextView videoTarif;
         private TextView conversationTarif;
+
+        @Override
+        public void setText(ConsultantGroup currentElement) {
+            name.setText(currentElement.getName());
+            description.setText(currentElement.getDescription());
+            videoTarif.setText(currentElement.getVideoTarif().toString());
+            conversationTarif.setText(currentElement.getConversationTarif().toString());
+        }
     }
 
     @Override
     public CrudInformationAdapter.ViewHolder getViewHolder(View convertView, ConsultantGroup currentElement)  {
         ViewHolderImplementation viewHolder = new ViewHolderImplementation();
-        viewHolder.fillData(convertView);
-
-        viewHolder.name.setText(currentElement.getName());
-        viewHolder.description.setText(currentElement.getDescription());
-        viewHolder.videoTarif.setText(currentElement.getVideoTarif().toString());
-        viewHolder.conversationTarif.setText(currentElement.getConversationTarif().toString());
-
         return viewHolder;
     }
 }

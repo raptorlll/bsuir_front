@@ -65,7 +65,7 @@ public class CustomerInformationFragment
         return new CustomerInformationReadFragment(activeElement, getLayoutView());
     }
 
-    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder {
+    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder<CustomerInformation> {
         @Override
         public void fillData(View v) {
             this.birthData = (TextView) v.findViewById(R.id.birthData);
@@ -75,15 +75,18 @@ public class CustomerInformationFragment
         private TextView birthData;
         private TextView additionalInformation;
         private TextView primary;
+
+        @Override
+        public void setText(CustomerInformation currentElement) {
+            birthData.setText(new SimpleDateFormat("Y-m-d").format(currentElement.getBirthData()).concat(" birth date"));
+            additionalInformation.setText(currentElement.getAdditionalInformation());
+            primary.setText(currentElement.getPrimary() == 0 ? "Secondary" : "Primary");
+        }
     }
 
     @Override
     public CrudInformationAdapter.ViewHolder getViewHolder(View convertView, CustomerInformation currentElement)  {
         ViewHolderImplementation viewHolder = new ViewHolderImplementation();
-        viewHolder.fillData(convertView);
-        viewHolder.birthData.setText(new SimpleDateFormat("Y-m-d").format(currentElement.getBirthData()).concat(" birth date"));
-        viewHolder.additionalInformation.setText(currentElement.getAdditionalInformation());
-        viewHolder.primary.setText(currentElement.getPrimary() == 0 ? "Secondary" : "Primary");
         return viewHolder;
     }
 }

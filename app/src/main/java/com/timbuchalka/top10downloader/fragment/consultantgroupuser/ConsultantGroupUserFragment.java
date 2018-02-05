@@ -64,7 +64,7 @@ public class ConsultantGroupUserFragment
         return new ConsultantGroupUserReadFragment(activeElement, getLayoutView());
     }
 
-    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder {
+    public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder<ConsultantGroupUser> {
         @Override
         public void fillData(View v) {
             this.status = (TextView) v.findViewById(R.id.status);
@@ -79,18 +79,20 @@ public class ConsultantGroupUserFragment
         private TextView conversationTarif;
         private TextView user;
         private TextView consultantGroup;
+
+        @Override
+        public void setText(ConsultantGroupUser currentElement){
+            status.setText(currentElement.getStatus()==0 ? "Active" : "Inactive");
+            videoTarif.setText(currentElement.getVideoTarif() != null ? currentElement.getVideoTarif().toString() : "");
+            conversationTarif.setText(currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : "");
+            user.setText(currentElement.getUser().getFirstName());
+            consultantGroup.setText(currentElement.getConsultantGroup().getName());
+        }
     }
 
     @Override
     public CrudInformationAdapter.ViewHolder getViewHolder(View convertView, ConsultantGroupUser currentElement)  {
         ViewHolderImplementation viewHolder = new ViewHolderImplementation();
-        viewHolder.fillData(convertView);
-
-        viewHolder.status.setText(currentElement.getStatus()==0 ? "Active" : "Inactive");
-        viewHolder.videoTarif.setText(currentElement.getVideoTarif() != null ? currentElement.getVideoTarif().toString() : "");
-        viewHolder.conversationTarif.setText(currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : "");
-        viewHolder.user.setText(currentElement.getUser().getFirstName());
-        viewHolder.consultantGroup.setText(currentElement.getConsultantGroup().getName());
 
         return viewHolder;
     }
