@@ -5,12 +5,20 @@ import android.net.Uri;
 import com.timbuchalka.top10downloader.api.FetcherAbstract;
 import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateFetcher extends FetcherAbstract {
     private String customerInformation;
@@ -55,4 +63,3 @@ public class CreateFetcher extends FetcherAbstract {
         return connection;
     }
 }
-

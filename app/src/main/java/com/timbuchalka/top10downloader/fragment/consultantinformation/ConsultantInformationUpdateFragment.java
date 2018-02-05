@@ -1,10 +1,18 @@
 package com.timbuchalka.top10downloader.fragment.consultantinformation;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -13,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.nononsenseapps.filepicker.Utils;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.crud.ListData;
@@ -22,6 +32,7 @@ import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.ConsultantInformation;
 import com.timbuchalka.top10downloader.models.User;
 
+import java.io.File;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +41,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+//https://stackoverflow.com/questions/34276466/simple-httpurlconnection-post-file-multipart-form-data-from-android-to-google-bl
 public class ConsultantInformationUpdateFragment
         extends UpdateFragment<ConsultantInformation>
         implements ListData.OnDataAvailable<ConsultantGroupUser>
@@ -101,10 +113,26 @@ public class ConsultantInformationUpdateFragment
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment(Class<ConsultantInformation> genericClass, int layout) {
         super(genericClass, layout);
+        // This always works
+
 
         (new ListData<ConsultantGroupUser>(ConsultantGroupUser.class, this)).execute();
     }
 
+    private File fileChoosed = null;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            // Use the provided utility method to parse the result
+            List<Uri> files = Utils.getSelectedFilesFromResult(intent);
+            for (Uri uri: files) {
+                File file = Utils.getFileForUri(uri);
+                fileChoosed = Utils.getFileForUri(uri);
+                // Do something with the result...
+            }
+        }
+    }
     @Override
     public void convertForView(ConsultantInformation activeElement) {
         education.setText(activeElement.getEducation().toString());
@@ -126,11 +154,15 @@ public class ConsultantInformationUpdateFragment
     public void onClickListeners(View view) {
         if(view == licenseUntil) {
             datePicker.show();
+        } else if (view == licenseFile){
+            initFilePicker();
         }
     }
 
     @Override
     public void setListeners() {
+        licenseFile.setOnClickListener(this);
+
         // perform click event listener on edit text
         availableFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +242,25 @@ public class ConsultantInformationUpdateFragment
         availableFrom = (TextView) v.findViewById(R.id.availableFrom);
         availableUntil = (TextView) v.findViewById(R.id.availableUntil);
         consultantGroupUser = (Spinner) v.findViewById(R.id.consultantGroupUser);
+    }
+
+    private void initFilePicker(){
+        Intent i = new Intent(getContext(), FilePickerActivity.class);
+        // This works if you defined the intent filter
+        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+        // Set these depending on your use case. These are the defaults.
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+
+        // Configure initial directory by specifying a String.
+        // You could specify a String like "/storage/emulated/0/", but that can
+        // dangerous. Always use Android's API calls to get paths to the SD-card or
+        // internal memory.
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+
+        startActivityForResult(i, 1);
     }
 
     @Override
