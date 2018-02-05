@@ -22,10 +22,13 @@ public class ConsultantInformationReadFragment
 
     @Override
     public void createSetVars(View view) {
-        ((TextView) view.findViewById(R.id.status)).setText(activeElement.getStatus() == 1 ? "Active" : "Inactive");
-        ((TextView) view.findViewById(R.id.videoTarif)).setText(activeElement.getVideoTarif() != null ? activeElement.getVideoTarif().toString() : "");
-        ((TextView) view.findViewById(R.id.conversationTarif)).setText(activeElement.getConversationTarif() != null ? activeElement.getConversationTarif().toString() : "");
-        ((TextView) view.findViewById(R.id.user)).setText(activeElement.getUser().getFirstName());
-        ((TextView) view.findViewById(R.id.consultantGroup)).setText(activeElement.getConsultantGroup().getName());
+        ((TextView) view.findViewById(R.id.education)).setText(activeElement.getEducation().toString());
+        ((TextView) view.findViewById(R.id.degree)).setText(activeElement.getDegree().toString());
+        ((TextView) view.findViewById(R.id.licenseNumber)).setText(activeElement.getLicenseNumber().toString());
+        ((TextView) view.findViewById(R.id.licenseFile)).setText(activeElement.getLicenseFile().toString());
+        ((TextView) view.findViewById(R.id.licenseUntil)).setText(activeElement.getLicenseUntil().toString());
+        ((TextView) view.findViewById(R.id.availableFrom)).setText(activeElement.getAvailableFrom().toString());
+        ((TextView) view.findViewById(R.id.availableUntil)).setText(activeElement.getAvailableUntil().toString());
+        ((TextView) view.findViewById(R.id.consultantGroupUser)).setText(activeElement.getConsultantGroupUser().toString());
     }
 }

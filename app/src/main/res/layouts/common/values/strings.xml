@@ -6,4 +6,11 @@
     <string name="conversation_tarif">Conversation tarif</string>
     <string name="is_active">Is Active</string>
     <string name="save">Save</string>
+    <string name="consultantgroupuser">consultantGroupUser</string>
+    <string name="availableuntil">availableUntil</string>
+    <string name="availablefrom">availableFrom</string>
+    <string name="licenseuntil">licenseUntil</string>
+    <string name="licensefile">licenseFile</string>
+    <string name="degree">degree</string>
+    <string name="education">education</string>
 </resources>

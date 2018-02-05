@@ -2,40 +2,95 @@ package com.timbuchalka.top10downloader.fragment.consultantinformation;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.crud.ListData;
 import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
 import com.timbuchalka.top10downloader.models.ConsultantGroup;
+import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.ConsultantInformation;
 import com.timbuchalka.top10downloader.models.User;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 public class ConsultantInformationUpdateFragment
         extends UpdateFragment<ConsultantInformation>
+        implements ListData.OnDataAvailable<ConsultantGroupUser>
 {
-    CheckBox status;
-    TextView videoTarif;
-    TextView conversationTarif;
-    Spinner user;
-    Spinner consultantGroup;
-    ArrayList<User> userData = null;
-    ArrayList<ConsultantGroup> consultantGroupData = null;
+    private TextView education;
+    private TextView degree;
+    private TextView licenseNumber;
+    private TextView licenseFile;
+    private TextView licenseUntil;
+    private TextView availableFrom;
+    private TextView availableUntil;
+    private Spinner consultantGroupUser;
+    private DatePickerDialog datePicker;
+    private ArrayList<ConsultantGroupUser> consultantGroupUserData;
+
 
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment(){
         super();
+    }
+
+    @Override
+    public void onDataAvailable(Collection<ConsultantGroupUser> data, DownloadStatus status) {
+        System.out.println("");
+
+        consultantGroupUserData = (ArrayList<ConsultantGroupUser>)data;
+        ArrayList<String> list = new ArrayList<String>();
+
+        for (ConsultantGroupUser u : data){
+            list.add(u.getUser().getFirstName().concat(" ").concat(u.getUser().getEmail()));
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
+
+        consultantGroupUser.setAdapter(arrayAdapter);
+
+        if (activeElement.getConsultantGroupUser() == null && !data.isEmpty()) {
+            consultantGroupUser.setSelection(0);
+        } else {
+            int i = 0;
+            for (ConsultantGroupUser u : data){
+                if(activeElement.getConsultantGroupUser().getId() == u.getId()){
+                    consultantGroupUser.setSelection(i);
+                }
+
+                i++;
+            }
+        }
+
+        consultantGroupUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                activeElement.setConsultantGroupUser(((ArrayList<ConsultantGroupUser>)consultantGroupUserData).get(i));
+                System.out.println("");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @SuppressLint("ValidFragment")
@@ -46,48 +101,115 @@ public class ConsultantInformationUpdateFragment
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment(Class<ConsultantInformation> genericClass, int layout) {
         super(genericClass, layout);
+
+        (new ListData<ConsultantGroupUser>(ConsultantGroupUser.class, this)).execute();
     }
-
-
-    private DatePickerDialog datePicker;
-
-    private SimpleDateFormat dateFormatter;
 
     @Override
     public void convertForView(ConsultantInformation activeElement) {
-        status.setChecked(activeElement.getStatus() == 1);
-        videoTarif.setText(activeElement.getVideoTarif() != null ? activeElement.getVideoTarif().toString() : "");
-        conversationTarif.setText(activeElement.getConversationTarif() != null ? activeElement.getConversationTarif().toString() : "");
+        education.setText(activeElement.getEducation().toString());
+        degree.setText(activeElement.getDegree().toString());
+        licenseNumber.setText(activeElement.getLicenseNumber().toString());
+        licenseFile.setText(activeElement.getLicenseFile().toString());
+        licenseUntil.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(activeElement.getLicenseUntil()));
+        availableFrom.setText((new SimpleDateFormat("HH:mm", Locale.US)).format(activeElement.getAvailableFrom()));
+        availableUntil.setText((new SimpleDateFormat("HH:mm", Locale.US)).format(activeElement.getAvailableUntil()));
+//        consultantGroupUser.setText(activeElement.getConsultantGroupUser().toString());
     }
 
     @Override
     public void convertForSubmit(ConsultantInformation activeElement) {
-        activeElement.setStatus(new Byte(status.isChecked() ? "1" : "0"));
-
-        try{
-            activeElement.setConversationTarif(Integer.parseInt(conversationTarif.getText().toString()));
-            activeElement.setVideoTarif(Integer.parseInt(videoTarif.getText().toString()));
-        } catch (NumberFormatException e) {
-            System.out.println("Conversion error");
-        }
+//
     }
 
     @Override
     public void onClickListeners(View view) {
+        if(view == licenseUntil) {
+            datePicker.show();
+        }
     }
 
     @Override
     public void setListeners() {
+        // perform click event listener on edit text
+        availableFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
 
+                int hour = activeElement.getAvailableFrom() != null ?
+                        Integer.parseInt((new SimpleDateFormat("H", Locale.US)).format(activeElement.getAvailableFrom())):
+                        mcurrentTime.get(Calendar.HOUR_OF_DAY);
+
+                int minute = activeElement.getAvailableFrom() != null ?
+                        Integer.parseInt((new SimpleDateFormat("m", Locale.US)).format(activeElement.getAvailableFrom())):
+                        mcurrentTime.get(Calendar.MINUTE);
+
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Time time = new Time(selectedHour, selectedMinute, 0);
+                        availableFrom.setText((new SimpleDateFormat("HH:mm", Locale.US)).format(time));
+                        activeElement.setAvailableFrom(time);
+                    }
+                }, hour, minute, true);
+
+                mTimePicker.show();
+            }
+        });
+
+        // perform click event listener on edit text
+        availableUntil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+
+                int hour = activeElement.getAvailableUntil() != null ?
+                        Integer.parseInt((new SimpleDateFormat("H", Locale.US)).format(activeElement.getAvailableUntil())):
+                        mcurrentTime.get(Calendar.HOUR_OF_DAY);
+
+                int minute = activeElement.getAvailableUntil() != null ?
+                        Integer.parseInt((new SimpleDateFormat("m", Locale.US)).format(activeElement.getAvailableUntil())):
+                        mcurrentTime.get(Calendar.MINUTE);
+
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Time time = new Time(selectedHour, selectedMinute, 0);
+                        availableUntil.setText((new SimpleDateFormat("HH:mm", Locale.US)).format(time));
+                        activeElement.setAvailableUntil(time);
+                    }
+                }, hour, minute, true);
+
+                mTimePicker.show();
+            }
+        });
+
+        Calendar newCalendar = Calendar.getInstance();
+        licenseUntil.setOnClickListener(this);
+        datePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                licenseUntil.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(newDate.getTime()));
+                activeElement.setLicenseUntil(newDate.getTime());
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
-    public void findViewsById(View view) {
-        status = (CheckBox) view.findViewById(R.id.status);
-        videoTarif = (TextView) view.findViewById(R.id.videoTarif);
-        conversationTarif = (TextView) view.findViewById(R.id.conversationTarif);
-        user = (Spinner) view.findViewById(R.id.user);
-        consultantGroup = (Spinner) view.findViewById(R.id.consultantGroup);
+    public void findViewsById(View v) {
+        education = (TextView) v.findViewById(R.id.education);
+        degree = (TextView) v.findViewById(R.id.degree);
+        licenseNumber = (TextView) v.findViewById(R.id.licenseNumber);
+        licenseFile = (TextView) v.findViewById(R.id.licenseFile);
+        licenseUntil = (TextView) v.findViewById(R.id.licenseUntil);
+        availableFrom = (TextView) v.findViewById(R.id.availableFrom);
+        availableUntil = (TextView) v.findViewById(R.id.availableUntil);
+        consultantGroupUser = (Spinner) v.findViewById(R.id.consultantGroupUser);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 import com.timbuchalka.top10downloader.models.ConsultantGroup;
+import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.ModelInterface;
 import com.timbuchalka.top10downloader.models.User;
@@ -55,10 +56,16 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
         if(getTypeElement() != UserJson.class){
             gsonBuilder.registerTypeAdapter(UserJson.class, new ModelInterfaceSerializer());
         }
+
         if(getTypeElement() != ConsultantGroup.class){
             gsonBuilder.registerTypeAdapter(ConsultantGroup.class, new ModelInterfaceSerializer());
         }
+
         if(getTypeElement() != User.class){
+            gsonBuilder.registerTypeAdapter(User.class, new ModelInterfaceSerializer());
+        }
+
+        if(getTypeElement() != ConsultantGroupUser.class){
             gsonBuilder.registerTypeAdapter(User.class, new ModelInterfaceSerializer());
         }
     }

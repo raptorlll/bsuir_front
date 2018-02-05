@@ -4,49 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <!--user-->
-    <!--consultantGroup-->
-    <CheckBox
-        android:id="@+id/status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/is_active" />
 
     <EditText
-        android:id="@+id/videoTarif"
+        android:id="@+id/education"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="@string/video_tarif"
-        android:inputType="numberSigned" />
+        android:hint="@string/education" />
 
     <EditText
-        android:id="@+id/conversationTarif"
+        android:id="@+id/degree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="@string/conversation_tarif"
-        android:inputType="numberSigned" />
+        android:hint="@string/degree" />
 
-
-    <Spinner
-        android:id="@+id/user"
+    <EditText
+        android:id="@+id/licenseNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:hint="licenseNumber" />
 
-    <Spinner
-        android:id="@+id/consultantGroup"
+    <EditText
+        android:id="@+id/licenseFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:hint="@string/licensefile" />
+
+    <EditText
+        android:id="@+id/licenseUntil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/licenseuntil" />
+
+    <EditText
+        android:id="@+id/availableFrom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/availablefrom" />
+
+    <EditText
+        android:id="@+id/availableUntil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/availableuntil" />
+
+    <Spinner
+        android:id="@+id/consultantGroupUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/consultantgroupuser" />
 
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Save"
+        android:text="@string/save"
         android:textSize="20dp" />
 </LinearLayout>
