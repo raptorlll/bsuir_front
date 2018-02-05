@@ -53,13 +53,8 @@ public class LoginActivity extends BaseGuestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Begin the transaction
         ft = getSupportFragmentManager().beginTransaction();
-
-        // Replace the contents of the container with the new fragment
         ft.replace(R.id.fragment_placeholder, new RegistrationFragment());
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
         ft.commit();
 
         setContentView(R.layout.login);

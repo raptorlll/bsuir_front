@@ -121,7 +121,6 @@ public class ConsultantGroupUserUpdateFragment
                 });
             }
         })).execute();
-//        new ListData(User.class, this).execute();
     }
 
     @SuppressLint("ValidFragment")
@@ -138,20 +137,18 @@ public class ConsultantGroupUserUpdateFragment
         status.setChecked(activeElement.getStatus() == 1);
         videoTarif.setText(activeElement.getVideoTarif() != null ? activeElement.getVideoTarif().toString() : "");
         conversationTarif.setText(activeElement.getConversationTarif() != null ? activeElement.getConversationTarif().toString() : "");
-//        user.setText(activeElement.getConversationTarif().toString());
-//        consultantGroup.setText(activeElement.getConversationTarif().toString());
     }
 
     @Override
     public void convertForSubmit(ConsultantGroupUser activeElement) {
-//        activeElement.setName(name.getText().toString());
-//        activeElement.setDescription(description.getText().toString());
-//        try{
-//            activeElement.setConversationTarif(Integer.parseInt(conversationTarif.getText().toString()));
-//            activeElement.setVideoTarif(Integer.parseInt(videoTarif.getText().toString()));
-//        } catch (NumberFormatException e) {
-//            System.out.println("Conversion error");
-//        }
+        activeElement.setStatus(new Byte(status.isChecked() ? "1" : "0"));
+
+        try{
+            activeElement.setConversationTarif(Integer.parseInt(conversationTarif.getText().toString()));
+            activeElement.setVideoTarif(Integer.parseInt(videoTarif.getText().toString()));
+        } catch (NumberFormatException e) {
+            System.out.println("Conversion error");
+        }
     }
 
     @Override

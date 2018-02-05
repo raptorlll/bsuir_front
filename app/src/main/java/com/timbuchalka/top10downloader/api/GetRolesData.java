@@ -37,16 +37,6 @@ public class GetRolesData
     }
 
     @Override
-    protected void onPostExecute(Set<Role> Logins) {
-        Log.d(TAG, "onPostExecute starts");
-
-        if(mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
-        }
-        Log.d(TAG, "onPostExecute ends");
-    }
-
-    @Override
     protected Set<Role> doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new RolesFetcher(this, params[0]);
         RawDataFetcher.execute();
@@ -72,9 +62,9 @@ public class GetRolesData
                 for (String s: roles){
                     setRoles.add(new Role(s, s));
                 }
-//
+
                 mLogin = setRoles;
-                Log.d(TAG, "onDownloadComplete " + setRoles.toString());
+                mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
             } catch(JSONException jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
@@ -82,11 +72,7 @@ public class GetRolesData
             }
         }
 
-        if(runningOnSameThread && mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, status);
-        }
-
-        Log.d(TAG, "onDownloadComplete ends");
+        mCallBack.onDataAvailable(mLogin, status);
     }
 }
 

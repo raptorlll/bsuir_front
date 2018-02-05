@@ -30,16 +30,12 @@ public class LoginFragment
         implements GetLoginData.OnDataAvailable, GetRolesData.OnDataAvailable  {
     private static final String TAG = "Login fragment";
 
-    // The onCreateView method is called when Fragment should create its View object hierarchy,
-    // either dynamically or via XML layout inflation.
     @Override
     public View onCreateView(
             LayoutInflater inflater,
             ViewGroup parent,
             Bundle savedInstanceState
     ) {
-        // Defines the xml file for the fragment
-
         View view = inflater.inflate(R.layout.login_fragment, parent, false);
         username = (EditText) view.findViewById(R.id.username);
         password = (EditText) view.findViewById(R.id.password);
@@ -63,12 +59,8 @@ public class LoginFragment
         return view;
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
     }
 
 
@@ -77,23 +69,11 @@ public class LoginFragment
     @Override
     public void onDataAvailable(Set<Role> data, DownloadStatus status) {
         Log.d(TAG, "onDataAvailable: ");
-//        String[] sb = new String[data.size()];
-//        int i = 0;
-//        for (Role s : data){
-//            sb[i++] = s.getValue();
-//        }
-//        SharedPreferences.Editor e= sp.edit();
-//        e.putString("roles", TextUtils.join(".", sb));
         Gson gson = new Gson();
         Type type = new TypeToken<Set<Role>>() {
         }.getType();
         String json = gson.toJson(data, type);
 
-//        String[] sb = new String[data.size()];
-//        int i = 0;
-//        for (Role s : data){
-//            sb[i++] = s.getValue();
-//        }
         SharedPreferences.Editor e = sp.edit();
         e.putString("roles", json);
         e.commit();
@@ -161,7 +141,6 @@ public class LoginFragment
         //check username and password are correct and then add them to SharedPreferences
         if (username.getText().toString().length() > 1 && password.getText().toString().length() > 1) {
             authProcess(username.getText().toString(), password.getText().toString());
-//            sendAuthRequest(username.getText().toString(), password.getText().toString());
         } else {
             Toast.makeText(getActivity(), "Fill all fields correctly", Toast.LENGTH_LONG).show();
         }

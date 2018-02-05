@@ -11,6 +11,7 @@ import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 import com.timbuchalka.top10downloader.models.ConsultantGroup;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.ModelInterface;
+import com.timbuchalka.top10downloader.models.User;
 import com.timbuchalka.top10downloader.models.UserJson;
 
 import java.lang.reflect.Type;
@@ -56,6 +57,9 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
         }
         if(getTypeElement() != ConsultantGroup.class){
             gsonBuilder.registerTypeAdapter(ConsultantGroup.class, new ModelInterfaceSerializer());
+        }
+        if(getTypeElement() != User.class){
+            gsonBuilder.registerTypeAdapter(User.class, new ModelInterfaceSerializer());
         }
     }
 

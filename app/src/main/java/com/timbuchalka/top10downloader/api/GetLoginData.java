@@ -14,10 +14,8 @@ public class GetLoginData
     private static final String TAG = "GetLoginData";
 
     private Token mLogin;
-    private String mBaseURL;
 
     private final OnDataAvailable mCallBack;
-    private boolean runningOnSameThread = false;
 
     public interface OnDataAvailable {
         void onDataAvailable(Token data, DownloadStatus status);
@@ -26,16 +24,6 @@ public class GetLoginData
     public GetLoginData(OnDataAvailable callBack) {
         Log.d(TAG, "GetLoginData called");
         mCallBack = callBack;
-    }
-
-    @Override
-    protected void onPostExecute(Token Logins) {
-        Log.d(TAG, "onPostExecute starts");
-
-        if(mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
-        }
-        Log.d(TAG, "onPostExecute ends");
     }
 
     @Override
@@ -58,6 +46,7 @@ public class GetLoginData
                 token = convertor.convert(jsonData);
                 mLogin = token;
                 Log.d(TAG, "onDownloadComplete " + token.toString());
+                mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
             } catch(JSONException jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
@@ -65,11 +54,7 @@ public class GetLoginData
             }
         }
 
-        if(runningOnSameThread && mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, status);
-        }
-
-        Log.d(TAG, "onDownloadComplete ends");
+        mCallBack.onDataAvailable(mLogin, status);
     }
 }
 

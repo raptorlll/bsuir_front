@@ -32,16 +32,6 @@ public class GetRegisterData
     }
 
     @Override
-    protected void onPostExecute(UserJson Logins) {
-        Log.d(TAG, "onPostExecute starts");
-
-        if (mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
-        }
-        Log.d(TAG, "onPostExecute ends");
-    }
-
-    @Override
     protected UserJson doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new RegisterFetcher(this, params[0]);
         RawDataFetcher.execute();
@@ -57,13 +47,12 @@ public class GetRegisterData
         if (status == DownloadStatus.OK) {
             try {
                 JSONObject jsonData = new JSONObject(data);
-
                 UserJsonConvertor convertor = new UserJsonConvertor();
                 userJson = convertor.convert(jsonData);
-//                TokenConvertor convertor = new TokenConvertor();
-//                token = convertor.convert(jsonData);
 
                 mLogin = userJson;
+
+                mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
             } catch (JSONException jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
@@ -71,11 +60,7 @@ public class GetRegisterData
             }
         }
 
-        if (runningOnSameThread && mCallBack != null) {
-            mCallBack.onDataAvailable(mLogin, status);
-        }
-
-        Log.d(TAG, "onDownloadComplete ends");
+        mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
     }
 }
 
