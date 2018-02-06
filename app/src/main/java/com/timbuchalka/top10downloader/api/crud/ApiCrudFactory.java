@@ -2,18 +2,8 @@ package com.timbuchalka.top10downloader.api.crud;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantGroupConvertor;
-import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantGroupUserConvertor;
-import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantInformationConvertor;
-import com.timbuchalka.top10downloader.api.crud.convertor.CrudConvertorInterface;
-import com.timbuchalka.top10downloader.api.crud.convertor.CustomerInformationConvertor;
-import com.timbuchalka.top10downloader.api.crud.convertor.UserConvertor;
-import com.timbuchalka.top10downloader.models.ConsultantGroup;
-import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
-import com.timbuchalka.top10downloader.models.ConsultantInformation;
-import com.timbuchalka.top10downloader.models.CustomerInformation;
-import com.timbuchalka.top10downloader.models.ModelInterface;
-import com.timbuchalka.top10downloader.models.User;
+import com.timbuchalka.top10downloader.api.crud.convertor.*;
+import com.timbuchalka.top10downloader.models.*;
 
 import java.com.timbuchalka.top10downloader.api.crud.convertor.ConversationConvertor;
 import java.com.timbuchalka.top10downloader.models.Conversation;
@@ -38,6 +28,8 @@ public class ApiCrudFactory {
             return new ConsultantInformationConvertor();
         } else if (Conversation.class == genericClass) {
             return new ConversationConvertor();
+        } else if (CustomerPayment.class == genericClass) {
+            return new CustomerPaymentConvertor();
         }
 
         return null;

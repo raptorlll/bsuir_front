@@ -43,11 +43,13 @@ public class ConversationUpdateFragment
     @SuppressLint("ValidFragment")
     ConversationUpdateFragment(Class<Conversation> genericClass, Conversation activeElement, int layout) {
         super(genericClass, activeElement, layout);
+        executeDropDowns();
     }
 
     @SuppressLint("ValidFragment")
     ConversationUpdateFragment(Class<Conversation> genericClass, int layout) {
         super(genericClass, layout);
+        executeDropDowns();
     }
 
 

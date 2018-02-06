@@ -1,6 +1,7 @@
 package java.com.timbuchalka.top10downloader.api.crud.convertor;
 
 import com.google.gson.reflect.TypeToken;
+import com.timbuchalka.top10downloader.api.crud.convertor.CrudConvertorAbstract;
 import com.timbuchalka.top10downloader.models.ConsultantGroup;
 
 import java.com.timbuchalka.top10downloader.models.Conversation;

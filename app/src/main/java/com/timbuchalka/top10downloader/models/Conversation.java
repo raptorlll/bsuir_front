@@ -3,6 +3,7 @@ package java.com.timbuchalka.top10downloader.models;
 import java.util.Date;
 import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
+import com.timbuchalka.top10downloader.models.ModelInterface;
 
 public class Conversation implements ModelInterface {
     private Long id;
