@@ -15,6 +15,8 @@ import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.ModelInterface;
 import com.timbuchalka.top10downloader.models.User;
 
+import java.com.timbuchalka.top10downloader.api.crud.convertor.ConversationConvertor;
+import java.com.timbuchalka.top10downloader.models.Conversation;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -34,6 +36,8 @@ public class ApiCrudFactory {
             return new UserConvertor();
         } else if (ConsultantInformation.class == genericClass) {
             return new ConsultantInformationConvertor();
+        } else if (Conversation.class == genericClass) {
+            return new ConversationConvertor();
         }
 
         return null;

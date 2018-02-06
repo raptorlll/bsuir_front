@@ -124,6 +124,8 @@ public class ConsultantInformationUpdateFragment
     ConsultantInformationUpdateFragment(Class<ConsultantInformation> genericClass, int layout) {
         super(genericClass, layout);
         // This always works
+
+
         (new ListData<ConsultantGroupUser>(ConsultantGroupUser.class, this)).execute();
     }
 
@@ -157,7 +159,7 @@ public class ConsultantInformationUpdateFragment
     public void convertForSubmit(ConsultantInformation activeElement) {
         GetPostFilesData postFilesData = new GetPostFilesData(this, fileChoosed, activeElement);
         postFilesData.execute();
-        return ;
+        ret
 //
     }
 

@@ -32,14 +32,7 @@ abstract public class ReadFragment<T extends ModelInterface>
         return view;
     }
 
-    abstract public void createSetVars(View view);/* {
-        birthData = (TextView) view.findViewById(R.id.birthData);
-        additionalInformation = (TextView) view.findViewById(R.id.additionalInformation);
-        primary = (TextView) view.findViewById(R.id.primary);
-        birthData.setText(new SimpleDateFormat("Y-m-d").format(activeElement.getBirthData()).concat(" birth date"));
-        additionalInformation.setText(activeElement.getAdditionalInformation());
-        primary.setText(activeElement.getPrimary() == 0 ? "Secondary" : "Primary");
-    }*/
+    abstract public void createSetVars(View view);
 }
 
 
