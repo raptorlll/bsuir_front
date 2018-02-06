@@ -15,21 +15,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GetPostFilesData
-        extends AsyncTask<String, Void, Set<ConsultantInformation>>
+        extends AsyncTask<String, Void, ConsultantInformation>
         implements FetcherAbstract.OnDownloadComplete {
 
     private static final String TAG = "GetPostFilesData";
     private ConsultantInformation consultantInformation;
     private File file;
 
-    private Set<ConsultantInformation> mLogin;
+    private ConsultantInformation mLogin;
     private String mBaseURL;
 
     private final OnDataAvailable mCallBack;
     private boolean runningOnSameThread = false;
 
     public interface OnDataAvailable {
-        void onDataAvailable(Set<ConsultantInformation> data, DownloadStatus status);
+        void onDataAvailable(ConsultantInformation data, DownloadStatus status);
     }
 
     public GetPostFilesData(OnDataAvailable callBack, File file, ConsultantInformation consultantInformation) {
@@ -40,12 +40,12 @@ public class GetPostFilesData
     }
 
     @Override
-    protected Set<ConsultantInformation> doInBackground(String... params) {
+    protected ConsultantInformation doInBackground(String... params) {
         ConsultantInformationConvertor<ConsultantInformation> convertor =
                 new ConsultantInformationConvertor<ConsultantInformation>();
         String json = convertor.convertElement(consultantInformation);
 
-        FetcherAbstract RawDataFetcher = new MultipartFileFetcher(this, file, json);
+        FetcherAbstract RawDataFetcher = new MultipartFileFetcher(this, file, json, "/consultant_information/save");
         RawDataFetcher.execute();
 
 
@@ -60,7 +60,7 @@ public class GetPostFilesData
         Set<ConsultantInformation> token;
         if(status == DownloadStatus.OK) {
             try {
-                Collection<ConsultantInformation> convertedData = ApiCrudFactory.convertCollection(ConsultantInformation.class, data);
+                ConsultantInformation convertedData = ApiCrudFactory.convertElement(ConsultantInformation.class, data);
                 mLogin = convertedData;
                 mCallBack.onDataAvailable(mLogin, status);
             } catch(JSONException jsone) {

@@ -159,7 +159,6 @@ public class ConsultantInformationUpdateFragment
     public void convertForSubmit(ConsultantInformation activeElement) {
         GetPostFilesData postFilesData = new GetPostFilesData(this, fileChoosed, activeElement);
         postFilesData.execute();
-        ret
 //
     }
 

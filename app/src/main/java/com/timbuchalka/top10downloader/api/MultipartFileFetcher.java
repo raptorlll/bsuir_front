@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultipartFileFetcher extends FetcherAbstract{
+    private String url;
     private File model;
     private String jsonString;
 
-    public MultipartFileFetcher(OnDownloadComplete callback, File model, String jsonString) {
+    public MultipartFileFetcher(OnDownloadComplete callback, File model, String jsonString, String url) {
         super(callback);
         this.model = model;
         this.jsonString = jsonString;
+        this.url = url;
     }
 
     public MultipartFileFetcher(OnDownloadComplete callback) {
@@ -31,7 +33,7 @@ public class MultipartFileFetcher extends FetcherAbstract{
 
     @Override
     protected String getUrl() {
-        return "/consultant_information/save";
+        return url;
     }
 
 
