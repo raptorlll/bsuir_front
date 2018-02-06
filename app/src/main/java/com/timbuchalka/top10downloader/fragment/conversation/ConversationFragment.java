@@ -10,32 +10,31 @@ import com.timbuchalka.top10downloader.adapters.CrudInformationAdapter;
 import com.timbuchalka.top10downloader.fragment.crud.CrudFragment;
 import com.timbuchalka.top10downloader.fragment.crud.ReadFragment;
 import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
-import com.timbuchalka.top10downloader.models.Conversation;
+import java.com.timbuchalka.top10downloader.models.Conversation;
 
 import java.text.SimpleDateFormat;
-
 
 public class ConversationFragment
         extends CrudFragment<Conversation> {
 
     @Override
     protected int getLayoutList(){
-        return R.layout.list_row_customer_information;
+        return R.layout.list_row_conversation;
     }
 
     @Override
     protected int getLayoutView(){
-        return R.layout.list_row_customer_information_read;
+        return R.layout.list_row_conversation_read;
     }
 
     @Override
     protected int getLayoutCreate(){
-        return R.layout.list_row_customer_information_update;
+        return R.layout.list_row_conversation_update;
     }
 
     @Override
     protected int getLayoutUpdate(){
-        return R.layout.list_row_customer_information_update;
+        return R.layout.list_row_conversation_update;
     }
 
     public ConversationFragment() {
@@ -67,20 +66,22 @@ public class ConversationFragment
 
     public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder<Conversation> {
         @Override
-        public void fillData(View v) {
-            this.birthData = (TextView) v.findViewById(R.id.birthData);
-            this.additionalInformation = (TextView) v.findViewById(R.id.additionalInformation);
-            this.primary = (TextView) v.findViewById(R.id.primary);
+        public void fillData(View view) {
+            active = (TextView) view.findViewById(R.id.active);
+            consultantGroupUser = (TextView) view.findViewById(R.id.consultantGroupUser);
+            customerInformation = (TextView) view.findViewById(R.id.customerInformation);
         }
-        private TextView birthData;
-        private TextView additionalInformation;
-        private TextView primary;
+
+        TextView active;
+        TextView consultantGroupUser;
+        TextView customerInformation;
 
         @Override
-        public void setText(Conversation currentElement) {
-            birthData.setText(new SimpleDateFormat("Y-m-d").format(currentElement.getBirthData()).concat(" birth date"));
-            additionalInformation.setText(currentElement.getAdditionalInformation());
-            primary.setText(currentElement.getPrimary() == 0 ? "Secondary" : "Primary");
+        public void setText(Conversation activeElement) {
+            active.setText(activeElement.getActive() == 1 ? "Active" : "Inactive");
+            consultantGroupUser.setText(activeElement.getConsultantGroupUser().getUser().getFirstName().concat("")
+                    .concat(activeElement.getConsultantGroupUser().getUser().getLastName()));
+            customerInformation.setText(activeElement.getCustomerInformation().getAdditionalInformation());
         }
     }
 

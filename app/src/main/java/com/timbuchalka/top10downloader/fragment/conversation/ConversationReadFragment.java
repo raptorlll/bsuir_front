@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.fragment.crud.ReadFragment;
-import com.timbuchalka.top10downloader.models.Conversation;
+import java.com.timbuchalka.top10downloader.models.Conversation;
 
 import java.text.SimpleDateFormat;
 
@@ -22,17 +22,19 @@ public class ConversationReadFragment
         super(activeElement, layout);
     }
 
-    TextView birthData;
-    TextView additionalInformation;
-    TextView primary;
+    TextView active;
+    TextView consultantGroupUser;
+    TextView customerInformation;
 
     @Override
     public void createSetVars(View view) {
-        birthData = (TextView) view.findViewById(R.id.birthData);
-        additionalInformation = (TextView) view.findViewById(R.id.additionalInformation);
-        primary = (TextView) view.findViewById(R.id.primary);
-        birthData.setText(new SimpleDateFormat("Y-m-d").format(activeElement.getBirthData()).concat(" birth date"));
-        additionalInformation.setText(activeElement.getAdditionalInformation());
-        primary.setText(activeElement.getPrimary() == 0 ? "Secondary" : "Primary");
+        active = (TextView) view.findViewById(R.id.active);
+        consultantGroupUser = (TextView) view.findViewById(R.id.consultantGroupUser);
+        customerInformation = (TextView) view.findViewById(R.id.customerInformation);
+
+        active.setText(activeElement.getActive() == 1 ? "Active" : "Inactive");
+        consultantGroupUser.setText(activeElement.getConsultantGroupUser().getUser().getFirstName().concat("")
+                .concat(activeElement.getConsultantGroupUser().getUser().getLastName()));
+        customerInformation.setText(activeElement.getCustomerInformation().getAdditionalInformation());
     }
 }
