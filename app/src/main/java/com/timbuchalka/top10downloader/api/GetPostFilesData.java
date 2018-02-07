@@ -1,17 +1,11 @@
-package java.com.timbuchalka.top10downloader.api;
+package com.timbuchalka.top10downloader.api;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import com.timbuchalka.top10downloader.models.Role;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 import com.timbuchalka.top10downloader.models.ConsultantInformation;
 import com.timbuchalka.top10downloader.api.crud.convertor.ConsultantInformationConvertor;
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.File;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 public class GetPostFilesData
@@ -28,8 +22,8 @@ public class GetPostFilesData
     private final OnDataAvailable mCallBack;
     private boolean runningOnSameThread = false;
 
-    public interface OnDataAvailable {
-        void onDataAvailable(ConsultantInformation data, DownloadStatus status);
+    public interface OnDataAvailable <T>{
+        void onDataAvailable(T data, DownloadStatus status);
     }
 
     public GetPostFilesData(OnDataAvailable callBack, File file, ConsultantInformation consultantInformation) {
@@ -63,7 +57,7 @@ public class GetPostFilesData
                 ConsultantInformation convertedData = ApiCrudFactory.convertElement(ConsultantInformation.class, data);
                 mLogin = convertedData;
                 mCallBack.onDataAvailable(mLogin, status);
-            } catch(JSONException jsone) {
+            } catch(Exception jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
                 status = DownloadStatus.FAILED_OR_EMPTY;

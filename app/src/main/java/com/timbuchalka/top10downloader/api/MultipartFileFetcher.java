@@ -1,4 +1,4 @@
-package java.com.timbuchalka.top10downloader.api;
+package com.timbuchalka.top10downloader.api;
 
 import android.net.Uri;
 
@@ -9,7 +9,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultipartFileFetcher extends FetcherAbstract{
+public class MultipartFileFetcher extends FetcherAbstract {
     private String url;
     private File model;
     private String jsonString;
@@ -48,31 +48,13 @@ public class MultipartFileFetcher extends FetcherAbstract{
 
         multipart.addFormField("data", this.jsonString);
 
-        /*
-        "data", "{\n" +
-        "\t\"education\": \"MIT\",\n" +
-        "\t\"degree\": \"PhD\",\n" +
-        "\t\"licenseNumber\": \"License by NY Government\",\n" +
-        "\t\"licenseFile\": \"file.png\",\n" +
-        "\t\"licenseUntil\": \"2017-12-30\",\n" +
-        "\t\"availableFrom\": \"09:00:00\",\n" +
-        "\t\"availableUntil\": \"16:00:00\",\n" +
-        "\t\"consultantGroupUser\": 2\n" +
-        "}"
-        */
-
         try {
-            multipart.addFilePart("file", this.model);
+            if(this.model!=null){
+                multipart.addFilePart("file", this.model);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        List<String> response = null;
-//        try {
-//            response = multipart.finish();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         HttpURLConnection connection = multipart.finishConnection();
         return connection;
@@ -86,9 +68,10 @@ public class MultipartFileFetcher extends FetcherAbstract{
         private OutputStream outputStream;
         private PrintWriter writer;
 
-        public HttpURLConnection getHttpConn(){
+        public HttpURLConnection getHttpConn() {
             return httpConn;
         }
+
         /**
          * This constructor initializes a new HTTP POST request with content type
          * is set to multipart/form-data
@@ -103,7 +86,8 @@ public class MultipartFileFetcher extends FetcherAbstract{
 
             // creates a unique boundary based on time stamp
             boundary = "===" + System.currentTimeMillis() + "===";
-            URL url = requestURL;/*new URL(requestURL)*/;
+            URL url = requestURL;/*new URL(requestURL)*/
+            ;
             httpConn = (HttpURLConnection) url.openConnection();
             httpConn.setUseCaches(false);
             httpConn.setDoOutput(true);    // indicates POST method
@@ -111,7 +95,7 @@ public class MultipartFileFetcher extends FetcherAbstract{
             httpConn.setRequestProperty("Content-Type",
                     "multipart/form-data; boundary=" + boundary);
             outputStream = httpConn.getOutputStream();
-            writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),true);
+            writer = new PrintWriter(new OutputStreamWriter(outputStream, charset), true);
         }
 
         /**
@@ -154,6 +138,13 @@ public class MultipartFileFetcher extends FetcherAbstract{
             writer.append(LINE_FEED);
             writer.flush();
 
+            writeFile(uploadFile, outputStream);
+
+            writer.append(LINE_FEED);
+            writer.flush();
+        }
+
+        private void writeFile(File uploadFile, OutputStream outputStream) throws IOException {
             FileInputStream inputStream = new FileInputStream(uploadFile);
             byte[] buffer = new byte[4096];
             int bytesRead = -1;
@@ -162,8 +153,6 @@ public class MultipartFileFetcher extends FetcherAbstract{
             }
             outputStream.flush();
             inputStream.close();
-            writer.append(LINE_FEED);
-            writer.flush();
         }
 
         /**

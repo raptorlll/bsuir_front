@@ -2,14 +2,11 @@ package com.timbuchalka.top10downloader.api;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import com.timbuchalka.top10downloader.api.crud.ApiCrudFactory;
 import com.timbuchalka.top10downloader.api.crud.convertor.ConversationMessageConvertor;
 import com.timbuchalka.top10downloader.models.ConversationMessage;
-import org.json.JSONException;
-
 import java.io.File;
-import java.util.Collection;
 import java.util.Set;
-import java.com.timbuchalka.top10downloader.api.MultipartFileFetcher;
 
 public class GetPostFilesMessageData
         extends AsyncTask<String, Void, ConversationMessage>
@@ -33,7 +30,7 @@ public class GetPostFilesMessageData
     }
 
     @Override
-    protected onversationMessage doInBackground(String... params) {
+    protected ConversationMessage doInBackground(String... params) {
         ConversationMessageConvertor<ConversationMessage> convertor = new ConversationMessageConvertor<ConversationMessage>();
         String json = convertor.convertElement(conversationMessage);
 
@@ -54,7 +51,7 @@ public class GetPostFilesMessageData
                 ConversationMessage convertedData = ApiCrudFactory.convertElement(ConversationMessage.class, data);
                 mLogin = convertedData;
                 mCallBack.onDataAvailable(mLogin, status);
-            } catch(JSONException jsone) {
+            } catch(Exception jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
                 status = DownloadStatus.FAILED_OR_EMPTY;

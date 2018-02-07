@@ -10,7 +10,7 @@ import com.timbuchalka.top10downloader.adapters.CrudInformationAdapter;
 import com.timbuchalka.top10downloader.fragment.crud.CrudFragment;
 import com.timbuchalka.top10downloader.fragment.crud.ReadFragment;
 import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 
 import java.text.SimpleDateFormat;
 

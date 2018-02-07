@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.fragment.crud.ReadFragment;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 
 import java.text.SimpleDateFormat;
 

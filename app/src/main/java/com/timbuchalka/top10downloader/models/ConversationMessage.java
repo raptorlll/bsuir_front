@@ -1,7 +1,7 @@
 package com.timbuchalka.top10downloader.models;
 
 import java.security.Timestamp;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 import java.sql.Time;
 
 public class ConversationMessage implements ModelInterface {

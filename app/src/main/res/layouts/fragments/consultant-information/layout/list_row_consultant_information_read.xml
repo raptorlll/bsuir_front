@@ -5,19 +5,23 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/education"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
         android:textStyle="normal|bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+
 
     <TextView
         android:id="@+id/degree"
@@ -31,21 +35,28 @@
         android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/licenseFile" />
+
 
     <TextView
         android:id="@+id/licenseNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
         android:textStyle="normal|bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/consultantGroupUser" />
+
 
     <TextView
         android:id="@+id/licenseFile"
@@ -59,7 +70,8 @@
         android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/licenseUntil" />
+
 
     <TextView
         android:id="@+id/licenseUntil"
@@ -67,13 +79,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
         android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/availableFrom" />
+
 
     <TextView
         android:id="@+id/availableFrom"
@@ -87,7 +99,8 @@
         android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/availableUntil" />
+
 
     <TextView
         android:id="@+id/availableUntil"
@@ -101,7 +114,8 @@
         android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/licenseNumber" />
+
 
     <TextView
         android:id="@+id/consultantGroupUser"
@@ -109,11 +123,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
         android:textStyle="normal|bold"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
         app:layout_constraintRight_toRightOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/conversationTarif" />
+        app:layout_constraintTop_toBottomOf="@+id/education" />
 </android.support.constraint.ConstraintLayout>

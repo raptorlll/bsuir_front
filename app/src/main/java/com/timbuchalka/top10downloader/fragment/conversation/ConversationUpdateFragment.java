@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.timbuchalka.top10downloader.R;
@@ -19,7 +22,7 @@ import com.timbuchalka.top10downloader.models.Conversation;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 import com.timbuchalka.top10downloader.models.User;
 
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,7 +146,7 @@ public class ConversationUpdateFragment
     @Override
     public void convertForView(Conversation activeElement) {
         /* All other in spinners */
-        active.setActive(activeElement.getActive() == 1);
+        active.setChecked(activeElement.getActive() == 1);
     }
 
     @Override

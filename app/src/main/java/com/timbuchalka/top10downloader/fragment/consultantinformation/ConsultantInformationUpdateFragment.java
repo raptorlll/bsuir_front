@@ -32,7 +32,6 @@ import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.ConsultantInformation;
 import com.timbuchalka.top10downloader.models.User;
 
-import java.com.timbuchalka.top10downloader.api.GetPostFilesData;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,11 +50,13 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import com.timbuchalka.top10downloader.api.GetPostFilesData;
 
 //https://stackoverflow.com/questions/34276466/simple-httpurlconnection-post-file-multipart-form-data-from-android-to-google-bl
 public class ConsultantInformationUpdateFragment
         extends UpdateFragment<ConsultantInformation>
-        implements ListData.OnDataAvailable<ConsultantGroupUser> {
+        implements ListData.OnDataAvailable<ConsultantGroupUser>,
+            GetPostFilesData.OnDataAvailable<ConsultantInformation> {
     private TextView education;
     private TextView degree;
     private TextView licenseNumber;
@@ -67,10 +68,23 @@ public class ConsultantInformationUpdateFragment
     private DatePickerDialog datePicker;
     private ArrayList<ConsultantGroupUser> consultantGroupUserData;
 
+    @Override
+    public boolean customSubmit(ConsultantInformation activeElement) {
+        GetPostFilesData postFilesData = new GetPostFilesData(this, fileChoosed, activeElement);
+        postFilesData.execute();
+
+        return true;
+    }
 
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment() {
         super();
+    }
+
+    @Override
+    public void onDataAvailable(ConsultantInformation data, DownloadStatus status) {
+        System.out.println("Data available");
+        changeToListPage();
     }
 
     @Override
@@ -118,14 +132,12 @@ public class ConsultantInformationUpdateFragment
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment(Class<ConsultantInformation> genericClass, ConsultantInformation activeElement2, int layout) {
         super(genericClass, activeElement2, layout);
+        (new ListData<ConsultantGroupUser>(ConsultantGroupUser.class, this)).execute();
     }
 
     @SuppressLint("ValidFragment")
     ConsultantInformationUpdateFragment(Class<ConsultantInformation> genericClass, int layout) {
         super(genericClass, layout);
-        // This always works
-
-
         (new ListData<ConsultantGroupUser>(ConsultantGroupUser.class, this)).execute();
     }
 
@@ -157,9 +169,9 @@ public class ConsultantInformationUpdateFragment
 
     @Override
     public void convertForSubmit(ConsultantInformation activeElement) {
-        GetPostFilesData postFilesData = new GetPostFilesData(this, fileChoosed, activeElement);
-        postFilesData.execute();
-//
+        activeElement.setEducation(education.getText().toString());
+        activeElement.setDegree(degree.getText().toString());
+        activeElement.setLicenseNumber(licenseNumber.getText().toString());
     }
 
     @Override

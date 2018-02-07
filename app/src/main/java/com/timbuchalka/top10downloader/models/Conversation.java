@@ -1,4 +1,4 @@
-package java.com.timbuchalka.top10downloader.models;
+package com.timbuchalka.top10downloader.models;
 
 import java.util.Date;
 import com.timbuchalka.top10downloader.models.ConsultantGroupUser;

@@ -89,15 +89,14 @@ public class ConsultantInformationFragment
 //            conversationTarif.setText(currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : "");
 //            user.setText(currentElement.getUser().getFirstName());
 //            consultantGroup.setText(currentElement.getConsultantGroup().getName());
-            education.setText(currentElement.getEducation().toString());
-            degree.setText(currentElement.getDegree().toString());
-            licenseNumber.setText(currentElement.getLicenseNumber().toString());
-            licenseFile.setText(currentElement.getLicenseFile().toString());
+            education.setText(currentElement.getEducation() != null ? currentElement.getEducation().toString() : "");
+            degree.setText(currentElement.getDegree() != null ? currentElement.getDegree().toString() : "");
+            licenseNumber.setText(currentElement.getLicenseNumber() != null ? currentElement.getLicenseNumber().toString() : "");
+            licenseFile.setText(currentElement.getLicenseFile() != null ? currentElement.getLicenseFile().toString() : "");
             licenseUntil.setText(currentElement.getLicenseUntil().toString());
             availableFrom.setText(currentElement.getAvailableFrom().toString());
             availableUntil.setText(currentElement.getAvailableUntil().toString());
             consultantGroupUser.setText(currentElement.getConsultantGroupUser().toString());
-
         }
     }
 

@@ -5,8 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import com.timbuchalka.top10downloader.api.crud.convertor.*;
 import com.timbuchalka.top10downloader.models.*;
 
-import java.com.timbuchalka.top10downloader.api.crud.convertor.ConversationConvertor;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.api.crud.convertor.ConversationConvertor;
+import com.timbuchalka.top10downloader.models.Conversation;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -45,7 +45,7 @@ public class ApiCrudFactory {
         return (Collection<T>) ApiCrudFactory.getConvertor(genericClass).convertCollection(data);
     }
 
-    static <T extends ModelInterface> T convertElement(Class<T> genericClass, String data) {
+    public static <T extends ModelInterface> T convertElement(Class<T> genericClass, String data) {
         return (T) ApiCrudFactory.getConvertor(genericClass).convertElement(data);
     }
 

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
@@ -15,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 
 public class CustomerPaymentUpdateFragment
         extends UpdateFragment<CustomerPayment> {
@@ -88,7 +91,6 @@ public class CustomerPaymentUpdateFragment
     @Override
     public void convertForView(CustomerPayment activeElement) {
         dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
-        conversation.setText(activeElement.getConversation().getCustomerInformation().getAdditionalInformation());
     }
 
     @Override

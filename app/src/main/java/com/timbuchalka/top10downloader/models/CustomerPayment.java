@@ -1,7 +1,7 @@
 package com.timbuchalka.top10downloader.models;
 
 import java.sql.Timestamp;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 
 public class CustomerPayment implements ModelInterface {
     private Long id;

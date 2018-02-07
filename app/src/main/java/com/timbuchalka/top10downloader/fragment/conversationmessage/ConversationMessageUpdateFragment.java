@@ -1,10 +1,18 @@
 package com.timbuchalka.top10downloader.fragment.conversationmessage;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.nononsenseapps.filepicker.Utils;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.GetPostFilesMessageData;
@@ -16,7 +24,7 @@ import com.timbuchalka.top10downloader.models.ConversationMessage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.com.timbuchalka.top10downloader.models.Conversation;
+import com.timbuchalka.top10downloader.models.Conversation;
 
 public class ConversationMessageUpdateFragment
         extends UpdateFragment<ConversationMessage>
@@ -59,7 +67,7 @@ public class ConversationMessageUpdateFragment
     @Override
     public void convertForSubmit(ConversationMessage activeElement) {
         /* All in spinner */
-        activeElement.setMessage(message.getText());
+        activeElement.setMessage(message.getText().toString());
 
         GetPostFilesMessageData postFilesData = new GetPostFilesMessageData(this, fileChoosed, activeElement);
         postFilesData.execute();
@@ -69,7 +77,7 @@ public class ConversationMessageUpdateFragment
 
     @Override
     public void onClickListeners(View view) {
-        if (view == licenseFile) {
+        if (view == attachedFile) {
             initFilePicker();
         }
     }

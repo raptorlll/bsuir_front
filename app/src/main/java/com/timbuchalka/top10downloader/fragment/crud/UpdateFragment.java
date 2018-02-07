@@ -36,6 +36,10 @@ abstract public class UpdateFragment<T extends ModelInterface>
     public void onDataAvailable(T data, DownloadStatus status) {
         Log.d(TAG, "onDataAvailable: ");
         //redirect back
+        changeToListPage();
+    }
+
+    public void changeToListPage(){
         ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentMain, getListView());
         ft.commit();
@@ -93,8 +97,16 @@ abstract public class UpdateFragment<T extends ModelInterface>
         convertForView(activeElement);
     }
 
+    public boolean customSubmit(T activeElement){
+        return false;
+    }
+
     private void submit(){
         convertForSubmit(activeElement);
+
+        if (customSubmit(activeElement)) {
+            return;
+        }
 
         if(activeElement.getId() == null) {
             CreateData<T> getCustomerInformationData = new CreateData<T>(genericClass, this, activeElement);
