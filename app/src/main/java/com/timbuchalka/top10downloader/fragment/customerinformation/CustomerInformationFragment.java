@@ -13,6 +13,7 @@ import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
 import com.timbuchalka.top10downloader.models.CustomerInformation;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 public class CustomerInformationFragment
@@ -78,7 +79,7 @@ public class CustomerInformationFragment
 
         @Override
         public void setText(CustomerInformation currentElement) {
-            birthData.setText(new SimpleDateFormat("Y-m-d").format(currentElement.getBirthData()).concat(" birth date"));
+            birthData.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(currentElement.getBirthData()).concat(" birth date"));
             additionalInformation.setText(currentElement.getAdditionalInformation());
             primary.setText(currentElement.getPrimary() == 0 ? "Secondary" : "Primary");
         }

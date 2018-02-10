@@ -22,7 +22,7 @@ import com.timbuchalka.top10downloader.models.Conversation;
 
 public class CustomerPaymentUpdateFragment
         extends UpdateFragment<CustomerPayment> {
-    private TextView dataTime;
+    private TextView amount;
     private Spinner conversation;
     private ArrayList<Conversation> conversationData;
 
@@ -90,11 +90,12 @@ public class CustomerPaymentUpdateFragment
 
     @Override
     public void convertForView(CustomerPayment activeElement) {
-        dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
+        amount.setText(activeElement.getAmount().toString());
     }
 
     @Override
     public void convertForSubmit(CustomerPayment activeElement) {
+        activeElement.setAmount(Long.parseLong(amount.getText().toString()));
         /* All in spinner */
     }
 
@@ -108,8 +109,8 @@ public class CustomerPaymentUpdateFragment
 
     @Override
     public void findViewsById(View v) {
-        dataTime = (TextView) v.findViewById(R.id.name);
-        conversation = (Spinner) v.findViewById(R.id.description);
+        amount = (TextView) v.findViewById(R.id.amount);
+        conversation = (Spinner) v.findViewById(R.id.conversation);
     }
 
     @Override

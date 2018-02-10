@@ -13,11 +13,13 @@
             android:hint="conversation" />
 
     <EditText
-        android:id="@+id/dataTime"
+        android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="dataTime" />
+        android:hint="amount"
+        android:inputType="numberDecimal"
+        />
 
     <Button
         android:id="@+id/buttonSubmit"

@@ -14,6 +14,7 @@ import com.timbuchalka.top10downloader.fragment.consultantgroupuser.ConsultantGr
 import com.timbuchalka.top10downloader.fragment.consultantinformation.ConsultantInformationFragment;
 import com.timbuchalka.top10downloader.fragment.conversation.ConversationFragment;
 import com.timbuchalka.top10downloader.fragment.conversationmessage.ConversationMessageFragment;
+import com.timbuchalka.top10downloader.fragment.customerayment.CustomerPaymentFragment;
 import com.timbuchalka.top10downloader.fragment.customerinformation.CustomerInformationFragment;
 import com.timbuchalka.top10downloader.models.Role;
 
@@ -42,6 +43,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CONSULTANT_INFORMATION = Menu.FIRST + 4;
     private static final int MENU_CONVERSATION = Menu.FIRST + 5;
     private static final int MENU_CONVERSATION_MESSAGE = Menu.FIRST + 6;
+    private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
 //    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
 
@@ -84,6 +86,7 @@ public class MainActivity extends BaseAuthActivity {
             menu.add(0, MENU_CONSULTANT_INFORMATION, Menu.NONE, "Consultant information");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CONVERSATION_MESSAGE, Menu.NONE, "Conversation message");
+            menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Customer payment");
         }
 
         menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
@@ -126,6 +129,11 @@ public class MainActivity extends BaseAuthActivity {
 
             case MENU_CONVERSATION_MESSAGE:
                 ft.replace(R.id.fragmentMain, new ConversationMessageFragment());
+                ft.commit();
+                break;
+
+            case MENU_CUSTOMER_PAYMENT:
+                ft.replace(R.id.fragmentMain, new CustomerPaymentFragment());
                 ft.commit();
                 break;
 

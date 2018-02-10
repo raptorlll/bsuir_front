@@ -2,40 +2,37 @@ package com.timbuchalka.top10downloader.fragment.conversationmessage;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
 import com.timbuchalka.top10downloader.R;
 import com.timbuchalka.top10downloader.api.DownloadStatus;
 import com.timbuchalka.top10downloader.api.GetPostFilesMessageData;
-import com.timbuchalka.top10downloader.api.crud.ListData;
 import com.timbuchalka.top10downloader.fragment.crud.UpdateFragment;
-import com.timbuchalka.top10downloader.models.ConsultantGroupUser;
 import com.timbuchalka.top10downloader.models.ConversationMessage;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import com.timbuchalka.top10downloader.models.Conversation;
 
 public class ConversationMessageUpdateFragment
         extends UpdateFragment<ConversationMessage>
-        implements GetPostFilesMessageData.OnDataAvailable{
+        implements GetPostFilesMessageData.OnDataAvailable
+ {
     private EditText message;
     private EditText attachedFile;
     private ArrayList<Conversation> conversationData;
 
     @Override
     public void onDataAvailable(ConversationMessage data, DownloadStatus status) {
-        /**Todo: Implement this. Redirect */
+        System.out.println("Data available");
+        changeToListPage();
     }
 
     @SuppressLint("ValidFragment")
@@ -65,12 +62,18 @@ public class ConversationMessageUpdateFragment
     }
 
     @Override
+    public boolean customSubmit(ConversationMessage activeElement) {
+        GetPostFilesMessageData postFilesData = new GetPostFilesMessageData(this, fileChoosed, activeElement);
+        postFilesData.execute();
+
+        return true;
+    }
+
+    @Override
     public void convertForSubmit(ConversationMessage activeElement) {
         /* All in spinner */
         activeElement.setMessage(message.getText().toString());
 
-        GetPostFilesMessageData postFilesData = new GetPostFilesMessageData(this, fileChoosed, activeElement);
-        postFilesData.execute();
 
 //        activeElement.setMessage(message.getText());
     }

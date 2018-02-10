@@ -26,13 +26,16 @@ public class CustomerPaymentReadFragment
 
     private TextView dataTime;
     private TextView conversation;
+    private TextView amount;
 
     @Override
     public void createSetVars(View v) {
         dataTime = (TextView) v.findViewById(R.id.name);
         conversation = (TextView) v.findViewById(R.id.description);
+        amount = (TextView) v.findViewById(R.id.amount);
 
         dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
         conversation.setText(activeElement.getConversation().getCustomerInformation().getAdditionalInformation());
+        amount.setText(activeElement.getAmount().toString());
     }
 }

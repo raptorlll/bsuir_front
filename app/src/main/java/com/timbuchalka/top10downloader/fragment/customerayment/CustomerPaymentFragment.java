@@ -68,17 +68,20 @@ public class CustomerPaymentFragment
     public static class ViewHolderImplementation extends CrudInformationAdapter.ViewHolder<CustomerPayment> {
         @Override
         public void fillData(View v) {
-            this.dataTime = (TextView) v.findViewById(R.id.name);
-            this.conversation = (TextView) v.findViewById(R.id.description);
+            this.dataTime = (TextView) v.findViewById(R.id.dataTime);
+            this.conversation = (TextView) v.findViewById(R.id.conversation);
+            this.amount = (TextView) v.findViewById(R.id.amount);
         }
 
         private TextView dataTime;
         private TextView conversation;
+        private TextView amount;
 
         @Override
         public void setText(CustomerPayment currentElement) {
             dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(currentElement.getDataTime()));
             conversation.setText(currentElement.getConversation().getCustomerInformation().getAdditionalInformation());
+            amount.setText(currentElement.getAmount().toString());
         }
     }
 

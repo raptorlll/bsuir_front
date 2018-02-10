@@ -21,22 +21,22 @@ public class ConversationMessageFragment
         extends CrudFragment<ConversationMessage> {
     @Override
     protected int getLayoutList(){
-        return R.layout.list_row_customer_payment;
+        return R.layout.list_row_conversation_message;
     }
 
     @Override
     protected int getLayoutView(){
-        return R.layout.list_row_customer_payment_read;
+        return R.layout.list_row_conversation_message_read;
     }
 
     @Override
     protected int getLayoutCreate(){
-        return R.layout.list_row_customer_payment_update;
+        return R.layout.list_row_conversation_message_update;
     }
 
     @Override
     protected int getLayoutUpdate(){
-        return R.layout.list_row_customer_payment_update;
+        return R.layout.list_row_conversation_message_update;
     }
 
     public ConversationMessageFragment() {
