@@ -86,6 +86,10 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
             gsonBuilder.registerTypeAdapter(ConsultantGroupUser.class, new ModelInterfaceSerializer());
         }
 
+        if (getTypeElement() != CustomerInformation.class) {
+            gsonBuilder.registerTypeAdapter(CustomerInformation.class, new ModelInterfaceSerializer());
+        }
+
         /* Custom time serialization */
         gsonBuilder.registerTypeAdapter(Time.class, new TimeSerializer());
     }
