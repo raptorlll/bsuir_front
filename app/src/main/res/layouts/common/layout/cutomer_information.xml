@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.timbuchalka.top10downloader.MainActivity">
+    tools:context="com.leonov.bsuir.MainActivity">
 
     <ListView
         android:id="@+id/xmlListView"
