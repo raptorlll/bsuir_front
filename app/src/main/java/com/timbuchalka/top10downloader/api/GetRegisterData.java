@@ -16,6 +16,7 @@ public class GetRegisterData
         implements FetcherAbstract.OnDownloadComplete {
 
     private static final String TAG = "GetRegisterData";
+    private String userJson;
 
     private UserJson mLogin;
 
@@ -26,14 +27,15 @@ public class GetRegisterData
         void onDataAvailable(UserJson data, DownloadStatus status);
     }
 
-    public GetRegisterData(OnDataAvailable callBack) {
+    public GetRegisterData(OnDataAvailable callBack, String userJson) {
         Log.d(TAG, "GetLoginData called");
         mCallBack = callBack;
+        this.userJson = userJson;
     }
 
     @Override
     protected UserJson doInBackground(String... params) {
-        FetcherAbstract RawDataFetcher = new RegisterFetcher(this, params[0]);
+        FetcherAbstract RawDataFetcher = new RegisterFetcher(this, userJson);
         RawDataFetcher.execute();
         Log.d(TAG, "doInBackground ends");
         return mLogin;

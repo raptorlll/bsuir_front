@@ -91,7 +91,7 @@ public class RegistrationFragment extends Fragment
 
 
     private void registerProcess(String userString) {
-        GetRegisterData registerData = new GetRegisterData(this);
+        GetRegisterData registerData = new GetRegisterData(this, userString);
         registerData.execute();
     }
 

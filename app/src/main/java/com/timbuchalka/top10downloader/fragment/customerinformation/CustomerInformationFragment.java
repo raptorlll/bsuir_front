@@ -73,6 +73,7 @@ public class CustomerInformationFragment
             this.additionalInformation = (TextView) v.findViewById(R.id.additionalInformation);
             this.primary = (TextView) v.findViewById(R.id.primary);
         }
+
         private TextView birthData;
         private TextView additionalInformation;
         private TextView primary;
