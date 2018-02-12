@@ -2,7 +2,7 @@ package com.leonov.bsuir.api.crud;
 
 import android.os.AsyncTask;
 
-//import com.timbuchalka.top10downloader.convertors.CustomerInformationConvertor;
+//import com.leonov.bsuir.convertors.CustomerInformationConvertor;
 import com.leonov.bsuir.api.crud.fetcher.ListFetcher;
 import com.leonov.bsuir.api.DownloadStatus;
 import com.leonov.bsuir.api.FetcherAbstract;
