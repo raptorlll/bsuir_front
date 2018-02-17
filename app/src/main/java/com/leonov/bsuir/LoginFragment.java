@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.leonov.bsuir.api.DownloadStatus;
 import com.leonov.bsuir.api.GetLoginData;
 import com.leonov.bsuir.api.GetRolesData;
+import com.leonov.bsuir.api.PutTokenData;
 import com.leonov.bsuir.models.Role;
 import com.leonov.bsuir.models.Token;
 
@@ -94,6 +96,7 @@ public class LoginFragment
             return;
         }
 
+
         SharedPreferences.Editor e = sp.edit();
         e.putString("token", data.getAccess_token());
         e.putString("expires_in", data.getExpires_in());
@@ -107,10 +110,19 @@ public class LoginFragment
 
         getRoles(sp.getString("token", ""));
 
-        Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(getActivity(), MainActivity.class));
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
+            @Override
+            public void onDataAvailable(String data, DownloadStatus status) {
+                System.out.println("ee");
 
-        getActivity().finish();
+                Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), MainActivity.class));
+
+                getActivity().finish();
+            }
+        }, refreshedToken);
+        dat.execute();
 
         Log.d(TAG, "onDataAvailable: ends");
     }

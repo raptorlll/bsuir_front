@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.leonov.bsuir.api.DownloadStatus;
+import com.leonov.bsuir.api.PutTokenData;
 import com.leonov.bsuir.fragment.consultantgroup.ConsultantGroupFragment;
 import com.leonov.bsuir.fragment.consultantgroupuser.ConsultantGroupUserFragment;
 import com.leonov.bsuir.fragment.consultantinformation.ConsultantInformationFragment;
@@ -78,6 +81,15 @@ public class MainActivity extends BaseAuthActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
+
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
+//            @Override
+//            public void onDataAvailable(String data, DownloadStatus status) {
+//                System.out.println("ee");
+//            }
+//        }, refreshedToken);
+//        dat.execute();
 
         if(isAdmin()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);

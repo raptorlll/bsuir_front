@@ -53,8 +53,6 @@ public class GetLoginData
                 status = DownloadStatus.FAILED_OR_EMPTY;
             }
         }
-
-        mCallBack.onDataAvailable(mLogin, status);
     }
 }
 
