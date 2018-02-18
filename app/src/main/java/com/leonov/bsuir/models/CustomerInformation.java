@@ -7,6 +7,15 @@ public class CustomerInformation implements ModelInterface {
     private Date birthData;
     private String additionalInformation;
     private Byte primary;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;

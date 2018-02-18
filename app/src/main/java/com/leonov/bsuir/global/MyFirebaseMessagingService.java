@@ -22,7 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
 
-        send(remoteMessage.getFrom(), remoteMessage.getNotification().getBody());
+        send(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
     }
 
     void send(String title, String message){

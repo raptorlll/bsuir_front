@@ -32,8 +32,9 @@ public class CustomerInformationReadFragment
         birthData = (TextView) view.findViewById(R.id.birthData);
         additionalInformation = (TextView) view.findViewById(R.id.additionalInformation);
         primary = (TextView) view.findViewById(R.id.primary);
-        birthData.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(activeElement.getBirthData()).concat(" birth date"));
-        additionalInformation.setText(activeElement.getAdditionalInformation());
+
+        birthData.setText("Birth : ".concat(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(activeElement.getBirthData()).concat(" birth date")));
+        additionalInformation.setText("Information : ".concat(activeElement.getAdditionalInformation()));
         primary.setText(activeElement.getPrimary() == 0 ? "Secondary" : "Primary");
     }
 }

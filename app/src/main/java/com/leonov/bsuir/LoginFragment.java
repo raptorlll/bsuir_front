@@ -78,6 +78,23 @@ public class LoginFragment
         SharedPreferences.Editor e = sp.edit();
         e.putString("roles", json);
         e.commit();
+
+        /* redirect */
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
+            @Override
+            public void onDataAvailable(String data, DownloadStatus status) {
+                System.out.println("ee");
+
+                Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), MainActivity.class));
+
+                getActivity().finish();
+            }
+        }, refreshedToken);
+        dat.execute();
+
+        Log.d(TAG, "onDataAvailable: ends");
     }
 
     @Override
@@ -105,26 +122,9 @@ public class LoginFragment
         e.putString("token_type", data.getToken_type());
         e.commit();
 
-
         sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 
         getRoles(sp.getString("token", ""));
-
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
-            @Override
-            public void onDataAvailable(String data, DownloadStatus status) {
-                System.out.println("ee");
-
-                Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getActivity(), MainActivity.class));
-
-                getActivity().finish();
-            }
-        }, refreshedToken);
-        dat.execute();
-
-        Log.d(TAG, "onDataAvailable: ends");
     }
 
     EditText username, password;

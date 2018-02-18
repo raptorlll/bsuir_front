@@ -48,9 +48,6 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CONVERSATION_MESSAGE = Menu.FIRST + 6;
     private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
-//    private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +61,12 @@ public class MainActivity extends BaseAuthActivity {
         }
 
         downloadUrl(String.format(feedUrl, feedLimit));
+
+        /* Set default fragment */
+        FragmentTransaction ft;
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentMain, new MainFragment());
+        ft.commit();
     }
 
     @Override
@@ -82,15 +85,6 @@ public class MainActivity extends BaseAuthActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
 
-//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-//        PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
-//            @Override
-//            public void onDataAvailable(String data, DownloadStatus status) {
-//                System.out.println("ee");
-//            }
-//        }, refreshedToken);
-//        dat.execute();
-
         if(isAdmin()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);
             menu.add(0, MENU_CONSULTANT_GROUP, Menu.NONE, "Consultant group");
@@ -99,6 +93,10 @@ public class MainActivity extends BaseAuthActivity {
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CONVERSATION_MESSAGE, Menu.NONE, "Conversation message");
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Customer payment");
+        }
+
+        if (isCustomer()){
+            menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
         }
 
         menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
@@ -200,8 +198,6 @@ public class MainActivity extends BaseAuthActivity {
     private void downloadUrl(String feedUrl) {
         if (!feedUrl.equalsIgnoreCase(feedCachedUrl)) {
             Log.d(TAG, "downloadUrl: starting Asynctask");
-//            DownloadData downloadData = new DownloadData();
-//            downloadData.execute(feedUrl);
             feedCachedUrl = feedUrl;
             Log.d(TAG, "downloadUrl: done");
         } else {
@@ -215,17 +211,8 @@ public class MainActivity extends BaseAuthActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-//            Log.d(TAG, "onPostExecute: parameter is " + s);
             ParseApplications parseApplications = new ParseApplications();
             parseApplications.parse(s);
-
-//            ArrayAdapter<CustomerInformationEntry> arrayAdapter = new ArrayAdapter<CustomerInformationEntry>(
-//                    MainActivity.this, R.layout.list_item, parseApplications.getApplications());
-//            listApps.setAdapter(arrayAdapter);
-//            FeedAdapter<FeedEntry> feedAdapter = new FeedAdapter<>(MainActivity.this, R.layout.list_record,
-//                    parseApplications.getApplications());
-//            listApps.setAdapter(feedAdapter);
-
         }
 
         @Override
@@ -246,9 +233,6 @@ public class MainActivity extends BaseAuthActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
                 Log.d(TAG, "downloadXML: The response code was " + response);
-//                InputStream inputStream = connection.getInputStream();
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader reader = new BufferedReader(inputStreamReader);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                 int charsRead;

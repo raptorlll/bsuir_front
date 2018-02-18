@@ -1,27 +1,32 @@
-package com.leonov.bsuir;
+package com.leonov.bsuir.statical;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.leonov.bsuir.enums.RolesEnum;
+import com.leonov.bsuir.global.GlobalClass;
 import com.leonov.bsuir.models.Role;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseActivity extends AppCompatActivity {
+import static android.content.Context.MODE_PRIVATE;
+
+public class RolesChecker {
     private static final String TAG = "BaseActivity";
     SharedPreferences sp;
     private Set<Role> roles = new HashSet<>();
-    
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    private RolesChecker() {
+    }
+
+    public static RolesChecker getInstance(){
+        return new RolesChecker();
     }
 
     public boolean isAdmin(){
@@ -53,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public boolean isUserLogeddin() {
-        sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp = GlobalClass.getContext().getSharedPreferences("login", MODE_PRIVATE);
         //if SharedPreferences contains username and password then redirect to Home activity
         return  sp.contains("token");
     }
@@ -67,7 +72,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void parserRoles() {
-        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences sp = GlobalClass.getContext().getSharedPreferences("login", MODE_PRIVATE);
         String rolesString = sp.getString("roles", "");
 
         Gson gson = new Gson();
@@ -78,7 +83,7 @@ public class BaseActivity extends AppCompatActivity {
         if(rolesSet==null || rolesSet.size() == 0){
             rolesSet.add(new Role("GUEST", "guest"));
         }
-        
+
         roles = rolesSet;
     }
 }

@@ -33,6 +33,11 @@ public class GetRolesData
     }
 
     @Override
+    protected void onPostExecute(Set<Role> roles) {
+        super.onPostExecute(roles);
+    }
+
+    @Override
     protected Set<Role> doInBackground(String... params) {
         FetcherAbstract RawDataFetcher = new RolesFetcher(this, params[0]);
         RawDataFetcher.execute();
@@ -61,6 +66,8 @@ public class GetRolesData
 
                 mLogin = setRoles;
                 mCallBack.onDataAvailable(mLogin, DownloadStatus.OK);
+
+                return;
             } catch(JSONException jsone) {
                 jsone.printStackTrace();
                 Log.e(TAG, "onDownloadComplete: Error processing Json data " + jsone.getMessage());
