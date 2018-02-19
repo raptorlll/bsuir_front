@@ -32,9 +32,9 @@ public class ConsultantGroupReadFragment
         videoTarif = (TextView) view.findViewById(R.id.videoTarif);
         conversationTarif = (TextView) view.findViewById(R.id.conversationTarif);
 
-        name.setText(activeElement.getName());
-        description.setText(activeElement.getDescription());
-        videoTarif.setText(activeElement.getVideoTarif().toString());
-        conversationTarif.setText(activeElement.getConversationTarif().toString());
+        name.setText("Name : " + activeElement.getName());
+        description.setText("Description : " + activeElement.getDescription());
+        videoTarif.setText("Video tarif : " + activeElement.getVideoTarif().toString());
+        conversationTarif.setText("Conversation tarif : " + activeElement.getConversationTarif().toString());
     }
 }

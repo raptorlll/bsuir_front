@@ -81,6 +81,12 @@ public class LoginFragment
 
         /* redirect */
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+        /* Is something went wrong */
+        if(refreshedToken==null){
+            return;
+        }
+
         PutTokenData dat = new PutTokenData(new PutTokenData.OnDataAvailable() {
             @Override
             public void onDataAvailable(String data, DownloadStatus status) {

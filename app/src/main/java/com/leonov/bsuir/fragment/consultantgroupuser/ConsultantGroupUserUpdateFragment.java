@@ -14,6 +14,8 @@ import com.leonov.bsuir.R;
 import com.leonov.bsuir.api.DownloadStatus;
 import com.leonov.bsuir.api.crud.ListData;
 import com.leonov.bsuir.fragment.crud.UpdateFragment;
+import com.leonov.bsuir.models.Client;
+import com.leonov.bsuir.models.Consultant;
 import com.leonov.bsuir.models.ConsultantGroup;
 import com.leonov.bsuir.models.ConsultantGroupUser;
 import com.leonov.bsuir.models.User;
@@ -93,7 +95,7 @@ public class ConsultantGroupUserUpdateFragment
     }
 
     private void executeDropDowns() {
-        (new ListData<User>(User.class, this)).execute();
+        (new ListData<User>(User.class, this, Consultant.class)).execute();
         (new ListData<ConsultantGroup>(ConsultantGroup.class, new ListData.OnDataAvailable<ConsultantGroup>() {
             @Override
             public void onDataAvailable(Collection<ConsultantGroup> data, DownloadStatus status) {

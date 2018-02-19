@@ -26,6 +26,7 @@ public class CrudInformationAdapter<T extends ModelInterface>
     private final FragmentActivity contextInner;
     private CrudFragment<T> crudFragment;
     private List<T> elementsList;
+    private boolean isReadOnly = false;
 
     FragmentTransaction ft;
     public CrudInformationAdapter(CrudFragment<T> crudFragment, FragmentActivity context, int resource, List<T> applications) {
@@ -64,6 +65,10 @@ public class CrudInformationAdapter<T extends ModelInterface>
 
 
         viewHolder.setText(currentElement);
+
+        if (isReadOnly) {
+            viewHolder.crudButtons.setVisibility(View.INVISIBLE);
+        }
 
         try {
             viewHolder.crudButtons.setOnClickListener(new View.OnClickListener() {
@@ -118,25 +123,8 @@ public class CrudInformationAdapter<T extends ModelInterface>
             this.crudButtons = (TextView) v.findViewById(R.id.crudButtons);
         }
     }
+
+    public void setReadOnly(boolean readOnly) {
+        isReadOnly = readOnly;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

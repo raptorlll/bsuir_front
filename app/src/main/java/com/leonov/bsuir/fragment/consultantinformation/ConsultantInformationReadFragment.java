@@ -25,14 +25,15 @@ public class ConsultantInformationReadFragment
 
     @Override
     public void createSetVars(View view) {
-        ((TextView) view.findViewById(R.id.education)).setText(activeElement.getEducation().toString());
-        ((TextView) view.findViewById(R.id.degree)).setText(activeElement.getDegree().toString());
-        ((TextView) view.findViewById(R.id.licenseNumber)).setText(activeElement.getLicenseNumber().toString());
-        ((TextView) view.findViewById(R.id.licenseFile)).setText(activeElement.getLicenseFile().toString());
-        ((TextView) view.findViewById(R.id.licenseUntil)).setText(activeElement.getLicenseUntil().toString());
-        ((TextView) view.findViewById(R.id.availableFrom)).setText(activeElement.getAvailableFrom().toString());
-        ((TextView) view.findViewById(R.id.availableUntil)).setText(activeElement.getAvailableUntil().toString());
-        ((TextView) view.findViewById(R.id.consultantGroupUser)).setText(activeElement.getConsultantGroupUser().toString());
+        ((TextView) view.findViewById(R.id.education)).setText("Education : "+ activeElement.getEducation().toString());
+        ((TextView) view.findViewById(R.id.degree)).setText("Degree : "+ activeElement.getDegree().toString());
+        ((TextView) view.findViewById(R.id.licenseNumber)).setText("License Number : "+ activeElement.getLicenseNumber().toString());
+        ((TextView) view.findViewById(R.id.licenseFile)).setText("License File : "+activeElement.getLicenseFile().toString());
+        ((TextView) view.findViewById(R.id.licenseUntil)).setText("License Until : "+ activeElement.getLicenseUntil().toString());
+        ((TextView) view.findViewById(R.id.availableFrom)).setText("Available From : "+ activeElement.getAvailableFrom().toString());
+        ((TextView) view.findViewById(R.id.availableUntil)).setText("Available Until : "+ activeElement.getAvailableUntil().toString());
+        ((TextView) view.findViewById(R.id.consultantGroupUser)).setText("User : "+ activeElement.getConsultantGroupUser().getUser().getFirstName()
+            .concat(" ").concat(activeElement.getConsultantGroupUser().getConsultantGroup().getName()));
         ImageView viewImage = ((ImageView) view.findViewById(R.id.licenseFileView));
 
         new GetFileByUrlData(viewImage).execute(FetcherAbstract.API_HOST + "/assets/"+activeElement.getLicenseFile());

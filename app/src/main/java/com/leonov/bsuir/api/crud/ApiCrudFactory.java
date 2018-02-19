@@ -30,6 +30,10 @@ public class ApiCrudFactory {
             return new CustomerPaymentConvertor();
         } else if (ConversationMessage.class == genericClass) {
             return new ConversationMessageConvertor();
+        } else if (Client.class == genericClass) {
+            return new ClientConvertor(){};
+        } else if (Consultant.class == genericClass) {
+            return new ConsultantConvertor();
         }
 
         return null;

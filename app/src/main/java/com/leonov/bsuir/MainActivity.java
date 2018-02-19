@@ -47,6 +47,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CONVERSATION = Menu.FIRST + 5;
     private static final int MENU_CONVERSATION_MESSAGE = Menu.FIRST + 6;
     private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
+    private static final int MENU_MAIN = Menu.FIRST + 8;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
 
     @Override
@@ -85,6 +86,8 @@ public class MainActivity extends BaseAuthActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
 
+        menu.add(0, MENU_MAIN, Menu.NONE, "Main page");
+
         if(isAdmin()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);
             menu.add(0, MENU_CONSULTANT_GROUP, Menu.NONE, "Consultant group");
@@ -97,6 +100,11 @@ public class MainActivity extends BaseAuthActivity {
 
         if (isCustomer()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
+        }
+
+        if (isConsultant()){
+            menu.add(0, MENU_CONSULTANT_INFORMATION, Menu.NONE, "My information");
+            menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
         }
 
         menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
@@ -112,6 +120,11 @@ public class MainActivity extends BaseAuthActivity {
         ft = getSupportFragmentManager().beginTransaction();
 
         switch (id) {
+            case MENU_MAIN:
+                ft.replace(R.id.fragmentMain, new MainFragment());
+                ft.commit();
+                break;
+
             case MENU_CLIENT_INFO:
                 ft.replace(R.id.fragmentMain, new CustomerInformationFragment());
                 ft.commit();
@@ -133,7 +146,13 @@ public class MainActivity extends BaseAuthActivity {
                 break;
 
             case MENU_CONVERSATION:
-                ft.replace(R.id.fragmentMain, new ConversationFragment());
+                ConversationFragment fragment3 = new ConversationFragment();
+
+                if(isConsultant()){
+                    fragment3.setReadOnly(true);
+                }
+
+                ft.replace(R.id.fragmentMain, fragment3);
                 ft.commit();
                 break;
 

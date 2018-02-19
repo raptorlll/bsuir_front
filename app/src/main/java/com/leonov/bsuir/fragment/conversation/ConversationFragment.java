@@ -76,10 +76,10 @@ public class ConversationFragment
 
         @Override
         public void setText(Conversation activeElement) {
-            active.setText(activeElement.getActive() == 1 ? "Active" : "Inactive");
-            consultantGroupUser.setText(activeElement.getConsultantGroupUser().getUser().getFirstName().concat("")
-                    .concat(activeElement.getConsultantGroupUser().getUser().getLastName()));
-            customerInformation.setText(activeElement.getCustomerInformation().getAdditionalInformation());
+            active.setText("Status : " + (activeElement.getActive() == 1 ? "Active" : "Inactive"));
+            consultantGroupUser.setText("Consultant : " +activeElement.getConsultantGroupUser().getUser().getFirstName().concat(" ")
+                    .concat(activeElement.getConsultantGroupUser().getConsultantGroup().getName()));
+            customerInformation.setText("Customer : " +activeElement.getCustomerInformation().getAdditionalInformation());
         }
     }
 

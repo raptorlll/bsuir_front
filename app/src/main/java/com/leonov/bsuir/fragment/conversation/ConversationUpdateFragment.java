@@ -55,7 +55,7 @@ public class ConversationUpdateFragment
                 ArrayList<String> list = new ArrayList<String>();
 
                 for (CustomerInformation u : data){
-                    list.add(u.getAdditionalInformation());
+                    list.add(u.getUser().getFirstName().concat(" ").concat(u.getAdditionalInformation()));
                 }
 
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
@@ -98,7 +98,7 @@ public class ConversationUpdateFragment
                 ArrayList<String> list = new ArrayList<String>();
 
                 for (ConsultantGroupUser u : data){
-                    list.add(u.getUser().getUsername().concat(" ").concat(u.getUser().getLastName()));
+                    list.add(u.getUser().getUsername().concat(" ").concat(u.getConsultantGroup().getName()));
                 }
 
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);

@@ -15,6 +15,7 @@ public class ListData<T extends ModelInterface>
         implements FetcherAbstract.OnDownloadComplete {
     private Collection<T> mLogin;
     private Class<T> genericClass;
+    private Class queryClass;
 
     private final OnDataAvailable<T> mCallBack;
 
@@ -27,6 +28,13 @@ public class ListData<T extends ModelInterface>
         this.genericClass = genericClass;
     }
 
+    /** here can override url */
+    public ListData(Class<T> genericClass, OnDataAvailable callBack, Class queryClass) {
+        mCallBack = callBack;
+        this.queryClass = queryClass;
+        this.genericClass = genericClass;
+    }
+
     @Override
     protected void onPostExecute(Collection<T> Logins) {
 
@@ -34,7 +42,7 @@ public class ListData<T extends ModelInterface>
 
     @Override
     protected Collection<T> doInBackground(String... params) {
-        FetcherAbstract RawDataFetcher = new ListFetcher(genericClass, this);
+        FetcherAbstract RawDataFetcher = new ListFetcher(genericClass, this, queryClass);
         RawDataFetcher.execute();
         return mLogin;
     }

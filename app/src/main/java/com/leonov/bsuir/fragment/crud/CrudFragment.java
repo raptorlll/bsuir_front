@@ -27,6 +27,7 @@ abstract public class CrudFragment<T extends ModelInterface>
         implements ListData.OnDataAvailable<T> {
     private ListView listView;
     private static final String TAG = "Crud Fragment";
+    protected boolean isReadOnly = false;
     FragmentTransaction ft;
     Button addButtom;
     protected Class genericClass;
@@ -36,6 +37,7 @@ abstract public class CrudFragment<T extends ModelInterface>
         this.genericClass = genericClass;
     }
 
+
     @Override
     public void onDataAvailable(Collection<T> data, DownloadStatus status) {
         Log.d(TAG, "onDataAvailable: ");
@@ -44,6 +46,11 @@ abstract public class CrudFragment<T extends ModelInterface>
         list.addAll(data);
 
         CrudInformationAdapter<T> feedAdapter = new CrudInformationAdapter<T>(this, getActivity(), getLayoutList(), list);
+
+        if(isReadOnly){
+            feedAdapter.setReadOnly(true);
+        }
+
         listView.setAdapter(feedAdapter);
     }
 
@@ -72,6 +79,10 @@ abstract public class CrudFragment<T extends ModelInterface>
                 ft.commit();
             }
         });
+
+        if(isReadOnly){
+            addButtom.setVisibility(View.INVISIBLE);
+        }
 
         return view;
     }
@@ -105,6 +116,10 @@ abstract public class CrudFragment<T extends ModelInterface>
         ReadFragment faa = getReadFragment(activeElement);
         fragmentReplace(faa);
         Toast.makeText(getContext(), "Read at position ", Toast.LENGTH_LONG).show();
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        isReadOnly = readOnly;
     }
 
     protected int getLayoutMain() {

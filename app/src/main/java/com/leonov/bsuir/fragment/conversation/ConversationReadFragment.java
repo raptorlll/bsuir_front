@@ -30,9 +30,9 @@ public class ConversationReadFragment
         consultantGroupUser = (TextView) view.findViewById(R.id.consultantGroupUser);
         customerInformation = (TextView) view.findViewById(R.id.customerInformation);
 
-        active.setText(activeElement.getActive() == 1 ? "Active" : "Inactive");
-        consultantGroupUser.setText(activeElement.getConsultantGroupUser().getUser().getFirstName().concat("")
-                .concat(activeElement.getConsultantGroupUser().getUser().getLastName()));
-        customerInformation.setText(activeElement.getCustomerInformation().getAdditionalInformation());
+        active.setText("Status : " + (activeElement.getActive() == 1 ? "Active" : "Inactive"));
+        consultantGroupUser.setText("Consultant : " + activeElement.getConsultantGroupUser().getUser().getFirstName().concat(" ")
+                .concat(activeElement.getConsultantGroupUser().getConsultantGroup().getName()));
+        customerInformation.setText("Customer : " + activeElement.getCustomerInformation().getAdditionalInformation());
     }
 }

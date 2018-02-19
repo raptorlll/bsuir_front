@@ -79,11 +79,11 @@ public class ConsultantGroupUserFragment
 
         @Override
         public void setText(ConsultantGroupUser currentElement){
-            status.setText(currentElement.getStatus()==0 ? "Active" : "Inactive");
-            videoTarif.setText(currentElement.getVideoTarif() != null ? currentElement.getVideoTarif().toString() : "");
-            conversationTarif.setText(currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : "");
-            user.setText(currentElement.getUser().getFirstName());
-            consultantGroup.setText(currentElement.getConsultantGroup().getName());
+            status.setText("Status : " + (currentElement.getStatus()==0 ? "Active" : "Inactive"));
+            videoTarif.setText("Video tarif : " + (currentElement.getVideoTarif() != null ? currentElement.getVideoTarif().toString() : ""));
+            conversationTarif.setText("Conversation tarif : " + (currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : ""));
+            user.setText("Consultant : " + currentElement.getUser().getFirstName());
+            consultantGroup.setText("Group : " + currentElement.getConsultantGroup().getName());
         }
     }
 

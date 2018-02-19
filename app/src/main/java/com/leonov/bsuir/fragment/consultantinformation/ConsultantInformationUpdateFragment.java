@@ -78,7 +78,7 @@ public class ConsultantInformationUpdateFragment
         ArrayList<String> list = new ArrayList<String>();
 
         for (ConsultantGroupUser u : data) {
-            list.add(u.getUser().getFirstName().concat(" ").concat(u.getUser().getEmail()));
+            list.add(u.getUser().getFirstName().concat(" ").concat(u.getConsultantGroup().getName()));
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);

@@ -84,19 +84,15 @@ public class ConsultantInformationFragment
 
         @Override
         public void setText(ConsultantInformation currentElement) {
-//            status.setText(currentElement.getStatus()==0 ? "Active" : "Inactive");
-//            videoTarif.setText(currentElement.getVideoTarif() != null ? currentElement.getVideoTarif().toString() : "");
-//            conversationTarif.setText(currentElement.getConversationTarif() != null ? currentElement.getConversationTarif().toString() : "");
-//            user.setText(currentElement.getUser().getFirstName());
-//            consultantGroup.setText(currentElement.getConsultantGroup().getName());
-            education.setText(currentElement.getEducation() != null ? currentElement.getEducation().toString() : "");
-            degree.setText(currentElement.getDegree() != null ? currentElement.getDegree().toString() : "");
-            licenseNumber.setText(currentElement.getLicenseNumber() != null ? currentElement.getLicenseNumber().toString() : "");
-            licenseFile.setText(currentElement.getLicenseFile() != null ? currentElement.getLicenseFile().toString() : "");
-            licenseUntil.setText(currentElement.getLicenseUntil().toString());
-            availableFrom.setText(currentElement.getAvailableFrom().toString());
-            availableUntil.setText(currentElement.getAvailableUntil().toString());
-            consultantGroupUser.setText(currentElement.getConsultantGroupUser().toString());
+            education.setText("Education : "+ (currentElement.getEducation() != null ? currentElement.getEducation().toString() : ""));
+            degree.setText("Degree : "+ (currentElement.getDegree() != null ? currentElement.getDegree().toString() : ""));
+            licenseNumber.setText("License Number : "+ (currentElement.getLicenseNumber() != null ? currentElement.getLicenseNumber().toString() : ""));
+            licenseFile.setText("License File : "+ (currentElement.getLicenseFile() != null ? currentElement.getLicenseFile().toString() : ""));
+            licenseUntil.setText("License Until : "+ (currentElement.getLicenseUntil().toString()));
+            availableFrom.setText("Available From : "+ (currentElement.getAvailableFrom().toString()));
+            availableUntil.setText("Available Until : "+ (currentElement.getAvailableUntil().toString()));
+            consultantGroupUser.setText("User : "+ (currentElement.getConsultantGroupUser().getUser().getFirstName()
+                    .concat(" ").concat(currentElement.getConsultantGroupUser().getConsultantGroup().getName())));
         }
     }
 

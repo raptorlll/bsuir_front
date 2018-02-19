@@ -76,10 +76,10 @@ public class ConsultantGroupFragment
 
         @Override
         public void setText(ConsultantGroup currentElement) {
-            name.setText(currentElement.getName());
-            description.setText(currentElement.getDescription());
-            videoTarif.setText(currentElement.getVideoTarif().toString());
-            conversationTarif.setText(currentElement.getConversationTarif().toString());
+            name.setText("Name : " + currentElement.getName());
+            description.setText("Description : " + currentElement.getDescription());
+            videoTarif.setText("Video tarif : " + currentElement.getVideoTarif().toString());
+            conversationTarif.setText("Conversation tarif : " + currentElement.getConversationTarif().toString());
         }
     }
 

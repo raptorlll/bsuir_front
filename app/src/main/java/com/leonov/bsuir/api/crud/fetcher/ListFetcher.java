@@ -11,6 +11,7 @@ import java.net.URL;
 
 public class ListFetcher extends FetcherAbstract {
     private Class genericClass;
+    private Class queryClass;
 
     public ListFetcher(OnDownloadComplete callback) {
         super(callback);
@@ -21,6 +22,12 @@ public class ListFetcher extends FetcherAbstract {
         this.genericClass = genericClass;
     }
 
+    public ListFetcher(Class genericClass, OnDownloadComplete callback, Class queryClass) {
+        super(callback);
+        this.genericClass = genericClass;
+        this.queryClass = queryClass;
+    }
+
     @Override
     public String createUri() {
         return Uri.parse(getUrlConcat()).buildUpon().build().toString();
@@ -29,7 +36,7 @@ public class ListFetcher extends FetcherAbstract {
 
     @Override
     public String getUrl() {
-        return ApiCrudFactory.getUrl(genericClass);
+        return ApiCrudFactory.getUrl(queryClass == null ?  genericClass : queryClass);
     }
 
 

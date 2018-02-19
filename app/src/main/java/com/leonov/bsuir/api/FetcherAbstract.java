@@ -32,7 +32,6 @@ abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
         mCallback = callback;
     }
 
-
     protected String getUrlConcat() {
         return API_HOST.concat(getUrl());
     }
@@ -42,9 +41,6 @@ abstract public class FetcherAbstract extends AsyncTask<String, Void, String> {
     public void runInSameThread() {
         String s = createUri();
         this.execute(s);
-//        if(mCallback != null) {
-//            mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);
-//        }
 
         Log.d(TAG, "runInSameThread ends");
     }
