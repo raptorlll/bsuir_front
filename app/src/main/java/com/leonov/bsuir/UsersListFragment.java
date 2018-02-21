@@ -38,8 +38,6 @@ public class UsersListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.xmlListView);
 
-//        Set<User> list = new HashSet<>();
-
         (new ListData<User>(User.class, new ListData.OnDataAvailable<User>() {
             @Override
             public void onDataAvailable(Collection<User> data, DownloadStatus status) {
@@ -50,7 +48,6 @@ public class UsersListFragment extends Fragment {
         })).execute();
 
     }
-
 
     public class MySimpleArrayAdapter extends ArrayAdapter<User> {
         private final Context context;

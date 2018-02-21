@@ -100,6 +100,7 @@ public class MainActivity extends BaseAuthActivity {
 
         if (isCustomer()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
+            menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
         }
 
         if (isConsultant()){

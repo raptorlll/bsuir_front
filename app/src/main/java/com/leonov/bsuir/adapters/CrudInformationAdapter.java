@@ -28,6 +28,10 @@ public class CrudInformationAdapter<T extends ModelInterface>
     private List<T> elementsList;
     private boolean isReadOnly = false;
 
+    public List<T> getElementsList() {
+        return elementsList;
+    }
+
     FragmentTransaction ft;
     public CrudInformationAdapter(CrudFragment<T> crudFragment, FragmentActivity context, int resource, List<T> applications) {
         super(context, resource);

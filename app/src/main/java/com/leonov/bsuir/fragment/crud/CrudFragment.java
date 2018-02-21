@@ -52,7 +52,11 @@ abstract public class CrudFragment<T extends ModelInterface>
         }
 
         listView.setAdapter(feedAdapter);
+
+        attacheListListeners(listView);
     }
+
+    protected void attacheListListeners(ListView listView) {}
 
     public void loadData(){
         ListData<T> listData = new ListData<T>(genericClass,this);

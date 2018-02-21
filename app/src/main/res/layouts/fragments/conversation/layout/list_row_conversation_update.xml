@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/choose_is_active" />
+
     <CheckBox
         android:id="@+id/active"
         android:layout_width="match_parent"
@@ -12,12 +18,24 @@
         android:layout_marginTop="10dp"
         android:hint="@string/is_active" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/choose_consultant_and_its_group" />
+
     <Spinner
         android:id="@+id/consultantGroupUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="@string/consultantgroupuser" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/choose_information" />
 
     <Spinner
         android:id="@+id/customerInformation"

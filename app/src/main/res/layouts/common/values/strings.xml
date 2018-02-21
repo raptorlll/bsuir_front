@@ -14,4 +14,7 @@
     <string name="degree">degree</string>
     <string name="education">education</string>
     <string name="view_document">View document</string>
+    <string name="choose_consultant_and_its_group">Choose consultant and its group</string>
+    <string name="choose_information">Choose information</string>
+    <string name="choose_is_active">Choose is active</string>
 </resources>
