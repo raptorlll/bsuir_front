@@ -7,7 +7,7 @@ public class ConversationMessage implements ModelInterface {
     private Long id;
     private String message;
     private Byte isConsultantMessage;
-    private Timestamp dateTime;
+    private Time dateTime;
     private String attachedFile;
     private Conversation conversation;
     private Time videoDuration;
@@ -38,11 +38,11 @@ public class ConversationMessage implements ModelInterface {
         this.isConsultantMessage = isConsultantMessage;
     }
 
-    public Timestamp getDateTime() {
+    public Time getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(Time dateTime) {
         this.dateTime = dateTime;
     }
 

@@ -17,6 +17,8 @@ import com.leonov.bsuir.fragment.crud.ReadFragment;
 import com.leonov.bsuir.fragment.crud.UpdateFragment;
 import com.leonov.bsuir.models.Conversation;
 
+import java.util.List;
+
 public class ConversationFragment
         extends CrudFragment<Conversation> {
 
@@ -75,7 +77,9 @@ public class ConversationFragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Conversation c = ((CrudInformationAdapter<Conversation>) ((ListView) adapterView).getAdapter()).getElementsList().get(0);
+                List<Conversation>conv = ((CrudInformationAdapter<Conversation>) ((ListView) adapterView).getAdapter()).getElementsList();
+
+                Conversation c = ((CrudInformationAdapter<Conversation>) ((ListView) adapterView).getAdapter()).getElementsList().get(position);
 
                 FragmentTransaction ft;
                 ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -93,11 +97,13 @@ public class ConversationFragment
             active = (TextView) view.findViewById(R.id.active);
             consultantGroupUser = (TextView) view.findViewById(R.id.consultantGroupUser);
             customerInformation = (TextView) view.findViewById(R.id.customerInformation);
+            messagesCount = (TextView) view.findViewById(R.id.messagesCount);
         }
 
         TextView active;
         TextView consultantGroupUser;
         TextView customerInformation;
+        TextView messagesCount;
 
         @Override
         public void setText(Conversation activeElement) {
@@ -106,6 +112,8 @@ public class ConversationFragment
                     .concat(activeElement.getConsultantGroupUser().getConsultantGroup().getName()));
             customerInformation.setText("Customer : " + activeElement.getCustomerInformation().getUser().getFirstName() +
                     " " + activeElement.getCustomerInformation().getAdditionalInformation());
+            messagesCount.setText(String.valueOf(activeElement.getMessagesCount()));
+
         }
     }
 

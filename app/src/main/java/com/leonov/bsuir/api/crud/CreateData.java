@@ -13,7 +13,6 @@ public class CreateData<T extends ModelInterface>
     private Class<T> genericClass;
     private T model;
     private T modelOutput;
-
     private OnDataAvailable<T> mCallBack;
 
     public interface OnDataAvailable<T> {
@@ -33,9 +32,6 @@ public class CreateData<T extends ModelInterface>
 
     @Override
     protected void onPostExecute(T Logins) {
-        if(mCallBack != null) {
-            mCallBack.onDataAvailable(modelOutput, DownloadStatus.OK);
-        }
     }
 
     @Override
@@ -58,12 +54,15 @@ public class CreateData<T extends ModelInterface>
 
                 if(mCallBack != null) {
                     mCallBack.onDataAvailable(modelOutput, DownloadStatus.OK);
+                    return;
                 }
             } catch(Exception jsone) {
                 jsone.printStackTrace();
                 status = DownloadStatus.FAILED_OR_EMPTY;
             }
         }
+
+        mCallBack.onDataAvailable(modelOutput, DownloadStatus.OK);
     }
 }
 

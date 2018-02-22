@@ -3,6 +3,7 @@ package com.leonov.bsuir.models;
 public class Conversation implements ModelInterface {
     private Long id;
     private Byte active;
+    private int messagesCount;
     private ConsultantGroupUser consultantGroupUser;
     private CustomerInformation customerInformation;
 
@@ -12,6 +13,14 @@ public class Conversation implements ModelInterface {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getMessagesCount() {
+        return messagesCount;
+    }
+
+    public void setMessagesCount(int messagesCount) {
+        this.messagesCount = messagesCount;
     }
 
     public Byte getActive() {

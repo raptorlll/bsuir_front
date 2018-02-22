@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.leonov.bsuir.models.ConsultantGroup;
 import com.leonov.bsuir.models.ConsultantGroupUser;
+import com.leonov.bsuir.models.Conversation;
 import com.leonov.bsuir.models.CustomerInformation;
 import com.leonov.bsuir.models.ModelInterface;
 import com.leonov.bsuir.models.User;
@@ -18,6 +19,7 @@ import com.leonov.bsuir.models.UserJson;
 
 import java.lang.reflect.Type;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -88,14 +90,36 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
             gsonBuilder.registerTypeAdapter(CustomerInformation.class, new ModelInterfaceSerializer());
         }
 
+        if (getTypeElement() != Conversation.class) {
+            gsonBuilder.registerTypeAdapter(Conversation.class, new ModelInterfaceSerializer());
+        }
+
         /* Custom time serialization */
         gsonBuilder.registerTypeAdapter(Time.class, new TimeSerializer());
     }
 
     private void attacheDeserializers(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
+        gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampDeserializer());
+        gsonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
     }
 
+
+    private class TimestampDeserializer implements JsonDeserializer<Timestamp> {
+        @Override
+        public Timestamp deserialize(JsonElement jsonElement, Type typeOF,
+                                JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Date dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(jsonElement.getAsString());
+                Timestamp timestamp = new java.sql.Timestamp(dateFormat.getTime());
+                return timestamp;
+            } catch (ParseException e) {
+            }
+
+            throw new JsonParseException("Unparseable date: \"" + jsonElement.getAsString()
+                    + "\". Supported formats: " + DATE_FORMAT);
+        }
+    }
 
     private class DateDeserializer implements JsonDeserializer<Date> {
         @Override
@@ -103,6 +127,11 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
                                 JsonDeserializationContext context) throws JsonParseException {
             try {
                 return new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(jsonElement.getAsString());
+            } catch (ParseException e) {
+            }
+
+            try {
+                return new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(jsonElement.getAsString());
             } catch (ParseException e) {
             }
 
@@ -116,6 +145,12 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
         @Override
         public Time deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
                 throws JsonParseException {
+            try {
+                Date dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(jsonElement.getAsString());
+                Time timestamp = new java.sql.Time(dateFormat.getTime());
+                return timestamp;
+            } catch (ParseException e) {
+            }
             try {
                 String s = jsonElement.getAsString();
                 SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT, Locale.US);

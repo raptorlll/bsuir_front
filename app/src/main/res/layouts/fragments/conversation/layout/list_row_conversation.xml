@@ -40,6 +40,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/consultantGroupUser" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Count : "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customerInformation"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/messagesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        android:layout_marginLeft="8dp" />
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -58,4 +76,5 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#333333" />
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
