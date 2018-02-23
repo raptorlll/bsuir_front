@@ -14,11 +14,12 @@ public class NewsFragment extends Fragment {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.news_fragment, parent, false);
     }
-
     // This event is triggered soon after onCreateView().
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
     }

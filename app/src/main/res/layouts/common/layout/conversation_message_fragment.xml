@@ -62,4 +62,13 @@
         android:layout_toRightOf="@+id/viewStatus"
         android:text="Close" />
 
+    <Button
+        android:id="@+id/payments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/close"
+        android:layout_toRightOf="@+id/close"
+        android:text="Payments" />
+
 </RelativeLayout>

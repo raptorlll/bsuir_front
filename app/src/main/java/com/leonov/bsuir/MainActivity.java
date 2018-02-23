@@ -48,6 +48,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CONVERSATION_MESSAGE = Menu.FIRST + 6;
     private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
     private static final int MENU_MAIN = Menu.FIRST + 8;
+    private static final int MENU_CUSTOMER_PAYMENT_REPORTS = Menu.FIRST + 9;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
 
     @Override
@@ -101,11 +102,14 @@ public class MainActivity extends BaseAuthActivity {
         if (isCustomer()){
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
+            menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments");
         }
 
         if (isConsultant()){
             menu.add(0, MENU_CONSULTANT_INFORMATION, Menu.NONE, "My information");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
+            menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments list");
+            menu.add(0, MENU_CUSTOMER_PAYMENT_REPORTS, Menu.NONE, "Payment reports");
         }
 
         menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
@@ -163,6 +167,17 @@ public class MainActivity extends BaseAuthActivity {
                 break;
 
             case MENU_CUSTOMER_PAYMENT:
+                CustomerPaymentFragment fragment5 = new CustomerPaymentFragment();
+
+                if(isConsultant()){
+                    fragment5.setReadOnly(true);
+                }
+
+                ft.replace(R.id.fragmentMain, fragment5);
+                ft.commit();
+                break;
+
+            case MENU_CUSTOMER_PAYMENT_REPORTS:
                 ft.replace(R.id.fragmentMain, new CustomerPaymentFragment());
                 ft.commit();
                 break;

@@ -2,6 +2,7 @@ package com.leonov.bsuir;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 public class LoginActivity extends BaseGuestActivity {
@@ -11,6 +12,7 @@ public class LoginActivity extends BaseGuestActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.guest, menu);
+
         return true;
     }
 
@@ -56,10 +58,14 @@ public class LoginActivity extends BaseGuestActivity {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, new RegistrationFragment());
         ft.commit();
-
         setContentView(R.layout.login);
-
+//
+//        Toolbar toolbar = findViewById(R.layout.menu_main).findViewById(R.id.toolbar);
+////        toolbar.inflateMenu(R.menu.menu_main);
+//        setSupportActionBar(toolbar);
+//        setHasOptionsMenu(true);
     }
+
 
 }
 

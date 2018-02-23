@@ -44,7 +44,6 @@ public class ConversationMessageFragment
         super(genericClass);
     }
 
-
     @NonNull
     @Override
     public UpdateFragment<ConversationMessage> getCreateFragment() {

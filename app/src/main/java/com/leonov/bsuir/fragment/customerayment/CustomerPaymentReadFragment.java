@@ -30,12 +30,14 @@ public class CustomerPaymentReadFragment
 
     @Override
     public void createSetVars(View v) {
-        dataTime = (TextView) v.findViewById(R.id.name);
-        conversation = (TextView) v.findViewById(R.id.description);
+        dataTime = (TextView) v.findViewById(R.id.dataTime);
+        conversation = (TextView) v.findViewById(R.id.conversation);
         amount = (TextView) v.findViewById(R.id.amount);
 
-        dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
-        conversation.setText(activeElement.getConversation().getCustomerInformation().getAdditionalInformation());
-        amount.setText(activeElement.getAmount().toString());
+        dataTime.setText("Time : " + new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
+        conversation.setText("Conversation : " + activeElement.getConversation().getId().toString().concat(" ") +
+                activeElement.getConversation().getConsultantGroupUser().getUser().getFirstName().concat(" ") +
+                activeElement.getConversation().getConsultantGroupUser().getConsultantGroup().getName());
+        amount.setText("Amount : " + activeElement.getAmount().toString() + "USD cents");
     }
 }

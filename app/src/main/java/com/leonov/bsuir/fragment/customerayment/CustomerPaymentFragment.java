@@ -77,10 +77,12 @@ public class CustomerPaymentFragment
         private TextView amount;
 
         @Override
-        public void setText(CustomerPayment currentElement) {
-            dataTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(currentElement.getDataTime()));
-            conversation.setText(currentElement.getConversation().getCustomerInformation().getAdditionalInformation());
-            amount.setText(currentElement.getAmount().toString());
+        public void setText(CustomerPayment activeElement) {
+            dataTime.setText("Time : " + new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US).format(activeElement.getDataTime()));
+            conversation.setText("Conversation : " + activeElement.getConversation().getId().toString().concat(" ") +
+                    activeElement.getConversation().getConsultantGroupUser().getUser().getFirstName().concat(" ") +
+                    activeElement.getConversation().getConsultantGroupUser().getConsultantGroup().getName());
+            amount.setText("Amount : " + activeElement.getAmount().toString() + " USD cents");
         }
     }
 

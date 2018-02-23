@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leonov.bsuir.api.DownloadStatus;
 import com.leonov.bsuir.api.crud.CreateData;
 import com.leonov.bsuir.api.crud.GetData;
 import com.leonov.bsuir.api.crud.ListData;
 import com.leonov.bsuir.api.crud.PostData;
+import com.leonov.bsuir.fragment.conversation.ConversationFragment;
 import com.leonov.bsuir.models.Conversation;
 import com.leonov.bsuir.models.ConversationMessage;
+import com.leonov.bsuir.models.CustomerPayment;
+import com.leonov.bsuir.statical.RolesChecker;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -38,6 +43,7 @@ public class ConversationMessageFragment extends Fragment{
     private Conversation conversation;
     private Button close;
     private Button viewStatus;
+    private Button payment;
 
     @SuppressLint("ValidFragment")
     public ConversationMessageFragment(Conversation conversation) {
@@ -58,9 +64,14 @@ public class ConversationMessageFragment extends Fragment{
         textField = (EditText) view.findViewById(R.id.input);
         close = (Button) view.findViewById(R.id.close);
         viewStatus = (Button) view.findViewById(R.id.viewStatus);
+        payment = (Button) view.findViewById(R.id.payments);
 
         callAsynchronousTask();
         updateView();
+
+        if(RolesChecker.getInstance().isConsultant()){
+            close.setEnabled(false);
+        }
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,26 +112,52 @@ public class ConversationMessageFragment extends Fragment{
             }
         });
 
+        payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentMain, new ConversationPaymentsFragment(conversation));
+                ft.commit();
+            }
+        });
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConversationMessage conversationMessage = new ConversationMessage();
-                conversationMessage.setMessage(textField.getText().toString());
-                textField.setText("");
-                conversationMessage.setConversation(conversation);
-
-                CreateData<ConversationMessage> conversationMessageCreateData =
-                        new CreateData<ConversationMessage>(ConversationMessage.class, new CreateData.OnDataAvailable<ConversationMessage>() {
-                            @Override
-                            public void onDataAvailable(ConversationMessage data, DownloadStatus status) {
-                                updateView();
-                            }
-                        }, conversationMessage);
-                conversationMessageCreateData.execute();
-
-                System.out.println("Clicked");
+                (new ListData<CustomerPayment>(CustomerPayment.class, new ListData.OnDataAvailable<CustomerPayment>() {
+                    @Override
+                    public void onDataAvailable(Collection<CustomerPayment> data, DownloadStatus status) {
+                        if (conversation.canPost(data)) {
+                            sendMessage();
+                        } else {
+                            Toast.makeText(getContext(),
+                                    "Is not enough money. You need " + conversation.needAtLeast(data),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    }
+                }, "/customer_payment/conversation/" + conversation.getId().toString())).execute();
             }
         });
+    }
+
+    void sendMessage(){
+        final ConversationMessage conversationMessage = new ConversationMessage();
+        conversationMessage.setMessage(textField.getText().toString());
+        textField.setText("");
+        conversationMessage.setConversation(conversation);
+
+        CreateData<ConversationMessage> conversationMessageCreateData =
+                new CreateData<ConversationMessage>(ConversationMessage.class, new CreateData.OnDataAvailable<ConversationMessage>() {
+                    @Override
+                    public void onDataAvailable(ConversationMessage data, DownloadStatus status) {
+                        conversation.setMessagesCount(conversation.getMessagesCount() + 1);
+                        updateView();
+                    }
+                }, conversationMessage);
+        conversationMessageCreateData.execute();
+
+        System.out.println("Clicked");
     }
 
     public void callAsynchronousTask() {

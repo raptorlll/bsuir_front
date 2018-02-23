@@ -1,5 +1,7 @@
 package com.leonov.bsuir.models;
 
+import java.util.Collection;
+
 public class Conversation implements ModelInterface {
     private Long id;
     private Byte active;
@@ -45,5 +47,31 @@ public class Conversation implements ModelInterface {
 
     public void setCustomerInformation(CustomerInformation customerInformation) {
         this.customerInformation = customerInformation;
+    }
+
+    public double getSpentMoney() {
+        double tarif = getTarif();
+        return this.getMessagesCount() * tarif;
+    }
+
+    public double getTarif() {
+        return this.getConsultantGroupUser().getConversationTarif() == null
+                    ? this.getConsultantGroupUser().getConsultantGroup().getConversationTarif()
+                    : this.getConsultantGroupUser().getConversationTarif();
+    }
+
+    public boolean canPost(Collection<CustomerPayment> data){
+        return  needAtLeast(data) < 0;
+    }
+
+    public double needAtLeast(Collection<CustomerPayment> data){
+        int paymentsTotal = 0;
+        double tarif = getTarif();
+
+        for (CustomerPayment customerPayment : data) {
+            paymentsTotal += customerPayment.getAmount();
+        }
+
+        return  (getSpentMoney() + tarif) - paymentsTotal;
     }
 }

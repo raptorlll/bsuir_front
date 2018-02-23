@@ -26,7 +26,7 @@ abstract public class UpdateFragment<T extends ModelInterface>
     private int layout;
     protected T activeElement;
     private T element;
-    Button buttonSubmit;
+//    Button buttonSubmit;
 
     FragmentTransaction ft;
 
@@ -76,13 +76,13 @@ abstract public class UpdateFragment<T extends ModelInterface>
 
         findViewsById(view);
 
-        buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
+//        buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
 
         setValues();
 
         setListeners();
 
-        buttonSubmit.setOnClickListener(this);
+//        buttonSubmit.setOnClickListener(this);
 
         return view;
     }
@@ -136,9 +136,9 @@ abstract public class UpdateFragment<T extends ModelInterface>
     public void onClick(View view) {
         onClickListeners(view);
 
-        if (view == buttonSubmit) {
-            submit();
-        }
+//        if (view == buttonSubmit) {
+//            submit();
+//        }
     }
 
 }
