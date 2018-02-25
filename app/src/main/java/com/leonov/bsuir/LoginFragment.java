@@ -126,6 +126,7 @@ public class LoginFragment
         e.putString("jti", data.getJti());
         e.putString("scope", data.getScope());
         e.putString("token_type", data.getToken_type());
+        e.putString("login", username.getText().toString());
         e.commit();
 
         sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);

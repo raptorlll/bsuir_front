@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +32,19 @@ import com.leonov.bsuir.models.Conversation;
 import com.leonov.bsuir.models.ConversationMessage;
 import com.leonov.bsuir.models.CustomerPayment;
 import com.leonov.bsuir.statical.RolesChecker;
+import com.leonov.bsuir.video.CallScreenActivity;
+import com.leonov.bsuir.video.SinchService;
+import com.sinch.android.rtc.calling.Call;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.RECORD_AUDIO;
 
 @SuppressLint("ValidFragment")
 public class ConversationMessageFragment extends Fragment{
@@ -44,6 +55,7 @@ public class ConversationMessageFragment extends Fragment{
     private Button close;
     private Button viewStatus;
     private Button payment;
+    private Button video;
 
     @SuppressLint("ValidFragment")
     public ConversationMessageFragment(Conversation conversation) {
@@ -65,12 +77,14 @@ public class ConversationMessageFragment extends Fragment{
         close = (Button) view.findViewById(R.id.close);
         viewStatus = (Button) view.findViewById(R.id.viewStatus);
         payment = (Button) view.findViewById(R.id.payments);
+        video = (Button) view.findViewById(R.id.video);
 
         callAsynchronousTask();
         updateView();
 
         if(RolesChecker.getInstance().isConsultant()){
             close.setEnabled(false);
+            video.setEnabled(false);
         }
 
         close.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +142,12 @@ public class ConversationMessageFragment extends Fragment{
                     @Override
                     public void onDataAvailable(Collection<CustomerPayment> data, DownloadStatus status) {
                         if (conversation.canPost(data)) {
-                            sendMessage();
+                            final ConversationMessage conversationMessage = new ConversationMessage();
+                            conversationMessage.setMessage(textField.getText().toString());
+                            textField.setText("");
+                            conversationMessage.setConversation(conversation);
+
+                            sendMessage(conversationMessage);
                         } else {
                             Toast.makeText(getContext(),
                                     "Is not enough money. You need " + conversation.needAtLeast(data),
@@ -139,14 +158,40 @@ public class ConversationMessageFragment extends Fragment{
                 }, "/customer_payment/conversation/" + conversation.getId().toString())).execute();
             }
         });
+
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("debug");
+
+                Call call = ((BaseAuthActivity) getActivity()).getSinchServiceInterface().callUserVideo(
+                        conversation.getConsultantGroupUser().getUser().getUsername(),
+                        new SinchService.CallEnded() {
+                            @Override
+                            public void callEnded(int duration) {
+                                final ConversationMessage conversationMessage = new ConversationMessage();
+                                conversationMessage.setMessage(textField.getText().toString());
+                                textField.setText("");
+                                conversationMessage.setConversation(conversation);
+                                Time time = new Time(0, 0, duration);
+                                conversationMessage.setVideoDuration(time);
+
+                                sendMessage(conversationMessage);
+
+                                System.out.println("ended. Duration " + duration);
+                            }
+                        }
+                );
+                String callId = call.getCallId();
+
+                Intent callScreen = new Intent(getContext(), CallScreenActivity.class);
+                callScreen.putExtra(SinchService.CALL_ID, callId);
+                startActivity(callScreen);
+            }
+        });
     }
 
-    void sendMessage(){
-        final ConversationMessage conversationMessage = new ConversationMessage();
-        conversationMessage.setMessage(textField.getText().toString());
-        textField.setText("");
-        conversationMessage.setConversation(conversation);
-
+    void sendMessage(ConversationMessage conversationMessage){
         CreateData<ConversationMessage> conversationMessageCreateData =
                 new CreateData<ConversationMessage>(ConversationMessage.class, new CreateData.OnDataAvailable<ConversationMessage>() {
                     @Override

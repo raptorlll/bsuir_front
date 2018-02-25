@@ -15,7 +15,7 @@ import com.leonov.bsuir.models.Token;
 public class RegistrationActivity
         extends BaseGuestActivity
         implements GetLoginData.OnDataAvailable {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginVideoActivity";
 
     @Override
     public void onDataAvailable(Token data, DownloadStatus status) {

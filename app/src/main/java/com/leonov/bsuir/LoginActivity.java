@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 public class LoginActivity extends BaseGuestActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginVideoActivity";
     private FragmentTransaction ft;
 
     @Override

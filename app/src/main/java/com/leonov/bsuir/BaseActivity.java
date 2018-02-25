@@ -1,7 +1,11 @@
 package com.leonov.bsuir;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -9,12 +13,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.leonov.bsuir.enums.RolesEnum;
 import com.leonov.bsuir.models.Role;
+import com.leonov.bsuir.video.SinchService;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity{
     private static final String TAG = "BaseActivity";
     SharedPreferences sp;
     private Set<Role> roles = new HashSet<>();
@@ -81,4 +86,8 @@ public class BaseActivity extends AppCompatActivity {
         
         roles = rolesSet;
     }
+
+
+
+
 }

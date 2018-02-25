@@ -1,17 +1,19 @@
 package com.leonov.bsuir;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.leonov.bsuir.api.DownloadStatus;
-import com.leonov.bsuir.api.PutTokenData;
 import com.leonov.bsuir.fragment.consultantgroup.ConsultantGroupFragment;
 import com.leonov.bsuir.fragment.consultantgroupuser.ConsultantGroupUserFragment;
 import com.leonov.bsuir.fragment.consultantinformation.ConsultantInformationFragment;
@@ -20,6 +22,7 @@ import com.leonov.bsuir.fragment.conversationmessage.ConversationMessageFragment
 import com.leonov.bsuir.fragment.customerayment.CustomerPaymentFragment;
 import com.leonov.bsuir.fragment.customerinformation.CustomerInformationFragment;
 import com.leonov.bsuir.models.Role;
+import com.leonov.bsuir.video.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +31,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
+
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.MODIFY_AUDIO_SETTINGS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.CAMERA;
 
 public class MainActivity extends BaseAuthActivity {
     private static final String TAG = "MainActivity";
@@ -38,7 +49,7 @@ public class MainActivity extends BaseAuthActivity {
     public static final String STATE_URL = "feedUrl";
     public static final String STATE_LIMIT = "feedLimit";
     public Set<Role> rolesSet;
-    
+
     private static final int MENU_ADD = Menu.FIRST;
     private static final int MENU_CLIENT_INFO = Menu.FIRST + 1;
     private static final int MENU_CONSULTANT_GROUP = Menu.FIRST + 2;
@@ -49,6 +60,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
     private static final int MENU_MAIN = Menu.FIRST + 8;
     private static final int MENU_CUSTOMER_PAYMENT_REPORTS = Menu.FIRST + 9;
+    private static final int MENU_VIDEO_LOGIN = Menu.FIRST + 10;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
 
     @Override
@@ -69,6 +81,27 @@ public class MainActivity extends BaseAuthActivity {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentMain, new MainFragment());
         ft.commit();
+
+
+        if (!checkPermission()) {
+            requestPermission();
+        }
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        //if SharedPreferences contains username and password then redirect to Home activity
+        if (sp.contains("login")) {
+            if (!getSinchServiceInterface().isStarted()) {
+                getSinchServiceInterface().startClient(sp.getString("login", ""));
+                System.out.println("");
+//                showSpinner();
+            } else {
+//                openPlaceCallActivity();
+                System.out.println("");
+            }
+        }
     }
 
     @Override
@@ -89,7 +122,7 @@ public class MainActivity extends BaseAuthActivity {
 
         menu.add(0, MENU_MAIN, Menu.NONE, "Main page");
 
-        if(isAdmin()){
+        if (isAdmin()) {
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, R.string.client_info);
             menu.add(0, MENU_CONSULTANT_GROUP, Menu.NONE, "Consultant group");
             menu.add(0, MENU_CONSULTANT_GROUP_USER, Menu.NONE, "Consultant group user");
@@ -99,19 +132,20 @@ public class MainActivity extends BaseAuthActivity {
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Customer payment");
         }
 
-        if (isCustomer()){
+        if (isCustomer()) {
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments");
         }
 
-        if (isConsultant()){
+        if (isConsultant()) {
             menu.add(0, MENU_CONSULTANT_INFORMATION, Menu.NONE, "My information");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments list");
             menu.add(0, MENU_CUSTOMER_PAYMENT_REPORTS, Menu.NONE, "Payment reports");
         }
 
+//        menu.add(0, MENU_VIDEO_LOGIN, Menu.NONE, "Video login");
         menu.add(0, MENU_LOGOUT, Menu.NONE, "Logout");
 
         return super.onPrepareOptionsMenu(menu);
@@ -153,7 +187,7 @@ public class MainActivity extends BaseAuthActivity {
             case MENU_CONVERSATION:
                 ConversationFragment fragment3 = new ConversationFragment();
 
-                if(isConsultant()){
+                if (isConsultant()) {
                     fragment3.setReadOnly(true);
                 }
 
@@ -169,7 +203,7 @@ public class MainActivity extends BaseAuthActivity {
             case MENU_CUSTOMER_PAYMENT:
                 CustomerPaymentFragment fragment5 = new CustomerPaymentFragment();
 
-                if(isConsultant()){
+                if (isConsultant()) {
                     fragment5.setReadOnly(true);
                 }
 
@@ -182,6 +216,12 @@ public class MainActivity extends BaseAuthActivity {
                 ft.commit();
                 break;
 
+            case MENU_VIDEO_LOGIN:
+
+                Intent mainActivity = new Intent(this, LoginVideoActivity.class);
+                startActivity(mainActivity);
+                break;
+
             case MENU_LOGOUT:
                 SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor e = sp.edit();
@@ -192,35 +232,12 @@ public class MainActivity extends BaseAuthActivity {
                 startActivity(getIntent());
                 break;
 
-            case R.id.mnuFree:
-                feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=%d/xml";
-                break;
-            case R.id.mnuPaid:
-                feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=%d/xml";
-                break;
-            case R.id.mnuSongs:
-                feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topsongs/limit=%d/xml";
-                break;
-            case R.id.mnu10:
-            case R.id.mnu25:
-                if (!item.isChecked()) {
-                    item.setChecked(true);
-                    feedLimit = 35 - feedLimit;
-                    Log.d(TAG, "onOptionsItemSelected: " + item.getTitle() + " setting feedLimit to " + feedLimit);
-                } else {
-                    Log.d(TAG, "onOptionsItemSelected: " + item.getTitle() + " feedLimit unchanged");
-                }
-                break;
-            case R.id.mnuRefresh:
-                feedCachedUrl = "INVALIDATED";
-                break;
             default:
                 return super.onOptionsItemSelected(item);
 
         }
-//        downloadUrl(String.format(feedUrl, feedLimit));
-        return true;
 
+        return true;
     }
 
     @Override
@@ -239,6 +256,69 @@ public class MainActivity extends BaseAuthActivity {
             Log.d(TAG, "downloadUrl: URL not changed");
         }
     }
+
+
+    public static final int RequestPermissionCode = 1;
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                INTERNET,
+                WRITE_EXTERNAL_STORAGE,
+                RECORD_AUDIO,
+                MODIFY_AUDIO_SETTINGS,
+                READ_PHONE_STATE,
+                ACCESS_NETWORK_STATE,
+                CAMERA
+        }, RequestPermissionCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (grantResults.length > 0) {
+                    boolean internet = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean write_external_storage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean record_audio = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean modify_audio_settings = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    boolean read_phone_state = grantResults[4] == PackageManager.PERMISSION_GRANTED;
+                    boolean access_network_state = grantResults[5] == PackageManager.PERMISSION_GRANTED;
+                    boolean camera = grantResults[6] == PackageManager.PERMISSION_GRANTED;
+
+                    if (internet &&
+                            write_external_storage &&
+                            record_audio &&
+                            modify_audio_settings &&
+                            read_phone_state &&
+                            access_network_state &&
+                            camera) {
+                        Toast.makeText(getBaseContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getBaseContext(), "Permission", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
+
+    public boolean checkPermission() {
+        boolean internet = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET) == PackageManager.PERMISSION_GRANTED;
+        boolean write_external_storage = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean record_audio = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        boolean modify_audio_settings = ContextCompat.checkSelfPermission(getApplicationContext(), MODIFY_AUDIO_SETTINGS) == PackageManager.PERMISSION_GRANTED;
+        boolean read_phone_state = ContextCompat.checkSelfPermission(getApplicationContext(), READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+        boolean access_network_state = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED;
+        boolean camera = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        return internet &&
+                write_external_storage &&
+                record_audio &&
+                modify_audio_settings &&
+                read_phone_state &&
+                access_network_state &&
+                camera;
+    }
+
 
     private class DownloadData extends AsyncTask<String, Void, String> {
         private static final String TAG = "DownloadData";

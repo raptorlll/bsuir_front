@@ -141,7 +141,12 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
     }
 
 
-    private class TimeDeserializer implements JsonDeserializer<Time> {
+    private class TimeDeserializer implements JsonDeserializer<Time>, JsonSerializer<Time> {
+        @Override
+        public JsonElement serialize(Time src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive((new SimpleDateFormat("HH:mm:00", Locale.US)).format(src));
+        }
+
         @Override
         public Time deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
                 throws JsonParseException {
@@ -169,7 +174,7 @@ public abstract class CrudConvertorAbstract<T extends ModelInterface> implements
     private class TimeSerializer implements JsonSerializer<Time> {
         @Override
         public JsonElement serialize(Time src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive((new SimpleDateFormat("HH:mm:00", Locale.US)).format(src));
+            return new JsonPrimitive((new SimpleDateFormat("HH:mm:ss", Locale.US)).format(src));
         }
     }
 
