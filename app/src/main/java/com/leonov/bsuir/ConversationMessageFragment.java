@@ -162,33 +162,54 @@ public class ConversationMessageFragment extends Fragment{
         video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("debug");
+                (new ListData<CustomerPayment>(CustomerPayment.class, new ListData.OnDataAvailable<CustomerPayment>() {
+                    @Override
+                    public void onDataAvailable(Collection<CustomerPayment> data, DownloadStatus status) {
+                        if (conversation.canPost(data)) {
+                            final ConversationMessage conversationMessage = new ConversationMessage();
+                            conversationMessage.setMessage(textField.getText().toString());
+                            textField.setText("");
+                            conversationMessage.setConversation(conversation);
 
-                Call call = ((BaseAuthActivity) getActivity()).getSinchServiceInterface().callUserVideo(
-                        conversation.getConsultantGroupUser().getUser().getUsername(),
-                        new SinchService.CallEnded() {
-                            @Override
-                            public void callEnded(int duration) {
-                                final ConversationMessage conversationMessage = new ConversationMessage();
-                                conversationMessage.setMessage(textField.getText().toString());
-                                textField.setText("");
-                                conversationMessage.setConversation(conversation);
-                                Time time = new Time(0, 0, duration);
-                                conversationMessage.setVideoDuration(time);
-
-                                sendMessage(conversationMessage);
-
-                                System.out.println("ended. Duration " + duration);
-                            }
+                            callVideo();
+                        } else {
+                            Toast.makeText(getContext(),
+                                    "Is not enough money. You need " + conversation.needAtLeast(data),
+                                    Toast.LENGTH_LONG
+                            ).show();
                         }
-                );
-                String callId = call.getCallId();
-
-                Intent callScreen = new Intent(getContext(), CallScreenActivity.class);
-                callScreen.putExtra(SinchService.CALL_ID, callId);
-                startActivity(callScreen);
+                    }
+                }, "/customer_payment/conversation/" + conversation.getId().toString())).execute();
             }
         });
+    }
+
+    private void callVideo() {
+        System.out.println("debug");
+
+        Call call = ((BaseAuthActivity) getActivity()).getSinchServiceInterface().callUserVideo(
+                conversation.getConsultantGroupUser().getUser().getUsername(),
+                new SinchService.CallEnded() {
+                    @Override
+                    public void callEnded(int duration) {
+                        final ConversationMessage conversationMessage = new ConversationMessage();
+                        conversationMessage.setMessage(textField.getText().toString());
+                        textField.setText("");
+                        conversationMessage.setConversation(conversation);
+                        Time time = new Time(0, 0, duration);
+                        conversationMessage.setVideoDuration(time);
+
+                        sendMessage(conversationMessage);
+
+                        System.out.println("ended. Duration " + duration);
+                    }
+                }
+        );
+        String callId = call.getCallId();
+
+        Intent callScreen = new Intent(getContext(), CallScreenActivity.class);
+        callScreen.putExtra(SinchService.CALL_ID, callId);
+        startActivity(callScreen);
     }
 
     void sendMessage(ConversationMessage conversationMessage){
@@ -228,6 +249,7 @@ public class ConversationMessageFragment extends Fragment{
         (new ListData<ConversationMessage>(ConversationMessage.class, new ListData.OnDataAvailable<ConversationMessage>() {
             @Override
             public void onDataAvailable(Collection<ConversationMessage> data, DownloadStatus status) {
+                conversation.setConversationMessages(data);
                 MySimpleArrayAdapter feedAdapter = new MySimpleArrayAdapter(getContext(), data.toArray());
                 listView.setAdapter(feedAdapter);
                 feedAdapter.notifyDataSetChanged();
@@ -269,7 +291,12 @@ public class ConversationMessageFragment extends Fragment{
                             conversationMessage.getConversation().getCustomerInformation().getUser().getFirstName()
             ));
             time.setText("".concat(dateString));
-            text.setText("".concat(conversationMessage.getMessage()));
+            text.setText(conversationMessage.getVideoDuration() == null ?
+                    conversationMessage.getMessage() :
+                    "--- Video message. Long - ".concat(
+                            new SimpleDateFormat("HH:mm:ss", Locale.US).format(conversationMessage.getVideoDuration())
+                    ).concat(" s.")
+            );
 
             return rowView;
         }

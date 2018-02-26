@@ -19,7 +19,9 @@ import com.sinch.android.rtc.video.VideoController;
 
 public class SinchService extends Service {
 
-
+    private static final String APP_KEY = "2e535612-5c25-4ee7-9d66-9512fd24fec6";
+    private static final String APP_SECRET = "B1rpQ8pCo0iWErA/sPyF/Q==";
+    private static final String ENVIRONMENT = "clientapi.sinch.com";
 
     public static final String CALL_ID = "CALL_ID";
     static final String TAG = SinchService.class.getSimpleName();
@@ -95,7 +97,9 @@ public class SinchService extends Service {
         }
 
         public void fireCallEnded(int duration){
-            onCallEndListener.callEnded(duration);
+            if(onCallEndListener!=null){
+                onCallEndListener.callEnded(duration);
+            }
         }
 
         public String getUserName() {

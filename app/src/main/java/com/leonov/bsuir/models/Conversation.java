@@ -8,6 +8,7 @@ public class Conversation implements ModelInterface {
     private int messagesCount;
     private ConsultantGroupUser consultantGroupUser;
     private CustomerInformation customerInformation;
+    private Collection<ConversationMessage> conversationMessages;
 
     public Long getId() {
         return id;
@@ -15,6 +16,14 @@ public class Conversation implements ModelInterface {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Collection<ConversationMessage> getConversationMessages() {
+        return conversationMessages;
+    }
+
+    public void setConversationMessages(Collection<ConversationMessage> conversationMessages) {
+        this.conversationMessages = conversationMessages;
     }
 
     public int getMessagesCount() {
@@ -49,15 +58,34 @@ public class Conversation implements ModelInterface {
         this.customerInformation = customerInformation;
     }
 
+    public double getVideoMoney() {
+        double tarifVideo = getTarifVideo();
+        double minutes = 0;
+
+        for (ConversationMessage cm : conversationMessages){
+            if(cm.getVideoDuration()!=null){
+                minutes += cm.getVideoDuration().getMinutes() + cm.getVideoDuration().getSeconds() / 60;
+            }
+        }
+
+        return Math.ceil(minutes * tarifVideo);
+    }
+
     public double getSpentMoney() {
         double tarif = getTarif();
-        return this.getMessagesCount() * tarif;
+
+        return this.getMessagesCount() * tarif + getVideoMoney();
     }
 
     public double getTarif() {
         return this.getConsultantGroupUser().getConversationTarif() == null
                     ? this.getConsultantGroupUser().getConsultantGroup().getConversationTarif()
                     : this.getConsultantGroupUser().getConversationTarif();
+    }
+    public double getTarifVideo() {
+        return this.getConsultantGroupUser().getVideoTarif() == null
+                    ? this.getConsultantGroupUser().getConsultantGroup().getVideoTarif()
+                    : this.getConsultantGroupUser().getVideoTarif();
     }
 
     public boolean canPost(Collection<CustomerPayment> data){
@@ -67,11 +95,12 @@ public class Conversation implements ModelInterface {
     public double needAtLeast(Collection<CustomerPayment> data){
         int paymentsTotal = 0;
         double tarif = getTarif();
+        double tarifVideo = getTarifVideo();
 
         for (CustomerPayment customerPayment : data) {
             paymentsTotal += customerPayment.getAmount();
         }
 
-        return  (getSpentMoney() + tarif) - paymentsTotal;
+        return  (getSpentMoney() + Math.max(tarif, tarifVideo)) - paymentsTotal;
     }
 }
