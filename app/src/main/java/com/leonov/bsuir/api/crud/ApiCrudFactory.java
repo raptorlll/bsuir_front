@@ -34,6 +34,8 @@ public class ApiCrudFactory {
             return new ClientConvertor(){};
         } else if (Consultant.class == genericClass) {
             return new ConsultantConvertor();
+        }else if (SummaryPayments.class == genericClass) {
+            return new SummaryPaymentsConvertor();
         }
 
         return null;

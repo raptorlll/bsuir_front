@@ -59,7 +59,7 @@ public class MainActivity extends BaseAuthActivity {
     private static final int MENU_CONVERSATION_MESSAGE = Menu.FIRST + 6;
     private static final int MENU_CUSTOMER_PAYMENT = Menu.FIRST + 7;
     private static final int MENU_MAIN = Menu.FIRST + 8;
-    private static final int MENU_CUSTOMER_PAYMENT_REPORTS = Menu.FIRST + 9;
+    private static final int MENU_SUMMARY_PAYMENT_REPORTS = Menu.FIRST + 9;
     private static final int MENU_VIDEO_LOGIN = Menu.FIRST + 10;
     private static final int MENU_LOGOUT = Menu.FIRST + 100;
 
@@ -136,13 +136,14 @@ public class MainActivity extends BaseAuthActivity {
             menu.add(0, MENU_CLIENT_INFO, Menu.NONE, "My information accounts");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments");
+            menu.add(0, MENU_SUMMARY_PAYMENT_REPORTS, Menu.NONE, "Payment reports");
         }
 
         if (isConsultant()) {
             menu.add(0, MENU_CONSULTANT_INFORMATION, Menu.NONE, "My information");
             menu.add(0, MENU_CONVERSATION, Menu.NONE, "Conversations");
             menu.add(0, MENU_CUSTOMER_PAYMENT, Menu.NONE, "Payments list");
-            menu.add(0, MENU_CUSTOMER_PAYMENT_REPORTS, Menu.NONE, "Payment reports");
+            menu.add(0, MENU_SUMMARY_PAYMENT_REPORTS, Menu.NONE, "Payment reports");
         }
 
 //        menu.add(0, MENU_VIDEO_LOGIN, Menu.NONE, "Video login");
@@ -211,8 +212,8 @@ public class MainActivity extends BaseAuthActivity {
                 ft.commit();
                 break;
 
-            case MENU_CUSTOMER_PAYMENT_REPORTS:
-                ft.replace(R.id.fragmentMain, new CustomerPaymentFragment());
+            case MENU_SUMMARY_PAYMENT_REPORTS:
+                ft.replace(R.id.fragmentMain, new SummaryPaymentsFragment());
                 ft.commit();
                 break;
 

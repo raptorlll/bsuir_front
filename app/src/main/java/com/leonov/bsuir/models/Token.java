@@ -1,9 +1,5 @@
 package com.leonov.bsuir.models;
 
-/**
- * Created by Vera on 14.01.2018.
- */
-
 public class Token {
     private String access_token;
     private String token_type;
